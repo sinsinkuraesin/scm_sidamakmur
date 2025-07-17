@@ -12,6 +12,11 @@
                     @csrf
 
                     <div class="form-group">
+                        <Label>Kode Konsumen:</Label>
+                        <input type="text" class="form-control" name="kd_konsumen">
+                    </div>
+
+                    <div class="form-group">
                         <Label>Nama Konsumen:</Label>
                         <input type="text" class="form-control" name="nama_konsumen">
                     </div>

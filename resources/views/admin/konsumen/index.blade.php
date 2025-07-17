@@ -47,6 +47,7 @@
                                     @foreach ($konsumens as $konsumen)
                                         <tr>
                                             <td>{{ ++$i }}</td>
+                                            <td>{{ $konsumen->kd_konsumen }}</td>
                                             <td>{{ $konsumen->nama_konsumen }}</td>
                                             <td>{{ $konsumen->nama_pasar }}</td>
                                             <td>{{ $konsumen->alamat }}</td>

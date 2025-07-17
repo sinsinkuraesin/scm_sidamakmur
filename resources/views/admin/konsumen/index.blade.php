@@ -35,7 +35,6 @@
                                 <thead class="thead-light">
                                     <tr>
                                         <th>No</th>
-                                        <th>Kode Konsumen</th>
                                         <th>Nama Konsumen</th>
                                         <th>Nama Pasar</th>
                                         <th>Alamat</th>

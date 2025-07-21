@@ -8,7 +8,7 @@
   <link rel="apple-touch-icon" sizes="76x76" href="{{ asset('pemilik/pemilik/img/apple-icon.png') }}">
   <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
   <title>
-    @yield('title', 'PD.Sidamakmur - Pemilik')
+    @yield('title', 'Pemilik')
   </title>
 
   <!-- Fonts and icons -->
@@ -79,7 +79,7 @@
             <div class="icon icon-shape icon-sm text-center me-2">
               <i class="ni ni-tv-2 text-primary text-sm opacity-10"></i>
             </div>
-            <span class="nav-link-text ms-1">Dashboard</span>
+            <span class="nav-link-text ms-1">Beranda</span>
           </a>
         </li>
         <li class="nav-item">

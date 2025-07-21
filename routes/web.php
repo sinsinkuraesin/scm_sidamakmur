@@ -57,3 +57,6 @@ Route::get('/beranda-admin', [App\Http\Controllers\BerandaController::class, 'in
 
 // 4. Logout
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::get('/coba', function () {
+    return 'Halaman coba berhasil dibuka!';
+});

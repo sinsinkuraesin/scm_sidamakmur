@@ -111,11 +111,16 @@
             $waNumber = $noTlp;
         }
 
-        $pesan = urlencode("Halo *{$jual->konsumen->nama_konsumen}*, berikut adalah ringkasan invoice pembelian Anda di *PD Sidamakmur*:\n\n" .
-            "No Invoice: INV-JUAL-{$jual->jual_id}\nTanggal: " . \Carbon\Carbon::parse($jual->tgl_jual)->format('d M Y') . "\n\n" .
-            "Total Pembelian: Rp " . number_format($jual->detailJual->sum('total'), 0, ',', '.') . "\n\n" .
-            "Terima kasih telah berbelanja!");
+       $pesan = urlencode("Halo *{$jual->konsumen->nama_konsumen}*, berikut adalah ringkasan invoice pembelian Anda di *PD Sidamakmur*:\n\n" .
+            "🧾 No Invoice: INV-JUAL-{$jual->jual_id}\n📅 Tanggal: " . \Carbon\Carbon::parse($jual->tgl_jual)->format('d M Y') . "\n" .
+            "💰 Total Pembelian: Rp " . number_format($jual->detailJual->sum('total'), 0, ',', '.') . "\n\n" .
+            "Silakan lakukan pembayaran melalui transfer ke salah satu rekening berikut:\n\n" .
+            "🏦 *Bank BRI*\nNo. Rek: 1234 5678 9101 1121\nA.n: Nama Pemilik\n\n" .
+            "🏦 *Bank Mandiri*\nNo. Rek: 9876 5432 1098 7654\nA.n: Nama Pemilik\n\n" .
+            "Setelah transfer, mohon konfirmasi melalui WhatsApp ini ya 🙏\n\n" .
+            "Terima kasih telah berbelanja di *PD Sidamakmur*.");
         $waLink = "https://wa.me/$waNumber?text=$pesan";
+
     @endphp
 
     <div class="invoice-box">
@@ -169,9 +174,18 @@
         </div>
 
         <div class="payment-info">
-            <strong>Silakan melakukan pembayaran melalui transfer.</strong><br>
-            Jika Anda ingin melakukan pembayaran secara <strong>tunai (cash)</strong>, harap konfirmasi terlebih dahulu melalui WhatsApp.
-        </div>
+        <strong>Silakan melakukan pembayaran melalui transfer ke rekening berikut:</strong><br><br>
+
+        <strong>Bank BRI</strong><br>
+        No. Rekening: 1234 5678 9101 1121<br>
+        a.n. Nama Pemilik Rekening<br><br>
+
+        <strong>Bank Mandiri</strong><br>
+        No. Rekening: 9876 5432 1098 7654<br>
+        a.n. Nama Pemilik Rekening<br><br>
+
+        Jika Anda ingin melakukan pembayaran secara <strong>tunai (cash)</strong>, harap konfirmasi terlebih dahulu melalui <strong><a href="https://wa.me/6281234567890" target="_blank">WhatsApp</a></strong>.
+    </div>
 
         @if (!request()->routeIs('jual.invoice.pdf'))
         <div class="btn-container">

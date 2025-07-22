@@ -10,6 +10,7 @@ class Konsumen extends Model
     use HasFactory;
     protected $table = 'tbl_konsumen';
     protected $fillable = [
+        'kd_konsumen',
         'nama_konsumen',
         'nama_pasar',
         'alamat',

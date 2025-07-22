@@ -11,6 +11,7 @@
                         <div class="form-group mr-2">
                             <select name="filter" class="form-control" required>
                                 <option value="harian" {{ $filter == 'jenis' ? 'selected' : '' }}>Jenis Ikan</option>
+                                    <option value="harian" {{ $filter == 'harian' ? 'selected' : '' }}>Jenis Ikan</option>
                                 <option value="harian" {{ $filter == 'harian' ? 'selected' : '' }}>Harian</option>
                                 <option value="bulanan" {{ $filter == 'bulanan' ? 'selected' : '' }}>Bulanan</option>
                                 <option value="tahunan" {{ $filter == 'tahunan' ? 'selected' : '' }}>Tahunan</option>

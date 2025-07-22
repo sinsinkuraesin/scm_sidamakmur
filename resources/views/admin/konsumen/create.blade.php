@@ -23,7 +23,7 @@
 
                     <div class="form-group">
                         <Label>No Telephone:</Label>
-                        <input type="number" class="form-control" name="no_tlp">
+                        <input type="text" class="form-control" name="no_tlp">
                     </div>
 
                     <div class="form-group">

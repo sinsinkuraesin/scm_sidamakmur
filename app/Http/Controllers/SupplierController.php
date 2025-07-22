@@ -24,6 +24,7 @@ class SupplierController extends Controller
     {
         $kata = $request->input('kata');
         $query = " kd_supplier LIKE '%".$kata."%'
+                  OR nm_supplier LIKE '%".$kata."%'
                   OR jenis_ikan LIKE '%".$kata."%'
                   OR alamat LIKE '%".$kata."%'";
 
@@ -44,12 +45,14 @@ class SupplierController extends Controller
     {
         $request->validate([
             'kd_supplier' =>'required',
+            'nm_supplier' =>'required',
             'jenis_ikan' =>'required',
             'alamat' =>'required',
         ]);
 
         Supplier::create([
             'kd_supplier' =>$request->kd_supplier,
+            'nm_supplier' =>$request->nm_supplier,
             'jenis_ikan' =>$request->jenis_ikan,
             'alamat' =>$request->alamat,
         ]);
@@ -74,12 +77,14 @@ class SupplierController extends Controller
     {
         $request->validate([
             'kd_supplier' =>'required',
+            'nm_supplier' =>'required',
             'jenis_ikan' =>'required',
             'alamat' =>'required',
         ]);
 
         $supplier->update([
             'kd_supplier' =>$request->kd_supplier,
+            'nm_supplier' =>$request->nm_supplier,
             'jenis_ikan' =>$request->jenis_ikan,
             'alamat' =>$request->alamat,
         ]);

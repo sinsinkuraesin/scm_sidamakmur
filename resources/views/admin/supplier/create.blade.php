@@ -17,6 +17,11 @@
                     </div>
 
                     <div class="form-group">
+                        <Label>Nama Supplier:</Label>
+                        <input type="text" class="form-control" name="nm_supplier">
+                    </div>
+
+                    <div class="form-group">
                         <label for="jenis_ikan">Pilih Jenis Ikan:</label>
                         <select name="jenis_ikan" id="jenis_ikan" class="form-control" required>
                             <option value="" disabled selected>Pilih Jenis Ikan</option>

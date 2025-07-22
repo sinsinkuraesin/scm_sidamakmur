@@ -11,6 +11,7 @@ return new class extends Migration
         Schema::create('tbl_supplier', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('kd_supplier');
+            $table->string('nm_supplier');
             $table->unsignedBigInteger('jenis_ikan');
             $table->string('alamat');
             $table->timestamps();

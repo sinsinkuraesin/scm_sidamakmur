@@ -22,6 +22,12 @@
                         <input type="text" class="form-control" name="kd_supplier" id="kd_supplier" value="{{ $supplier->kd_supplier }}" required>
                     </div>
 
+                    <!-- Nama Supplier -->
+                    <div class="form-group">
+                        <label for="kd_supplier">Nama Supplier:</label>
+                        <input type="text" class="form-control" name="nm_supplier" id="nm_supplier" value="{{ $supplier->nm_supplier }}" required>
+                    </div>
+
                     <!-- Pilih jenis ikan -->
                     <div class="form-group">
                         <label for="jenis_ikan">Pilih Jenis Ikan:</label>

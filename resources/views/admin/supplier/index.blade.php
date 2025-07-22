@@ -36,6 +36,7 @@
                                     <tr>
                                         <th>No</th>
                                         <th>Kode Supplier</th>
+                                        <th>Nama Supplier</th>
                                         <th>Jenis Ikan</th>
                                         <th>Alamat Supplier</th>
                                         <th>Action</th>
@@ -46,6 +47,7 @@
                                         <tr>
                                             <td>{{ ++$i }}</td>
                                             <td>{{ $supplier->kd_supplier }}</td>
+                                            <td>{{ $supplier->nm_supplier }}</td>
                                             <td>{{ $supplier->jenis_ikan }}</td>
                                             <td>{{ $supplier->alamat }}</td>
 

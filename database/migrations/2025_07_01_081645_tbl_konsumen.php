@@ -17,6 +17,7 @@ return new class extends Migration
             $table->bigIncrements('id');
             $table->varchar('kd_konsumen');
             $table->string('nama_konsumen');
+            $table->string('no_tlp');
             $table->unsignedBigInteger('nama_pasar');
             $table->string('alamat');
             $table->time('jam_buka');

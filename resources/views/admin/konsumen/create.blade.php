@@ -22,6 +22,11 @@
                     </div>
 
                     <div class="form-group">
+                        <Label>No Telephone:</Label>
+                        <input type="number" class="form-control" name="no_tlp">
+                    </div>
+
+                    <div class="form-group">
                         <label for="nama_pasar">Pilih Pasar:</label>
                         <select name="nama_pasar" id="nama_pasar" class="form-control" required>
                             <option value="" disabled selected>Pilih Pasar</option>

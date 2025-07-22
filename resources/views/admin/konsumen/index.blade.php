@@ -37,6 +37,7 @@
                                         <th>No</th>
                                         <th>Kode Konsumen</th>
                                         <th>Nama Konsumen</th>
+                                        <th>No Telephone</th>
                                         <th>Nama Pasar</th>
                                         <th>Alamat</th>
                                         <th>Jam Operasional</th>
@@ -49,6 +50,7 @@
                                             <td>{{ ++$i }}</td>
                                             <td>{{ $konsumen->kd_konsumen }}</td>
                                             <td>{{ $konsumen->nama_konsumen }}</td>
+                                            <td>{{ $konsumen->no_tlp }}</td>
                                             <td>{{ $konsumen->nama_pasar }}</td>
                                             <td>{{ $konsumen->alamat }}</td>
                                             <td>{{ \Carbon\Carbon::createFromFormat('H:i:s', $konsumen->jam_buka)->format('H:i') }} - {{ \Carbon\Carbon::createFromFormat('H:i:s', $konsumen->jam_tutup)->format('H:i') }} WIB</td>

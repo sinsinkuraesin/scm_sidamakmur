@@ -79,6 +79,19 @@
             font-size: 12px;
             margin-top: 30px;
         }
+        .payment-info {
+            margin-top: 30px;
+            background-color: #e8f5e9;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 5px solid #4caf50;
+            font-size: 14px;
+            color: #2e7d32;
+        }
+        .payment-info a {
+            color: #2e7d32;
+            text-decoration: underline;
+        }
         @media print {
             .btn-container { display: none !important; }
             body { margin: 0; background-color: white; }
@@ -143,6 +156,15 @@
 
         <div class="total" style="text-align:right; font-weight:bold;">
             Total Penjualan: Rp {{ number_format($jual->detailJual->sum('total'), 0, ',', '.') }}
+        </div>
+
+        <!-- Keterangan Pembayaran via WhatsApp -->
+        <div class="payment-info">
+            <strong>Silakan melakukan pembayaran melalui WhatsApp:</strong><br>
+            Hubungi kami di
+            <img src="https://img.icons8.com/color/20/000000/whatsapp--v1.png" style="vertical-align: middle;">
+            <a href="https://wa.me/6281234567890" target="_blank">+62 812-3456-7890</a>
+            untuk konfirmasi pembayaran dan pengiriman barang.
         </div>
 
         @if (!request()->routeIs('jual.invoice.pdf'))

@@ -13,7 +13,7 @@
                                 <option value="hari" {{ $filter == 'jenis' ? 'selected' : '' }}>Jumlah Ikan</option>
                                 <option value="hari" {{ $filter == 'hari' ? 'selected' : '' }}>Harian</option>
                                 <option value="bulan" {{ $filter == 'bulan' ? 'selected' : '' }}>Bulanan</option>
-                                <option value="tahun" {{ $filter == 'tahun' ? 'selected' : '' }}>Pertahun</option>
+                                <option value="tahun" {{ $filter == 'tahun' ? 'selected' : '' }}>Tahunan</option>
                             </select>
                         </div>
                         <div class="form-group mr-2">

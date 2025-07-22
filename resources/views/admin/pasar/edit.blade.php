@@ -15,6 +15,11 @@
                 @method('PUT')
 
                 <div class="form-group">
+                    <Label>Kode Pasar:</Label>
+                    <input type="text" class="form-control" name="kd_pasar" value="{{ $pasar->kd_pasar }}">
+                </div>
+
+                <div class="form-group">
                     <Label>Nama Pasar:</Label>
                     <input type="text" class="form-control" name="nama_pasar" value="{{ $pasar->nama_pasar }}">
                 </div>

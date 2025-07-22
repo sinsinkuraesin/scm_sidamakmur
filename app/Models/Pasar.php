@@ -11,6 +11,6 @@ class Pasar extends Model
     public $table = "tbl_pasar";
 
     protected $fillable = [
-        'nama_pasar','alamat','jam_buka', 'jam_tutup'
+        'kd_pasar', 'nama_pasar','alamat','jam_buka', 'jam_tutup'
     ];
 }

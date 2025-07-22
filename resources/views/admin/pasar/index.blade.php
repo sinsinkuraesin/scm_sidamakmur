@@ -35,6 +35,7 @@
                                <thead class="thead-light">
                                     <tr>
                                         <th>No</th>
+                                        <th>Kode Pasar</th>
                                         <th>Nama Pasar</th>
                                         <th>Alamat</th>
                                         <th>Jam Operasional</th>
@@ -45,6 +46,7 @@
                                     @foreach ( $pasars as $pasar )
                                     <tr>
                                         <td>{{ ++$i }}</td>
+                                        <td>{{ $pasar->kd_pasar }}</td>
                                         <td>{{ $pasar->nama_pasar }}</td>
                                         <td>{{ $pasar->alamat }}</td>
                                         <td>{{ \Carbon\Carbon::createFromFormat('H:i:s', $pasar->jam_buka)->format('H:i') }} - {{ \Carbon\Carbon::createFromFormat('H:i:s', $pasar->jam_tutup)->format('H:i') }} WIB</td>

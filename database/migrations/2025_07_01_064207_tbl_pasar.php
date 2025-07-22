@@ -10,6 +10,7 @@ return new class extends Migration
     {
         Schema::create('tbl_pasar', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('kd_pasar');
             $table->string('nama_pasar');
             $table->string('alamat');
             $table->time('jam_buka');

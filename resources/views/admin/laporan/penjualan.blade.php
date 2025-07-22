@@ -10,8 +10,8 @@
                     <form method="GET" action="{{ route('laporan.penjualan') }}" class="form-inline mb-4">
                         <div class="form-group mr-2">
                             <select name="filter" class="form-control" required>
-                                <option value="hari" {{ $filter == 'jenis' ? 'selected' : '' }}>Jenis Ikan</option>
-                                <option value="hari" {{ $filter == 'hari' ? 'selected' : '' }}>Per Hari</option>
+                                <option value="hari" {{ $filter == 'jenis' ? 'selected' : '' }}>Jumlah Ikan</option>
+                                <option value="hari" {{ $filter == 'hari' ? 'selected' : '' }}>Harian</option>
                                 <option value="bulan" {{ $filter == 'bulan' ? 'selected' : '' }}>Bulanan</option>
                                 <option value="tahun" {{ $filter == 'tahun' ? 'selected' : '' }}>Tahunan</option>
                             </select>

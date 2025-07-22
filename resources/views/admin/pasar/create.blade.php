@@ -14,7 +14,7 @@
                 @csrf
 
                 <div class="form-group">
-                    <Label>Kode Setiap Pasar:</Label>
+                    <Label>Kode Pasar:</Label>
                     <input type="text" class="form-control" name="kd_pasar">
                 </div>
 

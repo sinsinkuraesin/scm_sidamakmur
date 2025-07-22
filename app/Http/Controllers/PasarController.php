@@ -35,7 +35,7 @@ class PasarController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-
+            'kd_pasar' =>'required',
             'nama_pasar' =>'required',
             'alamat' =>'required',
             'jam_buka' => 'required',
@@ -43,7 +43,7 @@ class PasarController extends Controller
         ]);
 
         Pasar::create([
-
+            'kd_pasar' =>$request->kd_pasar,
             'nama_pasar' =>$request->nama_pasar,
             'alamat' =>$request->alamat,
             'jam_buka' => $request->jam_buka,
@@ -67,7 +67,7 @@ class PasarController extends Controller
     {
         var_dump($request->all());
         $request->validate([
-
+            'kd_pasar' =>'required',
             'nama_pasar' =>'required',
             'alamat' =>'required',
             'jam_buka' => 'required',
@@ -75,7 +75,7 @@ class PasarController extends Controller
         ]);
 
         $pasar->update([
-
+            'kd_pasar' =>$request->kd_pasar,
             'nama_pasar' =>$request->nama_pasar,
             'alamat' =>$request->alamat,
             'jam_buka' => $request->jam_buka,

@@ -15,6 +15,11 @@
                 @method('PUT')
 
                 <div class="form-group">
+                    <Label>Kode Ikan:</Label>
+                    <input type="text" class="form-control" name="kd_ikan" value="{{ $ikan->kd_ikan }}">
+                </div>
+
+                <div class="form-group">
                     <Label>Jenis Ikan:</Label>
                     <input type="text" class="form-control" name="jenis_ikan" value="{{ $ikan->jenis_ikan }}">
                 </div>

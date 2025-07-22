@@ -35,6 +35,7 @@
                                <thead class="thead-light">
                                     <tr>
                                         <th>No</th>
+                                        <th>Kode Ikan</th>
                                         <th>Jenis Ikan</th>
                                         <th>Harga Beli/Kg</th>
                                         <th>Harga Jual/Kg</th>
@@ -46,6 +47,7 @@
                                     @foreach ( $ikans as $ikan )
                                     <tr>
                                         <td>{{ ++$i }}</td>
+                                        <td>{{ $ikan->kd_ikan }}</td>
                                         <td>{{ $ikan->jenis_ikan }}</td>
                                         <td>Rp. {{ number_format($ikan->harga_beli, 0, ',', '.') }} /kg</td>
                                         <td>Rp. {{ number_format($ikan->harga_jual, 0, ',', '.') }} /kg</td>

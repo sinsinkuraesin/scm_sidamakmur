@@ -27,7 +27,7 @@
 
                             <div class="form-group">
                                 <label for="no_tlp">No Telephone:</label>
-                                <input type="number" class="form-control" name="no_tlp" id="no_tlp" value="{{ $konsumen->no_tlp }}" required>
+                                <input type="text" class="form-control" name="no_tlp" id="no_tlp" value="{{ $konsumen->no_tlp }}" required>
                             </div>
 
                             <!-- Pilih Pasar -->

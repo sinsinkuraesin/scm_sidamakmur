@@ -30,59 +30,62 @@ class KonsumenController extends Controller
         return view('admin.konsumen.create', compact('pasar'));
     }
 
-   public function store(Request $request)
+    public function store(Request $request)
     {
-    $request->validate([
-        'nama_konsumen' => 'required|string|max:100',
-        'nama_pasar'    => 'required|exists:tbl_pasar,id',
-    ]);
+        $request->validate([
+            'kd_konsumen' => 'required|string|max:50',
+            'nama_konsumen' => 'required|string|max:100',
+            'no_tlp' => 'required|string|max:20',
+            'nama_pasar' => 'required|exists:tbl_pasar,id',
+        ]);
 
-    $pasar = Pasar::findOrFail($request->nama_pasar);
+        $pasar = Pasar::findOrFail($request->nama_pasar);
 
-    Konsumen::create([
-        'kd_konsumen' => $request->kd_konsumen,
-        'nama_konsumen' => $request->nama_konsumen,
-        'no_tlp' => $request->no_tlp,
-        'nama_pasar'    => $pasar->id,
-        'alamat'        => $pasar->alamat,
-        'jam_buka'      => $pasar->jam_buka,
-        'jam_tutup'     => $pasar->jam_tutup,
-    ]);
+        Konsumen::create([
+            'kd_konsumen' => $request->kd_konsumen,
+            'nama_konsumen' => $request->nama_konsumen,
+            'no_tlp' => $request->no_tlp,
+            'nama_pasar' => $pasar->id,
+            'alamat' => $pasar->alamat,
+            'jam_buka' => $pasar->jam_buka,
+            'jam_tutup' => $pasar->jam_tutup,
+        ]);
 
-    return redirect()->route('konsumen.index')->with('success', 'Data konsumen berhasil ditambahkan.');
+        return redirect()->route('konsumen.index')->with('success', 'Data konsumen berhasil ditambahkan.');
     }
 
-   public function edit($id)
-{
-    $konsumen = Konsumen::findOrFail($id);
-    $pasar = Pasar::all();
+    public function edit($id)
+    {
+        $konsumen = Konsumen::findOrFail($id);
+        $pasar = Pasar::all();
 
-    return view('admin.konsumen.edit', compact('konsumen', 'pasar'));
-}
+        return view('admin.konsumen.edit', compact('konsumen', 'pasar'));
+    }
 
-public function update(Request $request, $id)
-{
-    $request->validate([
-        'nama_konsumen' => 'required',
-        'nama_pasar' => 'required|exists:tbl_pasar,id',
-    ]);
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'kd_konsumen' => 'required|string|max:50',
+            'nama_konsumen' => 'required|string|max:100',
+            'no_tlp' => 'required|string|max:20',
+            'nama_pasar' => 'required|exists:tbl_pasar,id',
+        ]);
 
-    $konsumen = Konsumen::findOrFail($id);
-    $pasar = Pasar::findOrFail($request->nama_pasar);
+        $konsumen = Konsumen::findOrFail($id);
+        $pasar = Pasar::findOrFail($request->nama_pasar);
 
-    $konsumen->update([
-        'kd_konsumen' => $request->kd_konsumen,
-        'nama_konsumen' => $request->nama_konsumen,
-        'no_tlp' => $request->no_tlp,
-        'nama_pasar'    => $pasar->id,
-        'alamat'        => $pasar->alamat,
-        'jam_buka'      => $pasar->jam_buka,
-        'jam_tutup'     => $pasar->jam_tutup,
-    ]);
+        $konsumen->update([
+            'kd_konsumen' => $request->kd_konsumen,
+            'nama_konsumen' => $request->nama_konsumen,
+            'no_tlp' => $request->no_tlp,
+            'nama_pasar' => $pasar->id,
+            'alamat' => $pasar->alamat,
+            'jam_buka' => $pasar->jam_buka,
+            'jam_tutup' => $pasar->jam_tutup,
+        ]);
 
-    return redirect()->route('konsumen.index')->with('success', 'Data konsumen berhasil diperbarui.');
-}
-
+        return redirect()->route('konsumen.index')->with('success', 'Data konsumen berhasil diperbarui.');
+    }
 
    public function destroy($id)
     {

@@ -7,7 +7,6 @@
         html, body {
             margin: 0;
             padding: 0;
-            height: auto;
             background-color: white;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             color: #333;
@@ -31,7 +30,6 @@
         .invoice-title {
             font-size: 24px;
             color: #3f51b5;
-            margin: 0;
         }
         hr {
             border: 0;
@@ -100,12 +98,24 @@
     </style>
 </head>
 <body>
-
     @php
         $isPdf = request()->routeIs('jual.invoice.pdf');
         $logoPath = $isPdf
             ? public_path('images/logo.png')
             : asset('images/logo.png');
+
+        $noTlp = $jual->konsumen->no_tlp ?? '';
+        if (Str::startsWith($noTlp, '0')) {
+            $waNumber = '62' . substr($noTlp, 1);
+        } else {
+            $waNumber = $noTlp;
+        }
+
+        $pesan = urlencode("Halo *{$jual->konsumen->nama_konsumen}*, berikut adalah ringkasan invoice pembelian Anda di *PD Sidamakmur*:\n\n" .
+            "No Invoice: INV-JUAL-{$jual->jual_id}\nTanggal: " . \Carbon\Carbon::parse($jual->tgl_jual)->format('d M Y') . "\n\n" .
+            "Total Pembelian: Rp " . number_format($jual->detailJual->sum('total'), 0, ',', '.') . "\n\n" .
+            "Terima kasih telah berbelanja!");
+        $waLink = "https://wa.me/$waNumber?text=$pesan";
     @endphp
 
     <div class="invoice-box">
@@ -158,19 +168,16 @@
             Total Penjualan: Rp {{ number_format($jual->detailJual->sum('total'), 0, ',', '.') }}
         </div>
 
-        <!-- Keterangan Pembayaran via WhatsApp -->
         <div class="payment-info">
-            <strong>Silakan melakukan pembayaran melalui WhatsApp:</strong><br>
-            Hubungi kami di
-            <img src="https://img.icons8.com/color/20/000000/whatsapp--v1.png" style="vertical-align: middle;">
-            <a href="https://wa.me/6281234567890" target="_blank">+62 812-3456-7890</a>
-            untuk konfirmasi pembayaran dan pengiriman barang.
+            <strong>Silakan melakukan pembayaran melalui transfer.</strong><br>
+            Jika Anda ingin melakukan pembayaran secara <strong>tunai (cash)</strong>, harap konfirmasi terlebih dahulu melalui WhatsApp.
         </div>
 
         @if (!request()->routeIs('jual.invoice.pdf'))
         <div class="btn-container">
             <a href="{{ route('jual.index') }}" class="btn">Kembali</a>
             <a href="{{ route('jual.invoice.pdf', $jual->jual_id) }}" class="btn" target="_blank">Cetak PDF</a>
+            <a href="{{ $waLink }}" target="_blank" class="btn" style="background-color: #25D366;">Kirim via WhatsApp</a>
         </div>
         @endif
 

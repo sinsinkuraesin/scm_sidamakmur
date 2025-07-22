@@ -19,6 +19,11 @@
                                 <input type="text" class="form-control" name="nama_konsumen" id="nama_konsumen" value="{{ $konsumen->nama_konsumen }}" required>
                             </div>
 
+                            <div class="form-group">
+                                <label for="kd_konsumen">Kode konsumen:</label>
+                                <input type="text" class="form-control" name="kd_konsumen" id="kd_konsumen" value="{{ $konsumen->kd_konsumen }}" required>
+                            </div>
+
                             <!-- Pilih Pasar -->
                             <div class="form-group">
                                 <label for="nama_pasar">Pilih Pasar:</label>

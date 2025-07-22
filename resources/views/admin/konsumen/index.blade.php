@@ -35,6 +35,7 @@
                                 <thead class="thead-light">
                                     <tr>
                                         <th>No</th>
+                                        <th>Kode Konsumen</th>
                                         <th>Nama Konsumen</th>
                                         <th>Nama Pasar</th>
                                         <th>Alamat</th>
@@ -46,6 +47,7 @@
                                     @foreach ($konsumens as $konsumen)
                                         <tr>
                                             <td>{{ ++$i }}</td>
+                                            <td>{{ $konsumen->kd_konsumen }}</td>
                                             <td>{{ $konsumen->nama_konsumen }}</td>
                                             <td>{{ $konsumen->nama_pasar }}</td>
                                             <td>{{ $konsumen->alamat }}</td>

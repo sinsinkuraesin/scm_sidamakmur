@@ -42,6 +42,7 @@ class KonsumenController extends Controller
     Konsumen::create([
         'kd_konsumen' => $request->kd_konsumen,
         'nama_konsumen' => $request->nama_konsumen,
+        'no_tlp' => $request->no_tlp,
         'nama_pasar'    => $pasar->id,
         'alamat'        => $pasar->alamat,
         'jam_buka'      => $pasar->jam_buka,
@@ -72,6 +73,7 @@ public function update(Request $request, $id)
     $konsumen->update([
         'kd_konsumen' => $request->kd_konsumen,
         'nama_konsumen' => $request->nama_konsumen,
+        'no_tlp' => $request->no_tlp,
         'nama_pasar'    => $pasar->id,
         'alamat'        => $pasar->alamat,
         'jam_buka'      => $pasar->jam_buka,

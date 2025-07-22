@@ -12,6 +12,7 @@ class Konsumen extends Model
     protected $fillable = [
         'kd_konsumen',
         'nama_konsumen',
+        'no_tlp'
         'nama_pasar',
         'alamat',
         'jam_buka',

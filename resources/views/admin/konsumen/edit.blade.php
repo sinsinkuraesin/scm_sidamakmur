@@ -13,15 +13,21 @@
                             @csrf
                             @method('PUT')
 
+                            <div class="form-group">
+                                <label for="kd_konsumen">Kode konsumen:</label>
+                                <input type="text" class="form-control" name="kd_konsumen" id="kd_konsumen" value="{{ $konsumen->kd_konsumen }}" required>
+                            </div>
+
                             <!-- Nama Konsumen -->
                             <div class="form-group">
                                 <label for="nama_konsumen">Nama konsumen:</label>
                                 <input type="text" class="form-control" name="nama_konsumen" id="nama_konsumen" value="{{ $konsumen->nama_konsumen }}" required>
                             </div>
 
+
                             <div class="form-group">
-                                <label for="kd_konsumen">Kode konsumen:</label>
-                                <input type="text" class="form-control" name="kd_konsumen" id="kd_konsumen" value="{{ $konsumen->kd_konsumen }}" required>
+                                <label for="no_tlp">No Telephone:</label>
+                                <input type="number" class="form-control" name="no_tlp" id="no_tlp" value="{{ $konsumen->no_tlp }}" required>
                             </div>
 
                             <!-- Pilih Pasar -->

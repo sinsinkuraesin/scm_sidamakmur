@@ -12,8 +12,9 @@
             </p>
             <form class="user" method="POST" action="{{ route('pasar.store') }}" enctype="multipart/form-data">
                 @csrf
+
                 <div class="form-group">
-                    <Label>Kode Pasar:</Label>
+                    <Label>Kode Setiap Pasar:</Label>
                     <input type="text" class="form-control" name="kd_pasar">
                 </div>
 

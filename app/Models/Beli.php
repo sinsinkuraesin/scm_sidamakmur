@@ -12,7 +12,7 @@ class Beli extends Model
     protected $table = 'tbl_beli';
 
     protected $fillable = [
-        'kd_supplier', 'tgl_beli', 'jenis_ikan', 'harga_beli', 'jml_ikan', 'total_harga'
+        'kd_supplier', 'tgl_beli', 'jenis_ikan', 'harga_beli', 'jml_ikan', 'total_harga', 'bukti_pembayaran'
     ];
 
     public function supplier()

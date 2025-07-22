@@ -170,6 +170,15 @@
             </tbody>
         </table>
 
+        @if ($beli->bukti_pembayaran)
+            <div class="section-title">Bukti Pembayaran</div>
+            <div style="text-align: center; margin-top: 15px;">
+                <img src="{{ $isPdf ? public_path('storage/' . $beli->bukti_pembayaran) : asset('storage/' . $beli->bukti_pembayaran) }}"
+                    alt="Bukti Pembayaran" style="max-width: 100%; max-height: 400px;">
+            </div>
+        @endif
+
+
         @if (!request()->routeIs('beli.invoice.pdf'))
         <div class="btn-container">
             <a href="{{ route('beli.index') }}" class="btn">Selesai</a>

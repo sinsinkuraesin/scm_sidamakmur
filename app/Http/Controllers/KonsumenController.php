@@ -40,6 +40,7 @@ class KonsumenController extends Controller
     $pasar = Pasar::findOrFail($request->nama_pasar);
 
     Konsumen::create([
+        'kd_konsumen' => $request->kd_konsumen,
         'nama_konsumen' => $request->nama_konsumen,
         'nama_pasar'    => $pasar->id,
         'alamat'        => $pasar->alamat,
@@ -69,6 +70,7 @@ public function update(Request $request, $id)
     $pasar = Pasar::findOrFail($request->nama_pasar);
 
     $konsumen->update([
+        'kd_konsumen' => $request->kd_konsumen,
         'nama_konsumen' => $request->nama_konsumen,
         'nama_pasar'    => $pasar->id,
         'alamat'        => $pasar->alamat,

@@ -13,6 +13,11 @@
             <form class="user" method="POST" action="{{ route('ikan.store') }}" enctype="multipart/form-data">
                 @csrf
                 <div class="form-group">
+                    <Label>Kode Ikan:</Label>
+                    <input type="text" class="form-control" name="kd_ikan">
+                </div>
+
+                <div class="form-group">
                     <Label>Jenis Ikan:</Label>
                     <input type="text" class="form-control" name="jenis_ikan">
                 </div>

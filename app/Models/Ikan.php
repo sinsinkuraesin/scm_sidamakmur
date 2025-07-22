@@ -11,7 +11,7 @@ class Ikan extends Model
     public $table = "tbl_ikan";
 
     protected $fillable = [
-        'jenis_ikan','harga_beli','harga_jual', 'stok'
+        'kd_ikan', 'jenis_ikan','harga_beli','harga_jual', 'stok'
     ];
 
 

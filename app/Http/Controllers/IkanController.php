@@ -17,6 +17,7 @@ class IkanController extends Controller
     {
         $kata = $request->input('kata');
         $query = "jenis_ikan LIKE '%".$kata."%'
+                  OR kd_ikan LIKE '%".$kata."%'
                   OR harga_beli LIKE '%".$kata."%'
                   OR harga_jual LIKE '%".$kata."%'
                   OR stok LIKE '%".$kata."%'";
@@ -36,6 +37,7 @@ class IkanController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'kd_ikan' =>'required',
             'jenis_ikan' =>'required',
             'harga_beli' =>'required',
             'harga_jual' =>'required',
@@ -43,6 +45,7 @@ class IkanController extends Controller
         ]);
 
         Ikan::create([
+            'kd_ikan' =>$request->kd_ikan,
             'jenis_ikan' =>$request->jenis_ikan,
             'harga_beli' =>$request->harga_beli,
             'harga_jual' =>$request->harga_jual,
@@ -66,6 +69,7 @@ class IkanController extends Controller
     {
         var_dump($request->all());
         $request->validate([
+            'kd_ikan' =>'required',
             'jenis_ikan' =>'required',
             'harga_beli' =>'required',
             'harga_jual' =>'required',
@@ -73,6 +77,7 @@ class IkanController extends Controller
         ]);
 
         $ikan->update([
+            'kd_ikan' =>$request->kd_ikan,
             'jenis_ikan' =>$request->jenis_ikan,
             'harga_beli' =>$request->harga_beli,
             'harga_jual' =>$request->harga_jual,

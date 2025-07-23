@@ -60,7 +60,6 @@
 
                                                 <a href="{{ route('ikan.edit',$ikan->id) }}" class="btn btn-warning">Edit</a>
                                                 <a href="{{ route('beli.create') }}" class="btn btn-success">Beli</a>
-                                                <a href="{{ route('beli.create') }}" class="btn btn-success">Beli</a>
                                                 <button type="submit" class="btn btn-danger"
                                                 onclick="return confirm('Apakah Anda Ingin Menghapus Data Ikan..?')">Hapus</button>
                                             </form>

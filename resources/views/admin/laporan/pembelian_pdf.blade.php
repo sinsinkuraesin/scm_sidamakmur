@@ -51,7 +51,7 @@
 <table>
     <thead>
         <tr>
-            <th>No</th>
+            <th>Nomor</th>
             <th>Tanggal</th>
             <th>Kode Supplier</th>
             <th>Jenis Ikan</th>

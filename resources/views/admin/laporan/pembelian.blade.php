@@ -28,7 +28,7 @@
                                 <tr>
                                     <th>No</th>
                                     <th>Tanggal</th>
-                                    <th>Kode Supplier</th>
+                                    <th>Kode Supplierr</th>
                                     <th>Jenis Ikan</th>
                                     <th>Jumlah</th>
                                     <th>Harga/Kg</th>

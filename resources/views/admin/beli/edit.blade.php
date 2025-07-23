@@ -56,6 +56,16 @@
                                 <input type="number" name="total_harga" class="form-control" value="{{ $beli->total_harga }}" readonly>
                             </div>
 
+                            <div class="form-group mb-3">
+                                <label for="bukti_pembayaran" class="form-label">Upload Bukti Pembayaran Baru:</label>
+                                <input type="file" class="form-control" name="bukti_pembayaran" accept="image/*">
+
+                                @if ($beli->bukti_pembayaran)
+                                    <p class="mt-2">Bukti Saat Ini:</p>
+                                    <img src="{{ asset('storage/' . $beli->bukti_pembayaran) }}" alt="Bukti Pembayaran" style="max-height: 200px;">
+                                @endif
+                            </div>
+
                             <button type="submit" class="btn btn-primary">Update</button>
                             <a href="{{ route('beli.index') }}" class="btn btn-light">Batal</a>
                         </form>

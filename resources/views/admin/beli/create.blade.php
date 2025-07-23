@@ -53,6 +53,11 @@
                             <input type="hidden" name="total_harga" id="total_harga_hidden">
                         </div>
 
+                        <div class="form-group mb-3">
+                            <label for="bukti_pembayaran" class="form-label">Upload Bukti Pembayaran:</label>
+                            <input type="file" class="form-control" name="bukti_pembayaran" accept="image/*">
+                        </div>
+
                         <button type="submit" class="btn btn-primary">Simpan</button>
                         <a href="{{ route('beli.index') }}" class="btn btn-secondary">Batal</a>
                     </form>

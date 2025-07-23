@@ -8,6 +8,7 @@ use App\Models\Ikan;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class BeliController extends Controller
 {
@@ -82,13 +83,25 @@ class BeliController extends Controller
             'jml_ikan'    => 'required|numeric|min:1',
             'harga_beli'  => 'required|numeric|min:0',
             'total_harga' => 'required|numeric|min:0',
+            'bukti_pembayaran' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
+
+        $path = null;
+        if ($request->hasFile('bukti_pembayaran')) {
+            $path = $request->file('bukti_pembayaran')->store('bukti_pembayaran', 'public');
+        }
 
         DB::beginTransaction();
         try {
-            $transaksi = Beli::create($request->only([
-                'kd_supplier', 'jenis_ikan', 'tgl_beli', 'jml_ikan', 'harga_beli', 'total_harga'
-            ]));
+            $transaksi = Beli::create([
+                'kd_supplier' => $request->kd_supplier,
+                'jenis_ikan'  => $request->jenis_ikan,
+                'tgl_beli'    => $request->tgl_beli,
+                'jml_ikan'    => $request->jml_ikan,
+                'harga_beli'  => $request->harga_beli,
+                'total_harga' => $request->total_harga,
+                'bukti_pembayaran' => $path
+            ]);
 
             $ikan = Ikan::findOrFail($request->jenis_ikan);
             $ikan->stok += $request->jml_ikan;
@@ -135,6 +148,7 @@ class BeliController extends Controller
             'jml_ikan'    => 'required|numeric|min:1',
             'harga_beli'  => 'required|numeric|min:0',
             'total_harga' => 'required|numeric|min:0',
+            'bukti_pembayaran' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
         DB::beginTransaction();
@@ -149,10 +163,25 @@ class BeliController extends Controller
             $ikan->stok += $selisih;
             $ikan->save();
 
+            // Handle upload file baru jika ada
+            if ($request->hasFile('bukti_pembayaran')) {
+                // Hapus file lama jika ada
+                if ($beli->bukti_pembayaran && \Storage::disk('public')->exists($beli->bukti_pembayaran)) {
+                    \Storage::disk('public')->delete($beli->bukti_pembayaran);
+                }
+
+                $path = $request->file('bukti_pembayaran')->store('bukti_pembayaran', 'public');
+                $beli->bukti_pembayaran = $path;
+            }
+
             // Update data pembelian
-            $beli->update($request->only([
-                'kd_supplier', 'jenis_ikan', 'tgl_beli', 'jml_ikan', 'harga_beli', 'total_harga'
-            ]));
+            $beli->kd_supplier = $request->kd_supplier;
+            $beli->jenis_ikan = $request->jenis_ikan;
+            $beli->tgl_beli = $request->tgl_beli;
+            $beli->jml_ikan = $request->jml_ikan;
+            $beli->harga_beli = $request->harga_beli;
+            $beli->total_harga = $request->total_harga;
+            $beli->save();
 
             DB::commit();
             return redirect()->route('beli.index')->with('success', 'Pembelian berhasil diperbarui.');
@@ -174,6 +203,10 @@ class BeliController extends Controller
             }
             $ikan->save();
 
+            // Hapus bukti pembayaran jika ada
+            if ($beli->bukti_pembayaran && Storage::disk('public')->exists($beli->bukti_pembayaran)) {
+                Storage::disk('public')->delete($beli->bukti_pembayaran);
+            }
             // Hapus data pembelian
             $beli->delete();
 

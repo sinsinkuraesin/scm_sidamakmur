@@ -44,7 +44,7 @@
 
                         <div class="form-group mb-3">
                             <label for="jml_ikan" class="form-label">Jumlah Ikan:</label>
-                            <input type="number" class="form-control" name="jml_ikan" id="jml_ikan" min="1" required>
+                            <input type="number" class="form-control" name="jml_ikan" id="jml_ikan" min="20" required placeholder="Minimal 20 kg">
                         </div>
 
                         <div class="form-group mb-3">

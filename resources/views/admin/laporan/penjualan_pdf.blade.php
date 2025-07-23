@@ -1,52 +1,111 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <title>Laporan Penjualan</title>
     <style>
-        body { font-family: sans-serif; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #fff;
+            margin: 0;
+            padding: 30px;
+            color: #333;
+        }
+
+        .laporan-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .laporan-header img {
+            height: 60px;
+        }
+
+        h1 {
+            font-size: 22px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        hr {
+            border: none;
+            height: 2px;
+            background-color: #3f51b5;
+            margin: 20px 0;
+        }
+
+        .section-title {
+            font-weight: bold;
+            color: #3f51b5;
+            margin-bottom: 10px;
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
+            margin-bottom: 20px;
+            font-size: 14px;
         }
-        th, td {
-            border: 1px solid #000;
-            padding: 6px;
-            font-size: 12px;
-            text-align: left;
-        }
+
         th {
-            background-color: #f2f2f2;
+            background-color: #3f51b5;
+            color: white;
+            padding: 8px;
         }
-        h2, p {
-            text-align: center;
-            margin: 0;
+
+        td {
+            border: 1px solid #ccc;
+            padding: 8px;
+        }
+
+        .total-row {
+            font-weight: bold;
+        }
+
+        .signature {
+            text-align: right;
+            margin-top: 40px;
+        }
+
+        .signature img {
+            height: 80px;
+            margin-bottom: 5px;
+
         }
     </style>
 </head>
 <body>
-       @php
-    use Carbon\Carbon;
+    @php
+        use Carbon\Carbon;
+        Carbon::setLocale('id');
 
-    Carbon::setLocale('id');
+        // Judul laporan berdasarkan filter
+        $judul = 'Laporan Penjualan';
+        if ($filter === 'bulan') {
+            $judul .= ' - Bulan ' . Carbon::parse($tanggal)->translatedFormat('F');
+        } elseif ($filter === 'tahun') {
+            $judul .= ' - Tahun ' . Carbon::parse($tanggal)->translatedFormat('Y');
+        } else {
+            $judul .= ' - Tanggal ' . Carbon::parse($tanggal)->translatedFormat('d F Y');
+        }
 
-    $judul = 'Laporan Penjualan';
+        // Penyesuaian path logo
+        $isPdf = request()->routeIs('laporan.penjualan.pdf');
+        $logoPath = $isPdf
+            ? 'file://' . public_path('images/logo.png')
+            : asset('images/logo.png');
+    @endphp
 
-    if ($filter === 'bulan') {
-        $bulan = Carbon::parse($tanggal)->translatedFormat('F');
-        $judul .= ' - Bulan ' . $bulan;
-    } elseif ($filter === 'tahun') {
-        $tahun = Carbon::parse($tanggal)->translatedFormat('Y');
-        $judul .= ' - Tahun ' . $tahun;
-    } else {
-        $tgl = Carbon::parse($tanggal)->translatedFormat('d F Y');
-        $judul .= ' - Tanggal ' . $tgl;
-    }
-@endphp
+    <div class="laporan-header">
+       <img src="file://{{ public_path('images/logo.png') }}" alt="Logo">
 
-<h2>{{ $judul }}</h2>
+    </div>
 
+    <h1>{{ $judul }}</h1>
+    <hr>
+
+    <div class="section-title">Detail Penjualan</div>
     <table>
         <thead>
             <tr>
@@ -54,7 +113,7 @@
                 <th>Tanggal</th>
                 <th>Nama Konsumen</th>
                 <th>Jenis Ikan</th>
-                <th>jml_ikan</th>
+                <th>Jumlah Ikan</th>
                 <th>Total Harga</th>
             </tr>
         </thead>
@@ -81,15 +140,23 @@
             @endforelse
         </tbody>
         <tfoot>
-            <tr>
-                <td colspan="5" style="text-align: right;"><strong>Total Penjualan</strong></td>
-                <td><strong>Rp {{ number_format($total, 0, ',', '.') }}</strong></td>
+            <tr class="total-row">
+                <td colspan="5" style="text-align:right;">Total Penjualan</td>
+                <td>Rp {{ number_format($total, 0, ',', '.') }}</td>
             </tr>
-            <tr>
-                <td colspan="5" style="text-align: right;"><strong>Total Ikan Terjual</strong></td>
-                <td><strong>{{ number_format($total_kg, 0, ',', '.') }} Kg</strong></td>
+            <tr class="total-row">
+                <td colspan="5" style="text-align:right;">Total Ikan Terjual</td>
+                <td>{{ number_format($total_kg, 0, ',', '.') }} Kg</td>
             </tr>
         </tfoot>
     </table>
+
+    <div class="signature">
+    <p>Hormat Kami,</p>
+    <img src="file://{{ public_path('images/ttd.jpg') }}" style="height: 80px;" alt="Tanda Tangan">
+    <p><strong>PD Sidamakmur</strong></p>
+</div>
+
+
 </body>
 </html>

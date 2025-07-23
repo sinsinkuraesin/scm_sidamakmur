@@ -80,10 +80,12 @@ class BeliController extends Controller
             'kd_supplier' => 'required|exists:tbl_supplier,id',
             'jenis_ikan'  => 'required|exists:tbl_ikan,id',
             'tgl_beli'    => 'required|date',
-            'jml_ikan'    => 'required|numeric|min:1',
+            'jml_ikan'    => 'required|numeric|min:20',
             'harga_beli'  => 'required|numeric|min:0',
             'total_harga' => 'required|numeric|min:0',
             'bukti_pembayaran' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+        ], [
+            'jml_ikan.min' => 'Jumlah ikan minimal pembelian adalah 20 kg.',
         ]);
 
         $path = null;
@@ -145,10 +147,12 @@ class BeliController extends Controller
             'kd_supplier' => 'required|exists:tbl_supplier,id',
             'jenis_ikan'  => 'required|exists:tbl_ikan,id',
             'tgl_beli'    => 'required|date',
-            'jml_ikan'    => 'required|numeric|min:1',
+            'jml_ikan'    => 'required|numeric|min:20',
             'harga_beli'  => 'required|numeric|min:0',
             'total_harga' => 'required|numeric|min:0',
             'bukti_pembayaran' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+        ], [
+            'jml_ikan.min' => 'Jumlah ikan minimal pembelian adalah 20 kg.',
         ]);
 
         DB::beginTransaction();

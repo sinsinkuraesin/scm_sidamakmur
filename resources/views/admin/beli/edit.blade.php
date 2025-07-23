@@ -8,7 +8,7 @@
                 <div class="card">
                     <div class="card-body">
                         <h4 class="card-title">Edit Pembelian</h4>
-                        <form method="POST" action="{{ route('beli.update', $beli->id) }}">
+                        <form method="POST" action="{{ route('beli.update', $beli->id) }}" enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
 

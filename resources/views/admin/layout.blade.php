@@ -81,15 +81,14 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {{ Request::is('laporan/penjualan') ? 'active' : '' }}" href="{{ route('laporan.penjualan') }}">
-                    Laporan Stok (Pengadaan)
+                    Laporan Penjualan
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {{ Request::is('laporan/penjualan') ? 'active' : '' }}" href="{{ route('laporan.penjualan') }}">
-                    Laporan Penjualan (Distribusi)
+                    Laporan Stok (Pengadaan)
                     </a>
                 </li>
-
                 </ul>
             </div>
             </li>

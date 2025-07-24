@@ -193,7 +193,7 @@
 
         <div class="signature">
             <p>Hormat Kami,</p>
-            <img src="{{ $isPdf ? public_path('images/ttd.png') : asset('images/ttd.png') }}" alt="Tanda Tangan">
+            <img src="{{ $isPdf ? public_path('images/ttd.jpg') : asset('images/ttd.jpg') }}" alt="Tanda Tangan">
             <p><strong>PD Sidamakmur</strong></p>
         </div>
 

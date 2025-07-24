@@ -34,7 +34,7 @@
                                     <th>Tanggal</th>
                                     <th>Nama Konsumen</th>
                                     <th>Jenis Ikan</th>
-                                    <th>Jumlah</th>
+                                    <th>Jumlah Ikan</th>
                                     <th>Harga Satuan/Kg</th>
                                     <th>Total Harga</th>
                                 </tr>

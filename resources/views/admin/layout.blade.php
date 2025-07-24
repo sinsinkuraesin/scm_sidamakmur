@@ -87,6 +87,13 @@
                 <li class="nav-item">
                     <a class="nav-link {{ Request::is('laporan/penjualan') ? 'active' : '' }}" href="{{ route('laporan.penjualan') }}">
                     Laporan Stok (Pengadaan)
+                    <a class="nav-link {{ Request::is('laporan/pengadaan') ? 'active' : '' }}" href="{{ route('laporan.penjualan') }}">
+                    Laporan Pengadaan
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ Request::is('laporan/distribusi') ? 'active' : '' }}" href="{{ route('laporan.penjualan') }}">
+                    Laporan Distribusi
                     </a>
                 </li>
                 </ul>

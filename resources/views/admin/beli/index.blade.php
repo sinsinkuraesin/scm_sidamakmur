@@ -47,7 +47,8 @@
                         <thead class="thead-light">
                                 <tr>
                                     <th>No</th>
-                                    <th>Kode Supplier</th>
+                                    <th>Kode Pembelian</th>
+                                    <th>Nama Supplier</th>
                                     <th>Jenis Ikan</th>
                                     <th>Tanggal Beli</th>
                                     <th>Jumlah</th>
@@ -60,12 +61,13 @@
                                 @foreach ($belis as $beli)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $beli->supplier->kd_supplier ?? '-' }}</td>
+                                        <td>{{ $beli->kd_beli }}</td>
+                                        <td>{{ $beli->supplier->nm_supplier ?? '-' }}</td>
                                         <td>{{ $beli->ikan->jenis_ikan ?? '-' }}</td>
                                         <td>{{ $beli->tgl_beli }}</td>
                                         <td>{{ $beli->jml_ikan }} Kg</td>
-                                        <td>Rp {{ number_format($beli->harga_beli, 0, ',', '.') }}</td>
-                                        <td>Rp {{ number_format($beli->total_harga, 0, ',', '.') }}</td>
+                                        <td>Rp. {{ number_format($beli->harga_beli, 0, ',', '.') }}</td>
+                                        <td>Rp. {{ number_format($beli->total_harga, 0, ',', '.') }}</td>
                                         <td>
                                             <form action="{{ route('beli.destroy', $beli->id) }}" method="POST">
                                                 @csrf
@@ -81,10 +83,11 @@
 
                             <tfoot>
                                 <tr>
-                                    <td colspan="6" class="text-right font-weight-bold">Total Pengeluaran:</td>
-                                    <td colspan="2" class="font-weight-bold">Rp {{ number_format($totalPengeluaran, 0, ',', '.') }}</td>
+                                    <td colspan="7" class="text-right font-weight-bold">Total Pengeluaran:</td>
+                                    <td colspan="1" class="font-weight-bold">Rp {{ number_format($totalPengeluaran, 0, ',', '.') }}</td>
                                 </tr>
                             </tfoot>
+
                         </table>
 
                         </div>

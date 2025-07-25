@@ -12,14 +12,19 @@
                             @csrf
                             @method('PUT')
 
+                            <div class="form-group">
+                                <Label>Kode Pembelian:</Label>
+                                <input type="text" class="form-control" name="kd_beli" value="{{ $beli->kd_beli }}">
+                            </div>
+
                             <!-- Supplier -->
                             <div class="form-group">
                                 <label>Supplier</label>
-                                <select name="kd_supplier" id="supplier" class="form-control" required>
+                                <select name="nm_supplier" id="supplier" class="form-control" required>
                                     <option value="">-- Pilih Supplier --</option>
                                     @foreach($supplier as $s)
-                                        <option value="{{ $s->id }}" {{ $beli->kd_supplier == $s->id ? 'selected' : '' }}>
-                                            {{ $s->kd_supplier }}{{ $s->nama }}
+                                        <option value="{{ $s->id }}" {{ $beli->nm_supplier == $s->id ? 'selected' : '' }}>
+                                            {{ $s->nm_supplier }}{{ $s->nama }}
                                         </option>
                                     @endforeach
                                 </select>

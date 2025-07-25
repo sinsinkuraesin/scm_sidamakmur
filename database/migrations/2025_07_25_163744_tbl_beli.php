@@ -10,6 +10,7 @@ return new class extends Migration
     {
         Schema::create('tbl_beli', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('kd_beli');
             $table->unsignedBigInteger('kd_supplier');
             $table->date('tgl_beli');
             $table->unsignedBigInteger('jenis_ikan');

@@ -13,7 +13,7 @@ class Jual extends Model
     protected $primaryKey = 'jual_id'; // Tambahkan ini jika kolom PK bukan 'id'
 
     protected $fillable = [
-        'nama_konsumen', 'tgl_jual', 'nama_pasar',
+        'kd_jual','nama_konsumen', 'tgl_jual', 'nama_pasar',
     ];
 
     public function konsumen()

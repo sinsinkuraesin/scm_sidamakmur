@@ -11,6 +11,7 @@ return new class extends Migration
         Schema::create('tbl_detail_jual', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('jual_id');
+            $table->string('kd_jual');
             $table->unsignedBigInteger('jenis_ikan');
             $table->double('harga_jual');
             $table->double('jml_ikan');

@@ -9,36 +9,48 @@
                         <h4 class="card-title">Tambah Penjualan</h4>
                         <p class="card-description">Masukkan data penjualan</p>
 
+                        {{-- Tampilkan pesan error --}}
+                        @if (session('error'))
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                {{ session('error') }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        @endif
+
                         <form method="POST" action="{{ route('jual.store') }}">
                             @csrf
 
-                            <!-- Konsumen -->
+                            <div class="form-group">
+                                <label for="kd_jual">Kode Jual:</label>
+                                <input type="text" name="kd_jual" id="kd_jual" class="form-control" required>
+                            </div>
+
+
                             <div class="form-group mb-3">
-                                <label for="nama_konsumen">Pilih Konsumen:</label>
-                                <select name="nama_konsumen" id="nama_konsumen" class="form-control" required>
-                                    <option value="" disabled selected>Pilih Konsumen</option>
+                                <label for="nama_konsumen">Pilih Nama Konsumen:</label>
+                                <select name="nama_konsumen" id="nama_konsumen" class="form-control @error('nama_konsumen') is-invalid @enderror" required>
+                                    <option value="" disabled selected>Pilih Nama Konsumen</option>
                                     @foreach ($konsumen as $k)
                                         <option value="{{ $k->id }}" data-pasar="{{ $k->nama_pasar_asli }}">
                                             {{ $k->nama_konsumen }}
                                         </option>
                                     @endforeach
                                 </select>
+                                @error('nama_konsumen') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
 
-                            <!-- Tanggal -->
                             <div class="form-group mb-3">
                                 <label for="tgl_jual">Tanggal Penjualan:</label>
-                                <input type="date" class="form-control" name="tgl_jual" required>
+                                <input type="date" class="form-control @error('tgl_jual') is-invalid @enderror" name="tgl_jual" required>
+                                @error('tgl_jual') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
 
-                            <!-- Pasar -->
                             <div class="form-group mb-4">
                                 <label for="nama_pasar">Nama Pasar:</label>
                                 <input type="text" id="nama_pasar" class="form-control" readonly>
                                 <input type="hidden" name="nama_pasar" id="nama_pasar_hidden">
                             </div>
 
-                            <!-- Judul Kolom -->
                             <div class="form-group">
                                 <label class="form-label">Pilih Ikan:</label>
                                 <div class="row font-weight-bold mb-2 px-2">
@@ -50,7 +62,6 @@
                                 </div>
                             </div>
 
-                            <!-- Daftar Ikan -->
                             @foreach ($ikan as $i)
                             @php $stokKosong = $i->stok <= 0; @endphp
                             <div class="border rounded p-3 mb-2 bg-light">
@@ -73,22 +84,21 @@
                                     </div>
                                     <div class="col-md-3">
                                         <input type="number"
-                                        name="ikan[{{ $i->id }}][jumlah]"
-                                        class="form-control jumlah"
-                                        min="1"
-                                        max="{{ $i->stok }}"
-                                        placeholder="{{ $stokKosong ? 'Stok kosong' : 'Stok tersedia: ' . $i->stok }}"
-                                        disabled>
+                                            name="ikan[{{ $i->id }}][jumlah]"
+                                            class="form-control jumlah"
+                                            min="1"
+                                            max="{{ $i->stok }}"
+                                            placeholder="{{ $stokKosong ? 'Stok kosong' : 'Stok tersedia: ' . $i->stok }}"
+                                            disabled>
                                     </div>
                                     <div class="col-md-3">
                                         <input type="text" class="form-control total-display" readonly placeholder="Rp 0">
-                                        <input type="hidden" class="total-hidden" name="ikan[{{ $i->id }}][total]">
+                                        <input type="hidden" class="total-hidden" name="ikan[{{ $i->id }}][total]" value="0">
                                     </div>
                                 </div>
                             </div>
                             @endforeach
 
-                            <!-- Total -->
                             <div class="form-group mt-4">
                                 <label for="total">Total Penjualan (Rp):</label>
                                 <input type="text" id="total" class="form-control" readonly>
@@ -105,7 +115,8 @@
     </div>
 </div>
 
-<!-- SCRIPT -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <script>
     document.getElementById('nama_konsumen').addEventListener('change', function () {
         const pasar = this.options[this.selectedIndex].getAttribute('data-pasar');
@@ -122,6 +133,7 @@
                 grandTotal += total;
             }
         });
+
         document.getElementById('total').value = new Intl.NumberFormat('id-ID').format(grandTotal);
         document.getElementById('total_hidden').value = grandTotal;
     }
@@ -151,8 +163,21 @@
             const wrapper = this.closest('.border');
             const harga = parseFloat(wrapper.querySelector('.harga').value) || 0;
             const jumlah = parseFloat(this.value) || 0;
-            const total = harga * jumlah;
+            const maxStok = parseFloat(this.getAttribute('max'));
 
+            if (jumlah > maxStok) {
+                this.value = maxStok;
+
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Stok Tidak Cukup!',
+                    html: 'Jumlah melebihi stok tersedia. Maksimal: <b>' + maxStok + '</b> ekor.',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'Oke',
+                });
+            }
+
+            const total = harga * this.value;
             wrapper.querySelector('.total-display').value = new Intl.NumberFormat('id-ID').format(total);
             wrapper.querySelector('.total-hidden').value = total;
             updateGrandTotal();
@@ -160,7 +185,6 @@
     });
 </script>
 
-<!-- STYLE -->
 <style>
     .ikan-checkbox {
         transform: scale(1.4);

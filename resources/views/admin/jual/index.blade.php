@@ -56,10 +56,12 @@
                         <thead class="thead-light">
                             <tr>
                                 <th>No</th>
-                                <th>Konsumen</th>
+                                <th>Kode Penjualan</th>
+                                <th>Nama Konsumen</th>
                                 <th>Nama Pasar</th>
                                 <th>Tanggal Jual</th>
                                 <th>Jenis Ikan</th>
+                                <th>Harga /Kg</th>
                                 <th>Total Harga</th>
                                 <th>Aksi</th>
                             </tr>
@@ -68,6 +70,7 @@
                             @foreach ($juals as $jual)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $jual->kd_jual }}</td>
                                     <td>{{ $jual->konsumen->nama_konsumen }}</td>
                                     <td>{{ $jual->nama_pasar }}</td>
                                     <td>{{ $jual->tgl_jual }}</td>
@@ -79,7 +82,14 @@
                                         </ul>
                                     </td>
                                     <td>
-                                        Rp {{ number_format($jual->detailJual->sum('total'), 0, ',', '.') }}
+                                            <ul class="mb-0 pl-3">
+                                                @foreach($jual->detailJual as $detail)
+                                                    <li>Rp. {{ number_format($detail->harga_jual, 0, ',', '.') }}</li>
+                                                @endforeach
+                                            </ul>
+                                        </td>
+                                    <td>
+                                        Rp. {{ number_format($jual->detailJual->sum('total'), 0, ',', '.') }}
                                     </td>
                                     <td>
                                         <form action="{{ route('jual.destroy', $jual->jual_id) }}" method="POST">

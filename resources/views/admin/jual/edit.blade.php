@@ -27,11 +27,16 @@
                             @csrf
                             @method('PUT')
 
+                            <div class="form-group mb-3">
+                                <label for="kd_jual">Kode Penjualan:</label>
+                                <input type="text" class="form-control" name="kd_jual" value="{{ $jual->kd_jual }}" required>
+                            </div>
+
                             <!-- Konsumen -->
                             <div class="form-group mb-3">
-                                <label for="nama_konsumen">Pilih Konsumen:</label>
+                                <label for="nama_konsumen">Pilih Nama Konsumen:</label>
                                 <select name="nama_konsumen" id="nama_konsumen" class="form-control" required>
-                                    <option value="" disabled>Pilih Konsumen</option>
+                                    <option value="" disabled>Pilih Nama Konsumen</option>
                                     @foreach ($konsumen as $k)
                                         <option value="{{ $k->id }}" data-pasar="{{ $k->nama_pasar_asli }}"
                                             {{ $k->id == $jual->nama_konsumen ? 'selected' : '' }}>
@@ -72,7 +77,7 @@
                                 $detail = $jual->detailJual->where('jenis_ikan', $i->id)->first();
                                 $stokKosong = $i->stok <= 0;
                             @endphp
-                            <div class="border rounded p-3 mb-2 bg-light">
+                            <div class="border rounded p-3 mb-2 bg-light detail-row">
                                 <div class="row align-items-center">
                                     <div class="col-md-1 text-center">
                                         <input type="checkbox"
@@ -100,6 +105,7 @@
                                             value="{{ $detail ? $detail->jml_ikan : '' }}"
                                             placeholder="{{ $stokKosong ? 'Stok kosong' : 'Stok tersedia: ' . $i->stok }}"
                                             {{ $detail ? '' : 'disabled' }}>
+                                        <input type="hidden" class="stok" value="{{ $i->stok }}">
                                     </div>
                                     <div class="col-md-3">
                                         <input type="text" class="form-control total-display" readonly
@@ -110,7 +116,7 @@
                             </div>
                             @endforeach
 
-                            <!-- Total -->
+                            <!-- Total Keseluruhan -->
                             <div class="form-group mt-4">
                                 <label for="total">Total Penjualan (Rp):</label>
                                 <input type="text" id="total" class="form-control" readonly value="{{ number_format($jual->detailJual->sum('total'), 0, ',', '.') }}">
@@ -127,61 +133,95 @@
     </div>
 </div>
 
-<!-- SCRIPT -->
+<!-- Script -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-    document.getElementById('nama_konsumen').addEventListener('change', function () {
-        const pasar = this.options[this.selectedIndex].getAttribute('data-pasar');
-        document.getElementById('nama_pasar').value = pasar;
-        document.getElementById('nama_pasar_hidden').value = pasar;
-    });
-
-    function updateGrandTotal() {
-        let grandTotal = 0;
-        document.querySelectorAll('.total-hidden').forEach(input => {
-            const checkbox = input.closest('.border').querySelector('.ikan-checkbox');
-            if (checkbox && checkbox.checked) {
-                const total = parseFloat(input.value) || 0;
-                grandTotal += total;
-            }
-        });
-        document.getElementById('total').value = new Intl.NumberFormat('id-ID').format(grandTotal);
-        document.getElementById('total_hidden').value = grandTotal;
+    function formatRupiah(number) {
+        return new Intl.NumberFormat('id-ID').format(number);
     }
 
-    document.querySelectorAll('.ikan-checkbox').forEach(checkbox => {
-        checkbox.addEventListener('change', function () {
-            const wrapper = this.closest('.border');
-            const jumlahInput = wrapper.querySelector('.jumlah');
-            const totalDisplay = wrapper.querySelector('.total-display');
-            const totalHidden = wrapper.querySelector('.total-hidden');
+    function updateTotalKeseluruhan() {
+        let totalAll = 0;
+        document.querySelectorAll('.total-hidden').forEach(el => {
+            totalAll += parseInt(el.value || 0);
+        });
+        document.getElementById('total').value = formatRupiah(totalAll);
+        document.getElementById('total_hidden').value = totalAll;
+    }
 
-            if (this.checked) {
-                jumlahInput.removeAttribute('disabled');
-                jumlahInput.focus();
-            } else {
-                jumlahInput.setAttribute('disabled', true);
+    document.querySelectorAll('.detail-row').forEach(function (detailRow) {
+        const checkbox = detailRow.querySelector('.ikan-checkbox');
+        const jumlahInput = detailRow.querySelector('.jumlah');
+        const harga = parseInt(detailRow.querySelector('.harga').value);
+        const totalDisplay = detailRow.querySelector('.total-display');
+        const totalHidden = detailRow.querySelector('.total-hidden');
+        const stok = parseInt(detailRow.querySelector('.stok').value);
+
+        if (!checkbox.checked) {
+            jumlahInput.disabled = true;
+        }
+
+        checkbox.addEventListener('change', function () {
+            jumlahInput.disabled = !this.checked;
+            if (!this.checked) {
                 jumlahInput.value = '';
                 totalDisplay.value = '';
                 totalHidden.value = 0;
-                updateGrandTotal();
+            }
+            updateTotalKeseluruhan();
+        });
+
+        jumlahInput.addEventListener('input', function () {
+            let jumlah = parseInt(this.value) || 0;
+
+            if (jumlah > stok) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Stok tidak mencukupi',
+                    text: 'Jumlah melebihi stok yang tersedia!'
+                });
+                this.value = stok;
+                jumlah = stok;
+            }
+
+            let total = jumlah * harga;
+            totalDisplay.value = formatRupiah(total);
+            totalHidden.value = total;
+            updateTotalKeseluruhan();
+        });
+    });
+
+    document.querySelector('form').addEventListener('submit', function (e) {
+        let isValid = true;
+
+        document.querySelectorAll('.detail-row').forEach(function (detailRow) {
+            const jumlah = parseInt(detailRow.querySelector('.jumlah').value || 0);
+            const stok = parseInt(detailRow.querySelector('.stok').value || 0);
+            const checkbox = detailRow.querySelector('.ikan-checkbox');
+
+            if (checkbox.checked && jumlah > stok) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Stok tidak mencukupi',
+                    text: 'Jumlah yang dimasukkan melebihi stok!'
+                });
+                detailRow.querySelector('.jumlah').focus();
+                e.preventDefault();
+                isValid = false;
+                return false;
             }
         });
+
+        return isValid;
     });
 
-    document.querySelectorAll('.jumlah').forEach(jumlahInput => {
-        jumlahInput.addEventListener('input', function () {
-            const wrapper = this.closest('.border');
-            const harga = parseFloat(wrapper.querySelector('.harga').value) || 0;
-            const jumlah = parseFloat(this.value) || 0;
-            const total = harga * jumlah;
-
-            wrapper.querySelector('.total-display').value = new Intl.NumberFormat('id-ID').format(total);
-            wrapper.querySelector('.total-hidden').value = total;
-            updateGrandTotal();
-        });
+    // Pasar otomatis dari konsumen
+    document.getElementById('nama_konsumen').addEventListener('change', function () {
+        const selected = this.options[this.selectedIndex];
+        const pasar = selected.getAttribute('data-pasar') || '';
+        document.getElementById('nama_pasar').value = pasar;
+        document.getElementById('nama_pasar_hidden').value = pasar;
     });
-
-    window.addEventListener('DOMContentLoaded', updateGrandTotal);
 </script>
 
 <!-- STYLE -->

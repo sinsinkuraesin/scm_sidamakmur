@@ -13,15 +13,19 @@
                 </p>
                 <form class="user" method="POST" action="{{ route('beli.store') }}" enctype="multipart/form-data">
                     @csrf
+                        <div class="form-group">
+                            <Label>Kode Pembelian:</Label>
+                            <input type="text" class="form-control" name="kd_beli">
+                        </div>
 
                         <div class="form-group">
                             <label for="kd_supplier">Pilih Supplier:</label>
                             <select name="kd_supplier" id="kd_supplier" class="form-control" required>
-                            <option value="" disabled selected>Pilih Supplier</option>
-                            @foreach ($supplier as $item)
-                                <option value="{{ $item->id }}">{{ $item->kd_supplier }}</option>
-                            @endforeach
-                        </select>
+                                <option value="" disabled selected>Pilih Supplier</option>
+                                @foreach ($supplier as $item)
+                                    <option value="{{ $item->id }}">{{ $item->kd_supplier }}</option>
+                                @endforeach
+                            </select>
                         </div>
 
                         <div class="form-group mb-3">
@@ -43,8 +47,8 @@
                         </div>
 
                         <div class="form-group mb-3">
-                            <label for="jml_ikan" class="form-label">Jumlah Ikan:</label>
-                            <input type="number" class="form-control" name="jml_ikan" id="jml_ikan" min="20" required placeholder="Minimal 20 kg">
+                            <label for="jml_ikan" class="form-label">Jumlah Ikan (Kg):</label>
+                            <input type="number" class="form-control" name="jml_ikan" id="jml_ikan" required placeholder="Minimal 20 kg">
                         </div>
 
                         <div class="form-group mb-3">
@@ -58,7 +62,7 @@
                             <input type="file" class="form-control" name="bukti_pembayaran" accept="image/*">
                         </div>
 
-                        <button type="submit" class="btn btn-primary">Simpan</button>
+                        <button type="submit" class="btn btn-primary">Beli</button>
                         <a href="{{ route('beli.index') }}" class="btn btn-secondary">Batal</a>
                     </form>
                 </div>
@@ -66,6 +70,9 @@
             </div>
             </div>
         </div>
+
+<!-- Tambahkan SweetAlert2 lebih dahulu -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
     document.getElementById('kd_supplier').addEventListener('change', function () {
@@ -83,12 +90,20 @@
 
                     updateTotalHarga();
                 } else {
-                    alert(data.error || "Ikan tidak ditemukan");
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Gagal',
+                        text: data.error || "Ikan tidak ditemukan",
+                    });
                 }
             })
             .catch(error => {
                 console.error('Gagal fetch:', error);
-                alert('Terjadi kesalahan mengambil data ikan.');
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Terjadi kesalahan mengambil data ikan.',
+                });
             });
     });
 
@@ -103,6 +118,23 @@
     }
 
     document.getElementById('jml_ikan').addEventListener('input', updateTotalHarga);
+
+    document.querySelector('form.user').addEventListener('submit', function(e) {
+        const jumlahIkan = parseFloat(document.getElementById('jml_ikan').value);
+
+        if (jumlahIkan < 20) {
+            e.preventDefault(); // Cegah submit
+            Swal.fire({
+                icon: 'warning',
+                title: 'Jumlah Ikan Terlalu Sedikit',
+                text: 'Pembelian tidak boleh di bawah 20 kg.',
+                confirmButtonText: 'OK'
+            });
+        }
+    });
 </script>
+
+
+
 
 @endsection

@@ -141,8 +141,8 @@
         <div class="section-title">Informasi Supplier</div>
         <table style="width: auto;">
             <tr>
-                <td style="padding-right: 10px;"><strong>Kode Supplier:</strong></td>
-                <td>{{ $beli->supplier->kd_supplier ?? '-' }}</td>
+                <td style="padding-right: 10px;"><strong>Nama Supplier:</strong></td>
+                <td>{{ $beli->supplier->nm_supplier ?? '-' }}</td>
             </tr>
             <tr>
                 <td style="padding-right: 10px;"><strong>Alamat Supplier:</strong></td>
@@ -164,7 +164,7 @@
                 <tr>
                     <td>{{ $beli->ikan->jenis_ikan ?? '-' }}</td>
                     <td>Rp {{ number_format($beli->harga_beli, 0, ',', '.') }}</td>
-                    <td>{{ $beli->jml_ikan }}</td>
+                    <td>{{ $beli->jml_ikan }} Kg</td>
                     <td>Rp {{ number_format($beli->total_harga, 0, ',', '.') }}</td>
                 </tr>
             </tbody>

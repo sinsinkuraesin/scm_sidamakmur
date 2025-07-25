@@ -43,6 +43,7 @@ class BeliController extends Controller
             ->orWhereHas('ikan', function ($q) use ($kata) {
                 $q->where('jenis_ikan', 'like', "%$kata%");
             })
+            ->orWhere('kd_beli', 'like', "%$kata%")
             ->orWhere('jml_ikan', 'like', "%$kata%")
             ->orWhere('harga_beli', 'like', "%$kata%")
             ->orWhere('total_harga', 'like', "%$kata%")
@@ -77,6 +78,7 @@ class BeliController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'kd_beli' => 'required',
             'kd_supplier' => 'required|exists:tbl_supplier,id',
             'jenis_ikan'  => 'required|exists:tbl_ikan,id',
             'tgl_beli'    => 'required|date',
@@ -96,6 +98,7 @@ class BeliController extends Controller
         DB::beginTransaction();
         try {
             $transaksi = Beli::create([
+                'kd_beli' => $request->kd_beli,
                 'kd_supplier' => $request->kd_supplier,
                 'jenis_ikan'  => $request->jenis_ikan,
                 'tgl_beli'    => $request->tgl_beli,
@@ -144,6 +147,7 @@ class BeliController extends Controller
     public function update(Request $request, Beli $beli)
     {
         $request->validate([
+            'kd_beli' => 'required',
             'kd_supplier' => 'required|exists:tbl_supplier,id',
             'jenis_ikan'  => 'required|exists:tbl_ikan,id',
             'tgl_beli'    => 'required|date',
@@ -179,6 +183,7 @@ class BeliController extends Controller
             }
 
             // Update data pembelian
+            $beli->kd_beli = $request->kd_beli;
             $beli->kd_supplier = $request->kd_supplier;
             $beli->jenis_ikan = $request->jenis_ikan;
             $beli->tgl_beli = $request->tgl_beli;

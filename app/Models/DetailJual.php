@@ -9,7 +9,7 @@ class DetailJual extends Model
     protected $table = 'tbl_detail_jual';
 
     protected $fillable = [
-        'jual_id', 'jenis_ikan', 'harga_jual', 'jml_ikan', 'total'
+        'jual_id','kd_jual', 'jenis_ikan', 'harga_jual', 'jml_ikan', 'total'
     ];
 
     public function ikan()

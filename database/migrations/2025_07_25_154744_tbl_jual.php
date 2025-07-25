@@ -10,6 +10,7 @@ return new class extends Migration
     {
         Schema::create('tbl_jual', function (Blueprint $table) {
             $table->bigIncrements('jual_id');
+            $table->string('kd_jual');
             $table->unsignedBigInteger('nama_konsumen');
             $table->date('tgl_jual');
             $table->string('nama_pasar');

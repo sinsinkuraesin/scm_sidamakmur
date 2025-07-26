@@ -21,6 +21,12 @@
       background: none !important;
       color: inherit !important;
     }
+     /* Agar tulisan menu tidak terpotong */
+    .sidebar .nav .nav-item .nav-link {
+        white-space: normal !important;
+        word-wrap: break-word !important;
+    }
+
   </style>
 </head>
 
@@ -81,19 +87,12 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {{ Request::is('laporan/penjualan') ? 'active' : '' }}" href="{{ route('laporan.penjualan') }}">
-                    Laporan Penjualan
+                    Laporan Stok (Pengadaan)
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {{ Request::is('laporan/penjualan') ? 'active' : '' }}" href="{{ route('laporan.penjualan') }}">
-                    Laporan Stok (Pengadaan)
-                    <a class="nav-link {{ Request::is('laporan/pengadaan') ? 'active' : '' }}" href="{{ route('laporan.penjualan') }}">
-                    Laporan Pengadaan
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link {{ Request::is('laporan/distribusi') ? 'active' : '' }}" href="{{ route('laporan.penjualan') }}">
-                    Laporan Distribusi
+                    Laporan Penjualan (Distribusi)
                     </a>
                 </li>
                 </ul>

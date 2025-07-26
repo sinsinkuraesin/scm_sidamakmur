@@ -110,12 +110,13 @@ class JualController extends Controller
 
         // Simpan detail penjualan
         foreach ($ikanDipilih as $ikan) {
-            if (!isset($ikan['id'], $ikan['harga'], $ikan['jumlah'], $ikan['total']) ||
-                !is_numeric($ikan['id']) || !is_numeric($ikan['harga']) ||
-                !is_numeric($ikan['jumlah']) || !is_numeric($ikan['total']) ||
-                $ikan['jumlah'] < 1 || $ikan['total'] < 0) {
-                throw new \Exception("Data ikan tidak valid.");
-            }
+        if (!isset($ikan['id'], $ikan['harga'], $ikan['jumlah'], $ikan['total']) ||
+            !is_numeric($ikan['id']) || !is_numeric($ikan['harga']) ||
+            !is_numeric($ikan['jumlah']) || !is_numeric($ikan['total']) ||
+            $ikan['jumlah'] < 5 || $ikan['total'] < 0) {
+            throw new \Exception("Setiap jenis ikan yang dipilih harus memiliki jumlah minimal 5 kg.");
+        }
+
 
             DetailJual::create([
                 'jual_id' => $jual->jual_id,

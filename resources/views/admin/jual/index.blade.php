@@ -96,8 +96,8 @@
                                             @csrf
                                             @method('DELETE')
                                             <a href="{{ route('jual.edit', $jual->jual_id) }}" class="btn btn-warning btn-sm">Edit</a>
-                                            <a href="{{ route('jual.invoice', $jual->jual_id) }}" class="btn btn-info btn-sm" target="_blank">Invoice</a>
                                             <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Yakin hapus data?')">Hapus</button>
+                                            <a href="{{ route('jual.invoice', $jual->jual_id) }}" class="btn btn-info btn-sm" target="_blank">Invoice</a>
                                         </form>
                                     </td>
                                 </tr>

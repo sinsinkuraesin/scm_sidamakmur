@@ -54,6 +54,7 @@
                                     <th>Jumlah</th>
                                     <th>Harga Satuan</th>
                                     <th>Total Harga</th>
+                                    <th>Status Pembayaran</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -68,6 +69,13 @@
                                         <td>{{ $beli->jml_ikan }} Kg</td>
                                         <td>Rp. {{ number_format($beli->harga_beli, 0, ',', '.') }}</td>
                                         <td>Rp. {{ number_format($beli->total_harga, 0, ',', '.') }}</td>
+                                        <td>
+                                            @if ($beli->bukti_pembayaran)
+                                                <span class="badge bg-success text-white">Sudah Upload Bukti Bayar</span>
+                                            @else
+                                                <span class="badge bg-danger text-white">Belum Upload Bukti Bayar</span>
+                                            @endif
+                                        </td>
                                         <td>
                                             <form action="{{ route('beli.destroy', $beli->id) }}" method="POST">
                                                 @csrf

@@ -86,10 +86,9 @@ class BeliController extends Controller
             'harga_beli'  => 'required|numeric|min:0',
             'total_harga' => 'required|numeric|min:0',
             'bukti_pembayaran' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-        ], [
-            'jml_ikan.min' => 'Jumlah ikan minimal pembelian adalah 20 kg.',
         ]);
 
+        // Letakkan di sini supaya $path tetap bisa digunakan di dalam try
         $path = null;
         if ($request->hasFile('bukti_pembayaran')) {
             $path = $request->file('bukti_pembayaran')->store('bukti_pembayaran', 'public');
@@ -105,7 +104,7 @@ class BeliController extends Controller
                 'jml_ikan'    => $request->jml_ikan,
                 'harga_beli'  => $request->harga_beli,
                 'total_harga' => $request->total_harga,
-                'bukti_pembayaran' => $path
+                'bukti_pembayaran' => $path // <- ini tidak akan error meski null
             ]);
 
             $ikan = Ikan::findOrFail($request->jenis_ikan);

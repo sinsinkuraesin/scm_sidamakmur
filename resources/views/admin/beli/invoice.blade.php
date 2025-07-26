@@ -169,15 +169,14 @@
                 </tr>
             </tbody>
         </table>
-
-        @if ($beli->bukti_pembayaran)
-            <div class="section-title">Bukti Pembayaran</div>
-            <div style="text-align: center; margin-top: 15px;">
-                <img src="{{ $isPdf ? public_path('storage/' . $beli->bukti_pembayaran) : asset('storage/' . $beli->bukti_pembayaran) }}"
-                    alt="Bukti Pembayaran" style="max-width: 100%; max-height: 400px;">
-            </div>
-        @endif
-
+        <div class="section-title">Status Pembayaran</div>
+        <p>
+            @if ($beli->bukti_pembayaran)
+                <span style="color: green; font-weight: bold;">Sudah Upload Bukti Pembayaran</span>
+            @else
+                <span style="color: red; font-weight: bold;">Belum Upload Bukti Pembayaran</span>
+            @endif
+        </p>
 
         @if (!request()->routeIs('beli.invoice.pdf'))
         <div class="btn-container">

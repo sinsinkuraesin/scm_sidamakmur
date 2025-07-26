@@ -17,7 +17,7 @@ return new class extends Migration
             $table->double('harga_beli');
             $table->double('jml_ikan');
             $table->double('total_harga');
-            $table->string('bukti_pembayaran');
+            $table->string('bukti_pembayaran')->nullable();
 
             $table->timestamps();
 

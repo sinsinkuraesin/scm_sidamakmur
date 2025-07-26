@@ -1,58 +1,6 @@
 @extends('admin.layout')
 
 @section('content')
-<style>
-    #ikan-container {
-        position: absolute;
-        top: 120px; /* sejajar tulisan selamat datang */
-        left: 0;
-        width: 100%;
-        height: 100px; /* hanya di baris atas */
-        pointer-events: none;
-        overflow: hidden;
-        z-index: 0;
-    }
-
-    .ikan {
-        position: absolute;
-        opacity: 0.9;
-        will-change: transform;
-        z-index: 0;
-    }
-
-    @keyframes gerakIkanRealistisKanan {
-        0% { transform: translateX(-150px); }
-        100% { transform: translateX(110vw); }
-    }
-
-    @keyframes gerakIkanRealistisKiri {
-        0% { transform: translateX(110vw) scaleX(-1); }
-        100% { transform: translateX(-150px) scaleX(-1); }
-    }
-
-    .gelembung {
-        position: absolute;
-        width: 20px;
-        height: 20px;
-        background: rgba(173, 216, 230, 0.6);
-        border-radius: 50%;
-        animation: gelembungNaik 8s linear infinite;
-        z-index: 999;
-    }
-
-    @keyframes gelembungNaik {
-        0% { bottom: -50px; opacity: 0; }
-        30% { opacity: 1; }
-        100% { bottom: 100%; opacity: 0; }
-    }
-
-    .gelembung:nth-child(1) { left: 10%; animation-delay: 0s; }
-    .gelembung:nth-child(2) { left: 25%; animation-delay: 2s; }
-    .gelembung:nth-child(3) { left: 40%; animation-delay: 4s; }
-    .gelembung:nth-child(4) { left: 60%; animation-delay: 1s; }
-    .gelembung:nth-child(5) { left: 75%; animation-delay: 3s; }
-    .gelembung:nth-child(6) { left: 90%; animation-delay: 5s; }
-</style>
 
 <div class="content-wrapper">
     <div class="mb-4">
@@ -90,13 +38,6 @@
         </div>
     </div>
 
-    <!-- Gelembung -->
-    <div class="gelembung"></div>
-    <div class="gelembung"></div>
-    <div class="gelembung"></div>
-    <div class="gelembung"></div>
-    <div class="gelembung"></div>
-    <div class="gelembung"></div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -193,34 +134,5 @@
         "{{ asset('images/ikan/mujaer.png') }}"
     ];
 
-    function buatIkan() {
-        const img = document.createElement('img');
-        img.src = ikanImages[Math.floor(Math.random() * ikanImages.length)];
-        img.classList.add('ikan');
-
-        const arahKanan = Math.random() < 0.5;
-        const ukuran = Math.floor(Math.random() * 20) + 30;
-        const durasi = Math.random() * 6 + 6; // 6–12s
-        const delay = Math.random() * 1;
-
-        img.style.width = ukuran + 'px';
-        img.style.top = '10px'; // tetap satu baris sejajar
-        img.style.left = arahKanan ? '-150px' : '110vw';
-        img.style.animation = `${arahKanan ? 'gerakIkanRealistisKanan' : 'gerakIkanRealistisKiri'} ${durasi}s linear ${delay}s forwards`;
-
-        ikanContainer.appendChild(img);
-
-        setTimeout(() => {
-            if (img.parentElement) ikanContainer.removeChild(img);
-        }, (durasi + delay) * 1000);
-    }
-
-    setInterval(() => {
-        if (document.querySelectorAll('.ikan').length < 6) {
-            buatIkan();
-        }
-    }, 1400);
-
-    for (let i = 0; i < 3; i++) buatIkan();
 </script>
 @endsection

@@ -19,6 +19,17 @@
                     <input type="text" class="form-control" name="kd_ikan" value="{{ $ikan->kd_ikan }}">
                 </div>
 
+                 <div class="form-group">
+                    <label>Upload Foto Ikan :</label>
+                    <input type="file" class="form-control" name="foto_ikan">
+
+                    @if ($ikan->foto_ikan)
+                        <div class="mt-2">
+                            <img src="{{ asset('Foto_Ikan/' . $ikan->foto_ikan) }}" alt="Foto Ikan" width="150">
+                        </div>
+                    @endif
+                </div>
+
                 <div class="form-group">
                     <Label>Jenis Ikan:</Label>
                     <input type="text" class="form-control" name="jenis_ikan" value="{{ $ikan->jenis_ikan }}">

@@ -18,6 +18,11 @@
                 </div>
 
                 <div class="form-group">
+                          <Label>Upload Foto Ikan :</Label>
+                          <input type="file" class="form-control" name="foto_ikan">
+                </div>
+
+                <div class="form-group">
                     <Label>Jenis Ikan:</Label>
                     <input type="text" class="form-control" name="jenis_ikan">
                 </div>

@@ -21,5 +21,7 @@ class DetailJual extends Model
     {
         return $this->belongsTo(Jual::class, 'jual_id');
     }
+
+
 }
 

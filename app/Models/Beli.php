@@ -25,6 +25,4 @@ class Beli extends Model
         return $this->belongsTo(Ikan::class, 'jenis_ikan');
     }
 
-
-
 }

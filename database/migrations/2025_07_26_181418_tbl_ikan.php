@@ -12,6 +12,7 @@ return new class extends Migration
         Schema::create('tbl_ikan', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('kd_ikan');
+            $table->text('foto_ikan');
             $table->string('jenis_ikan');
             $table->double('harga_beli');
             $table->double('harga_jual');

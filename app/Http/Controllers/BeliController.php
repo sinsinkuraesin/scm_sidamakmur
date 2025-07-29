@@ -107,9 +107,11 @@ class BeliController extends Controller
                 'bukti_pembayaran' => $path // <- ini tidak akan error meski null
             ]);
 
-            $ikan = Ikan::findOrFail($request->jenis_ikan);
-            $ikan->stok += $request->jml_ikan;
-            $ikan->save();
+            if ($path) { // Jika sudah upload bukti pembayaran
+                $ikan = Ikan::findOrFail($request->jenis_ikan);
+                $ikan->stok += $request->jml_ikan;
+                $ikan->save();
+            }
 
             DB::commit();
             return redirect()->route('beli.invoice', $transaksi->id);
@@ -144,60 +146,59 @@ class BeliController extends Controller
     }
 
     public function update(Request $request, Beli $beli)
-    {
-        $request->validate([
-            'kd_beli' => 'required',
-            'kd_supplier' => 'required|exists:tbl_supplier,id',
-            'jenis_ikan'  => 'required|exists:tbl_ikan,id',
-            'tgl_beli'    => 'required|date',
-            'jml_ikan'    => 'required|numeric|min:20',
-            'harga_beli'  => 'required|numeric|min:0',
-            'total_harga' => 'required|numeric|min:0',
-            'bukti_pembayaran' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-        ], [
-            'jml_ikan.min' => 'Jumlah ikan minimal pembelian adalah 20 kg.',
+{
+    $request->validate([
+        'kd_beli' => 'required',
+        'kd_supplier' => 'required|exists:tbl_supplier,id',
+        'jenis_ikan'  => 'required|exists:tbl_ikan,id',
+        'tgl_beli'    => 'required|date',
+        'jml_ikan'    => 'required|numeric|min:20',
+        'harga_beli'  => 'required|numeric|min:0',
+        'total_harga' => 'required|numeric|min:0',
+        'bukti_pembayaran' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+    ]);
+
+    DB::beginTransaction();
+
+    try {
+        $ikan = Ikan::findOrFail($request->jenis_ikan);
+        $stokBertambah = false;
+        $pathBaru = $beli->bukti_pembayaran;
+
+        // Jika sebelumnya belum ada bukti pembayaran, dan sekarang diupload
+        if (!$beli->bukti_pembayaran && $request->hasFile('bukti_pembayaran')) {
+            $pathBaru = $request->file('bukti_pembayaran')->store('bukti_pembayaran', 'public');
+            $ikan->stok += $request->jml_ikan;
+            $ikan->save();
+            $stokBertambah = true;
+        }
+
+        // Hapus bukti lama jika ingin mengganti (opsional, tergantung kebutuhan)
+        if ($beli->bukti_pembayaran && $request->hasFile('bukti_pembayaran')) {
+            if (Storage::disk('public')->exists($beli->bukti_pembayaran)) {
+                Storage::disk('public')->delete($beli->bukti_pembayaran);
+            }
+            $pathBaru = $request->file('bukti_pembayaran')->store('bukti_pembayaran', 'public');
+        }
+
+        $beli->update([
+            'kd_beli' => $request->kd_beli,
+            'kd_supplier' => $request->kd_supplier,
+            'jenis_ikan'  => $request->jenis_ikan,
+            'tgl_beli'    => $request->tgl_beli,
+            'jml_ikan'    => $request->jml_ikan,
+            'harga_beli'  => $request->harga_beli,
+            'total_harga' => $request->total_harga,
+            'bukti_pembayaran' => $pathBaru
         ]);
 
-        DB::beginTransaction();
-        try {
-            // Ambil stok ikan saat ini
-            $ikan = Ikan::findOrFail($request->jenis_ikan);
-
-            // Koreksi stok: Kurangi jumlah lama, tambahkan jumlah baru
-            $stokAwal = $beli->jml_ikan;
-            $stokBaru = $request->jml_ikan;
-            $selisih = $stokBaru - $stokAwal;
-            $ikan->stok += $selisih;
-            $ikan->save();
-
-            // Handle upload file baru jika ada
-            if ($request->hasFile('bukti_pembayaran')) {
-                // Hapus file lama jika ada
-                if ($beli->bukti_pembayaran && \Storage::disk('public')->exists($beli->bukti_pembayaran)) {
-                    \Storage::disk('public')->delete($beli->bukti_pembayaran);
-                }
-
-                $path = $request->file('bukti_pembayaran')->store('bukti_pembayaran', 'public');
-                $beli->bukti_pembayaran = $path;
-            }
-
-            // Update data pembelian
-            $beli->kd_beli = $request->kd_beli;
-            $beli->kd_supplier = $request->kd_supplier;
-            $beli->jenis_ikan = $request->jenis_ikan;
-            $beli->tgl_beli = $request->tgl_beli;
-            $beli->jml_ikan = $request->jml_ikan;
-            $beli->harga_beli = $request->harga_beli;
-            $beli->total_harga = $request->total_harga;
-            $beli->save();
-
-            DB::commit();
-            return redirect()->route('beli.index')->with('success', 'Pembelian berhasil diperbarui.');
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return redirect()->back()->with('error', 'Gagal memperbarui pembelian: ' . $e->getMessage());
-        }
+        DB::commit();
+        return redirect()->route('beli.index')->with('success', 'Data pembelian berhasil diperbarui.' . ($stokBertambah ? ' Stok ikan telah ditambahkan.' : ''));
+    } catch (\Exception $e) {
+        DB::rollBack();
+        return redirect()->back()->with('error', 'Gagal memperbarui pembelian: ' . $e->getMessage());
     }
+}
 
     public function destroy(Beli $beli)
     {

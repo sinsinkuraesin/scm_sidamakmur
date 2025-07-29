@@ -82,12 +82,12 @@
                 <ul class="nav flex-column sub-menu">
                 <li class="nav-item">
                     <a class="nav-link {{ Request::is('laporan/pembelian') ? 'active' : '' }}" href="{{ route('laporan.pembelian') }}">
-                    Laporan Pembelian (Perancanaan)
+                    Laporan Pembelian (Pengadaan)
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {{ Request::is('laporan/penjualan') ? 'active' : '' }}" href="{{ route('laporan.penjualan') }}">
-                    Laporan Stok (Pengadaan)
+                    Laporan Stok (Persediaan)
                     </a>
                 </li>
                 <li class="nav-item">

@@ -51,7 +51,7 @@
       justify-content: center;
     }
     .bg-custom-green {
-  background: linear-gradient(90deg, #4CAF50, #2E7D32); /* Hijau sesuai logo */
+  ; /* Hijau sesuai logo */
 }
 .text-custom-green {
   color: #2E7D32 !important;

@@ -53,6 +53,8 @@ Route::middleware('auth')->group(function () {
         return view('pemilik.beranda');
     });
     Route::get('/pemilik/data_ikan', [App\Http\Controllers\DataIkanController::class, 'index'])->name('pemilik.data_ikan');
+    Route::get('/pemilik/data_supplier', [App\Http\Controllers\PemilikSupplierController::class, 'index'])->name('pemilik.data_supplier');
+
 });
 
 

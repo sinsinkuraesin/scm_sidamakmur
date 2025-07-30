@@ -7,16 +7,12 @@
 
   <link rel="apple-touch-icon" sizes="76x76" href="{{ asset('pemilik/pemilik/img/apple-icon.png') }}">
   <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
-  <title>
-    @yield('title', 'Pemilik')
-  </title>
+  <title>@yield('title', 'Pemilik')</title>
 
   <!-- Fonts and icons -->
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
-  <!-- Nucleo Icons -->
   <link href="{{ asset('pemilik/css/nucleo-icons.css') }}" rel="stylesheet" />
   <link href="{{ asset('pemilik/css/nucleo-svg.css') }}" rel="stylesheet" />
-  <!-- Font Awesome Icons -->
   <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
@@ -24,13 +20,13 @@
   <link id="pagestyle" href="{{ asset('pemilik/css/argon-dashboard.css?v=2.0.4') }}" rel="stylesheet" />
 
   <style>
-#sidenav-main::-webkit-scrollbar {
-  display: none;
-}
-#sidenav-main {
-  -ms-overflow-style: none;  /* IE/Edge */
-  scrollbar-width: none;     /* Firefox */
-}
+    #sidenav-main::-webkit-scrollbar {
+      display: none;
+    }
+    #sidenav-main {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
 
     .main-content {
       margin-left: 220px;
@@ -48,27 +44,45 @@
       align-items: center;
       justify-content: center;
     }
+
     .bg-custom-green {
-  ; /* Hijau sesuai logo */
-}
-.text-custom-green {
-  color: #2E7D32 !important;
-}
+      background: linear-gradient(90deg, #fc4a1a, #f7b733);
 
+    }
 
+    .text-custom-green {
+      color: white !important;
+    }
+
+    @media (max-width: 1199.98px) {
+      #sidenav-main {
+        transition: transform 0.3s ease-in-out;
+        transform: translateX(-100%);
+        z-index: 1031;
+        position: fixed !important;
+      }
+
+      body.g-sidenav-show #sidenav-main {
+        transform: translateX(0);
+      }
+
+      body.g-sidenav-hidden #sidenav-main {
+        transform: translateX(-100%);
+      }
+    }
   </style>
 </head>
 
-<body class="g-sidenav-show bg-gray-100">
+<body class="g-sidenav-show g-sidenav-hidden bg-gray-100">
   <div class="min-height-300 bg-custom-green position-absolute w-100"></div>
 
-  <aside class="sidenav bg-white navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-4 d-none d-xl-block" id="sidenav-main">
-  <div class="sidenav-header text-center">
-    <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
-    <div class="text-center my-3">
-  <img src="{{ asset('images/logo.png') }}" alt="main_logo" width="120">
-</div>
-  </div>
+  <aside id="sidenav-main" class="sidenav bg-white navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-4">
+    <div class="sidenav-header text-center">
+      <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-xl-none" aria-hidden="true" id="iconSidenav"></i>
+      <div class="text-center my-3">
+        <img src="{{ asset('images/logo.png') }}" alt="main_logo" width="120">
+      </div>
+    </div>
     <hr class="horizontal dark mt-0">
     <div class="collapse navbar-collapse w-auto" id="sidenav-collapse-main">
       <ul class="navbar-nav">
@@ -89,7 +103,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{{ route('supplier.index') }}">
+          <a class="nav-link" href="{{ route('pemilik.data_supplier') }}">
             <div class="icon icon-shape icon-sm text-center me-2">
               <i class="ni ni-basket text-warning text-sm opacity-10"></i>
             </div>
@@ -193,19 +207,20 @@
         </div>
       </div>
     </nav>
+
     @yield('content')
   </main>
 
   <footer class="bg-white text-center py-3">
-  <div class="container">
-    <span class="text-muted d-block d-sm-inline-block">
-      &copy; 2025 by Diana Kholifah & Sinsin Kuraesin.
-    </span>
-    <span class="text-muted d-block d-sm-inline-block float-sm-right mt-1 mt-sm-0">
-      Proyek Sistem Informasi <i class="ti-heart text-danger ml-1"></i>
-    </span>
-  </div>
-</footer>
+    <div class="container">
+      <span class="text-muted d-block d-sm-inline-block">
+        &copy; 2025 by Diana Kholifah & Sinsin Kuraesin.
+      </span>
+      <span class="text-muted d-block d-sm-inline-block float-sm-right mt-1 mt-sm-0">
+        Proyek Sistem Informasi
+      </span>
+    </div>
+  </footer>
 
   <!-- Core JS Files -->
   <script src="{{ asset('pemilik/js/core/popper.min.js') }}"></script>
@@ -215,25 +230,14 @@
   @stack('scripts')
 
   <script>
-    const sidenavMain = document.getElementById('sidenav-main');
     const iconNavbarSidenav = document.getElementById('iconNavbarSidenav');
-
     if (iconNavbarSidenav) {
-        iconNavbarSidenav.addEventListener('click', () => {
-        if (sidenavMain.classList.contains('d-none')) {
-            sidenavMain.classList.remove('d-none');
-            sidenavMain.style.transform = 'translateX(0)';
-            sidenavMain.classList.add('d-block');
-        } else {
-            sidenavMain.style.transform = 'translateX(-100%)';
-            setTimeout(() => {
-            sidenavMain.classList.remove('d-block');
-            sidenavMain.classList.add('d-none');
-            }, 300);
-        }
-        });
+      iconNavbarSidenav.addEventListener('click', function () {
+        document.body.classList.toggle('g-sidenav-hidden');
+      });
     }
-    </script>
+  </script>
+
   <script async defer src="https://buttons.github.io/buttons.js"></script>
 </body>
 </html>

@@ -12,32 +12,36 @@ class LaporanPembelianController extends Controller
 {
     public function index(Request $request)
     {
-        $filter = $request->filter ?? 'harian';
-        $tanggal = $request->tanggal ?? Carbon::today()->format('Y-m-d');
+        $belis = collect(); // Default kosong
+        $totalPengeluaran = 0;
+        $filter = $request->filter;
+        $tanggal = $request->tanggal;
 
-        $belis = Beli::with(['supplier', 'ikan']);
+        if ($filter && $tanggal) {
+            $belisQuery = Beli::with(['supplier', 'ikan']);
 
-        switch ($filter) {
+            switch ($filter) {
+                case 'bulanan':
+                    $belisQuery = $belisQuery->whereMonth('tgl_beli', Carbon::parse($tanggal)->month)
+                                            ->whereYear('tgl_beli', Carbon::parse($tanggal)->year);
+                    break;
 
-            case 'bulanan':
-                $belis = $belis->whereMonth('tgl_beli', Carbon::parse($tanggal)->month)
-                               ->whereYear('tgl_beli', Carbon::parse($tanggal)->year);
-                break;
+                case 'tahunan':
+                    $belisQuery = $belisQuery->whereYear('tgl_beli', Carbon::parse($tanggal)->year);
+                    break;
 
-            case 'tahunan':
-                $belis = $belis->whereYear('tgl_beli', Carbon::parse($tanggal)->year);
-                break;
+                default: // harian
+                    $belisQuery = $belisQuery->whereDate('tgl_beli', $tanggal);
+                    break;
+            }
 
-            default:
-                $belis = $belis->whereDate('tgl_beli', $tanggal);
-                break;
+            $belis = $belisQuery->latest()->get();
+            $totalPengeluaran = $belis->sum('total_harga');
         }
-
-        $belis = $belis->latest()->get();
-        $totalPengeluaran = $belis->sum('total_harga');
 
         return view('admin.laporan.pembelian', compact('belis', 'filter', 'tanggal', 'totalPengeluaran'));
     }
+
 
     public function cetakPDF(Request $request)
     {

@@ -43,7 +43,9 @@ Route::get('/beranda-admin', [App\Http\Controllers\BerandaController::class, 'in
     // Laporan Penjualan
     Route::get('/laporan/penjualan', [App\Http\Controllers\LaporanPenjualanController::class, 'index'])->name('laporan.penjualan');
     Route::get('/laporan/penjualan/cetak', [App\Http\Controllers\LaporanPenjualanController::class, 'cetak'])->name('laporan.penjualan.cetak');
-
+    // Laporan Persediaan (Stok)
+    Route::get('/laporan/persediaan', [App\Http\Controllers\LaporanPersediaanController::class, 'index'])->name('laporan.persediaan');
+    Route::get('/laporan/persediaan/pdf', [App\Http\Controllers\LaporanPersediaanController::class, 'exportPdf'])->name('laporan.persediaan.pdf');
 
     // Pencarian
     Route::get('/cari', [App\Http\Controllers\IkanController::class, 'cari']);

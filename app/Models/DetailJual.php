@@ -23,5 +23,7 @@ class DetailJual extends Model
     }
 
 
+
+
 }
 

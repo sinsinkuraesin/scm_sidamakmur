@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use App\Models\Jual;
 use App\Models\Beli;
 use App\Models\Ikan;
-use App\Models\Konsumen;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
@@ -14,10 +13,13 @@ class BerandaController extends Controller
 {
     public function index()
     {
-        // 🔽 1. Downstream: Total pemasukan penjualan per bulan
-        $penjualan = Jual::with('detailJual')->get();
+        $tahunIni = Carbon::now()->year;
 
-        // Kita isi $konsumenTransaksi dengan total pemasukan per bulan
+        // 1. Data Penjualan Bulanan
+        $penjualan = Jual::with('detailJual')
+            ->whereYear('tgl_jual', $tahunIni)
+            ->get();
+
         $konsumenTransaksi = [];
         foreach (range(1, 12) as $bulan) {
             $total = $penjualan->filter(function ($jual) use ($bulan) {
@@ -27,45 +29,73 @@ class BerandaController extends Controller
             });
 
             $konsumenTransaksi[] = [
-            'bulan' => $bulan,
-            'total' => $total,
-        ];
-
+                'bulan' => Carbon::create(null, $bulan)->format('M'),
+                'total' => $total,
+            ];
         }
 
-        // 🔽 2. Internal Supply Chain: Rekap stok ikan per bulan dan jenis ikan
-        $stokIkan = Ikan::select(
-                DB::raw('MONTH(updated_at) as bulan'),
-                'jenis_ikan',
-                DB::raw('SUM(stok) as total')
-            )
-            ->groupBy('bulan', 'jenis_ikan')
-            ->orderBy('bulan')
-            ->get();
-
-        // 🔽 3. Upstream: Total pembelian dari supplier per bulan
-        $beli = Beli::select(
+        // 2. Data Pembelian Bulanan
+        $pembelianData = Beli::select(
                 DB::raw('MONTH(tgl_beli) as bulan'),
                 DB::raw('SUM(total_harga) as total')
             )
+            ->whereYear('tgl_beli', $tahunIni)
             ->groupBy('bulan')
             ->orderBy('bulan')
             ->get();
 
-        // Agar lengkap dari Januari–Desember
         $pembelian = [];
         foreach (range(1, 12) as $bulan) {
-            $item = $beli->firstWhere('bulan', $bulan);
+            $data = $pembelianData->firstWhere('bulan', $bulan);
             $pembelian[] = [
-                'bulan' => $bulan,
-                'total' => $item ? $item->total : 0,
+                'bulan' => Carbon::create(null, $bulan)->format('M'),
+                'total' => $data->total ?? 0,
+            ];
+        }
+
+        // 3. Data Stok Harian per Ikan (3 minggu terakhir)
+        $hariIni = Carbon::now();
+        $tanggalMulai = $hariIni->copy()->subWeeks(2)->startOfWeek();
+        $tanggalAkhir = $hariIni->copy()->endOfWeek();
+
+        $stokData = Ikan::select(
+                DB::raw("DATE(updated_at) as tanggal"),
+                'jenis_ikan',
+                DB::raw('SUM(stok) as total')
+            )
+            ->whereBetween('updated_at', [$tanggalMulai, $tanggalAkhir])
+            ->groupBy('tanggal', 'jenis_ikan')
+            ->orderBy('tanggal')
+            ->get();
+
+        $tanggalKeys = collect();
+        for ($date = $tanggalMulai->copy(); $date <= $tanggalAkhir; $date->addDay()) {
+            $tanggalKeys->push($date->format('Y-m-d'));
+        }
+
+        $tanggalLabels = $tanggalKeys->map(fn($tgl) => Carbon::parse($tgl)->format('d M'));
+
+        $jenisIkanList = $stokData->pluck('jenis_ikan')->unique();
+        $stokChartData = [];
+
+        foreach ($jenisIkanList as $jenis) {
+            $dataPerHari = [];
+            foreach ($tanggalKeys as $tgl) {
+                $data = $stokData->first(fn($item) => $item->tanggal === $tgl && $item->jenis_ikan === $jenis);
+                $dataPerHari[] = $data ? $data->total : 0;
+            }
+
+            $stokChartData[] = [
+                'label' => $jenis,
+                'data' => $dataPerHari,
             ];
         }
 
         return view('admin.beranda', compact(
-            'konsumenTransaksi', // → data pemasukan per bulan
-            'stokIkan',          // → stok ikan per bulan per jenis
-            'pembelian'          // → pembelian per bulan
+            'konsumenTransaksi',
+            'pembelian',
+            'stokChartData',
+            'tanggalLabels'
         ));
     }
 }

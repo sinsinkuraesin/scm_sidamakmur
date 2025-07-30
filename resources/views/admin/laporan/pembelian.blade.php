@@ -22,9 +22,9 @@
                         <a href="{{ route('laporan.pembelian.pdf', ['filter' => $filter, 'tanggal' => $tanggal]) }}" target="_blank" class="btn btn-success">Cetak PDF</a>
                     </form>
 
-                    <div class="table-responsive">
-                        <table class="table table-bordered">
-                            <thead class="thead-light">
+                    <div class="table-responsive pt-3">
+                            <table class="display expandable-table table-flush" style="width:100%">
+                                <thead class="thead-light">
                                 <tr>
                                     <th>No</th>
                                     <th>Tanggal</th>

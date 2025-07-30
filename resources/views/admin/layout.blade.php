@@ -86,7 +86,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {{ Request::is('laporan/penjualan') ? 'active' : '' }}" href="{{ route('laporan.penjualan') }}">
+                    <a class="nav-link {{ Request::is('laporan/persediaan') ? 'active' : '' }}" href="{{ route('laporan.persediaan') }}">
                     Laporan Stok (Persediaan)
                     </a>
                 </li>

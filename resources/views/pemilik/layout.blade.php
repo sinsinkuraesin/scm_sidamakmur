@@ -24,8 +24,6 @@
   <link id="pagestyle" href="{{ asset('pemilik/css/argon-dashboard.css?v=2.0.4') }}" rel="stylesheet" />
 
   <style>
-    /* Hilangkan scroll secara global */
-    /* Sembunyikan scrollbar tapi masih bisa scroll (optional) */
 #sidenav-main::-webkit-scrollbar {
   display: none;
 }
@@ -64,7 +62,7 @@
 <body class="g-sidenav-show bg-gray-100">
   <div class="min-height-300 bg-custom-green position-absolute w-100"></div>
 
-  <aside class="sidenav bg-white navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-4" id="sidenav-main">
+  <aside class="sidenav bg-white navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-4 d-none d-xl-block" id="sidenav-main">
   <div class="sidenav-header text-center">
     <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
     <div class="text-center my-3">
@@ -75,7 +73,7 @@
     <div class="collapse navbar-collapse w-auto" id="sidenav-collapse-main">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="nav-link" href="{{ url('beranda-admin') }}">
+          <a class="nav-link" href="{{ url('beranda-pemilik') }}">
             <div class="icon icon-shape icon-sm text-center me-2">
               <i class="ni ni-tv-2 text-primary text-sm opacity-10"></i>
             </div>
@@ -83,7 +81,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{{ route('ikan.index') }}">
+          <a class="nav-link" href="{{ route('pemilik.data_ikan') }}">
             <div class="icon icon-shape icon-sm text-center me-2">
               <i class="fas fa-fish text-info text-sm opacity-10"></i>
             </div>
@@ -170,7 +168,7 @@
     </div>
   </aside>
 
-  <main class="main-content position-relative border-radius-lg">
+  <main class="main-content position-relative border-radius-lg px-4 px-md-5">
     <!-- Navbar -->
     <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur" data-scroll="true">
       <div class="container-fluid py-1 px-3">
@@ -221,17 +219,21 @@
     const iconNavbarSidenav = document.getElementById('iconNavbarSidenav');
 
     if (iconNavbarSidenav) {
-      iconNavbarSidenav.addEventListener('click', () => {
+        iconNavbarSidenav.addEventListener('click', () => {
         if (sidenavMain.classList.contains('d-none')) {
-          sidenavMain.classList.remove('d-none');
-          sidenavMain.style.transform = 'translateX(0)';
+            sidenavMain.classList.remove('d-none');
+            sidenavMain.style.transform = 'translateX(0)';
+            sidenavMain.classList.add('d-block');
         } else {
-          sidenavMain.style.transform = 'translateX(-100%)';
-          setTimeout(() => sidenavMain.classList.add('d-none'), 300);
+            sidenavMain.style.transform = 'translateX(-100%)';
+            setTimeout(() => {
+            sidenavMain.classList.remove('d-block');
+            sidenavMain.classList.add('d-none');
+            }, 300);
         }
-      });
+        });
     }
-  </script>
+    </script>
   <script async defer src="https://buttons.github.io/buttons.js"></script>
 </body>
 </html>

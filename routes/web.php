@@ -15,16 +15,8 @@ Route::get('/', function () {
 
 // 3. Middleware auth untuk melindungi route di bawah
 Route::middleware('auth')->group(function () {
-
-
-    Route::get('/beranda-pemilik', function () {
-        return view('pemilik.beranda'); // pastikan view ini ada
-    });
-   // DASHBOARD sesuai role
-Route::get('/beranda-admin', [App\Http\Controllers\BerandaController::class, 'index'])->name('admin.beranda');
-
-
-
+   // ADMIN
+    Route::get('/beranda-admin', [App\Http\Controllers\BerandaController::class, 'index'])->name('admin.beranda');
     // CRUD hanya admin (bisa dibatasi pakai middleware role jika mau)
     Route::resource('/ikan', App\Http\Controllers\IkanController::class);
     Route::resource('/supplier', App\Http\Controllers\SupplierController::class);
@@ -55,9 +47,17 @@ Route::get('/beranda-admin', [App\Http\Controllers\BerandaController::class, 'in
     Route::get('/caribe', [App\Http\Controllers\BeliController::class, 'caribe']);
     Route::get('/carij', [App\Http\Controllers\JualController::class, 'carij']);
     Route::get('/cariju', [App\Http\Controllers\JualController::class, 'cariju']);
+
+    // 4. Pemilik
+    Route::get('/beranda-pemilik', function () {
+        return view('pemilik.beranda');
+    });
+    Route::get('/pemilik/data_ikan', [App\Http\Controllers\DataIkanController::class, 'index'])->name('pemilik.data_ikan');
 });
 
-// 4. Logout
+
+
+// 5. Logout
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/coba', function () {
     return 'Halaman coba berhasil dibuka!';

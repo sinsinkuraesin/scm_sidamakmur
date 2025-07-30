@@ -13,20 +13,6 @@
                     </div>
 
 
-                    {{-- Form pencarian kata --}}
-                    <form action="/cari" method="GET">
-                        @csrf
-                        <div class="input-group col-7 col-5 mb-2">
-                            <input type="text" name="kata" class="form-control bg-light border-1 small"
-                                   placeholder="Cari Data?" aria-label="Search" aria-describedby="basic-addon2"
-                                   style="border-color: #3f51b5;" required>
-                            <div class="input-group-append">
-                                <button class="btn btn-primary" type="submit" name="submit" value="Cari Data">
-                                    <i class="fas fa-search fa-sm"></i> Cari
-                                </button>
-                            </div>
-                        </div>
-                    </form>
 
                     {{-- Card Pencarian Stok Per Tanggal --}}
                     <div class="card-body">

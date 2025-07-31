@@ -59,7 +59,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/pemilik/pembelian', [App\Http\Controllers\PemilikPembelianController::class, 'index'])->name('pemilik.pembelian');
     Route::get('/pemilik/penjualan', [App\Http\Controllers\PemilikPenjualanController::class, 'index'])->name('pemilik.penjualan');
     Route::get('/pemilik/penjualan', [App\Http\Controllers\PemilikPenjualanController::class, 'index'])->name('pemilik.penjualan');
-Route::get('/pemilik/penjualan/invoice/{jual}', [App\Http\Controllers\JualController::class, 'invoice'])->name('penjualan.invoice');
+    Route::get('/pemilik/penjualan/invoice/{jual}', [App\Http\Controllers\JualController::class, 'invoice'])->name('penjualan.invoice');
+    Route::get('/pemilik/laporan/pembelian', [App\Http\Controllers\PemilikLaporanPembelianController::class, 'index'])->name('pemilik.lap_pembelian');
+    Route::get('/pemilik/laporan/pembelian/pdf', [App\Http\Controllers\PemilikLaporanPembelianController::class, 'cetakPDF'])->name('pemilik.lap_pembelian.pdf');
+    Route::get('/pemilik/laporan/penjualan', [App\Http\Controllers\PemilikLaporanPenjualanController::class, 'index'])->name('pemilik.lap_penjualan');
+    Route::get('/pemilik/laporan/penjualan/pdf', [App\Http\Controllers\PemilikLaporanPenjualanController::class, 'cetakPDF'])->name('pemilik.lap_penjualan.pdf');
+    Route::get('/pemilik/laporan/stok', [App\Http\Controllers\PemilikLaporanStokController::class, 'index'])->name('pemilik.lap_stok');
+    Route::get('/pemilik/laporan/stok/pdf', [App\Http\Controllers\PemilikLaporanStokController::class, 'cetakPDF'])->name('pemilik.lap_stok.pdf');
 
 });
 

@@ -74,7 +74,7 @@
 
 <style>
     thead.custom-header {
-        background: linear-gradient(90deg, #fc4a1a, #f7b733);
+        background: linear-gradient(90deg, #1d976c, #93f9b9);
         color: white;
     }
 

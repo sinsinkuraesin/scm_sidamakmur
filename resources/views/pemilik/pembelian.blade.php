@@ -31,7 +31,7 @@
                             <label for="sampai" class="form-label fw-bold">Sampai Tanggal</label>
                             <input type="date" name="sampai" id="sampai" class="form-control" value="{{ request('sampai') }}">
                         </div>
-                        <div class="col-md-4 d-flex align-items-end">
+                        <div class="col-md-4 mt-4 pt-1">
                             <button type="submit" class="btn btn-secondary">Filter</button>
                         </div>
                     </form>

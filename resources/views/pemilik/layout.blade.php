@@ -85,105 +85,109 @@
     <hr class="horizontal dark mt-0">
     <div class="collapse navbar-collapse w-auto" id="sidenav-collapse-main">
       <ul class="navbar-nav">
-        <li class="nav-item">
-          <a class="nav-link {{ Request::is('beranda-pemilik') ? 'active' : '' }}" href="{{ url('beranda-pemilik') }}">
-            <div class="icon icon-shape icon-sm text-center me-2">
-              <i class="ni ni-tv-2 text-primary text-sm opacity-10"></i>
-            </div>
-            <span class="nav-link-text ms-1">Beranda</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link {{ Request::is('pemilik/data_ikan*') ? 'active' : '' }}" href="{{ route('pemilik.data_ikan') }}">
-            <div class="icon icon-shape icon-sm text-center me-2">
-              <i class="fas fa-fish text-info text-sm opacity-10"></i>
-            </div>
-            <span class="nav-link-text ms-1">Data Ikan</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link {{ Request::is('pemilik/data_supplier*') ? 'active' : '' }}" href="{{ route('pemilik.data_supplier') }}">
-            <div class="icon icon-shape icon-sm text-center me-2">
-              <i class="ni ni-basket text-warning text-sm opacity-10"></i>
-            </div>
-            <span class="nav-link-text ms-1">Data Supplier</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link {{ Request::is('pasar*') ? 'active' : '' }}" href="{{ route('pasar.index') }}">
-          <a class="nav-link" href="{{ route('pemilik.data_pasar') }}">
-            <div class="icon icon-shape icon-sm text-center me-2">
-              <i class="ni ni-shop text-danger text-sm opacity-10"></i>
-            </div>
-            <span class="nav-link-text ms-1">Data Pasar</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link {{ Request::is('konsumen*') ? 'active' : '' }}" href="{{ route('konsumen.index') }}">
-          <a class="nav-link" href="{{ route('pemilik.data_konsumen') }}">
-            <div class="icon icon-shape icon-sm text-center me-2">
-              <i class="ni ni-single-02 text-success text-sm opacity-10"></i>
-            </div>
-            <span class="nav-link-text ms-1">Data Konsumen</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link {{ Request::is('beli*') ? 'active' : '' }}" href="{{ route('beli.index') }}">
-          <a class="nav-link" href="{{ route('pemilik.pembelian') }}">
-            <div class="icon icon-shape icon-sm text-center me-2">
-              <i class="ni ni-cart text-primary text-sm opacity-10"></i>
-            </div>
-            <span class="nav-link-text ms-1">Data Pembelian</span>
-          </a>
-        </li>
-        <li class="nav-item">
+  <li class="nav-item">
+    <a class="nav-link {{ Request::is('beranda-pemilik') ? 'active' : '' }}" href="{{ url('beranda-pemilik') }}">
+      <div class="icon icon-shape icon-sm text-center me-2">
+        <i class="ni ni-tv-2 text-primary text-sm opacity-10"></i>
+      </div>
+      <span class="nav-link-text ms-1">Beranda</span>
+    </a>
+  </li>
 
-          <a class="nav-link {{ Request::is('jual*') ? 'active' : '' }}" href="{{ route('jual.index') }}">
-          <a class="nav-link" href="">
-            <div class="icon icon-shape icon-sm text-center me-2">
-              <i class="ni ni-send text-info text-sm opacity-10"></i>
-            </div>
-            <span class="nav-link-text ms-1">Data Penjualan</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link {{ Request::is('laporan*') ? 'active' : '' }}" data-bs-toggle="collapse" href="#laporanMenu" role="button" aria-expanded="false" aria-controls="laporanMenu">
-            <div class="icon icon-shape icon-sm text-center me-2">
-              <i class="ni ni-collection text-warning text-sm opacity-10"></i>
-            </div>
-            <span class="nav-link-text ms-1">Laporan</span>
-          </a>
-          <div class="collapse" id="laporanMenu">
-            <ul class="nav flex-column ms-4">
-              <li class="nav-item">
-                <a class="nav-link {{ Request::is('laporan/pembelian') ? 'active' : '' }}" href="{{ route('laporan.pembelian') }}">
-                  <i class="fas fa-file-alt text-sm me-2"></i> Pembelian
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link {{ Request::is('laporan/penjualan') ? 'active' : '' }}" href="{{ route('laporan.penjualan') }}">
-                  <i class="fas fa-file-invoice-dollar text-sm me-2"></i> Penjualan
-                </a>
-              </li>
-            </ul>
-          </div>
-        </li>
+  <li class="nav-item">
+    <a class="nav-link {{ Request::is('pemilik/data_ikan*') ? 'active' : '' }}" href="{{ route('pemilik.data_ikan') }}">
+      <div class="icon icon-shape icon-sm text-center me-2">
+        <i class="fas fa-fish text-info text-sm opacity-10"></i>
+      </div>
+      <span class="nav-link-text ms-1">Data Ikan</span>
+    </a>
+  </li>
 
-        <li class="nav-item mt-3">
-          <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Account</h6>
+  <li class="nav-item">
+    <a class="nav-link {{ Request::is('pemilik/data_supplier*') ? 'active' : '' }}" href="{{ route('pemilik.data_supplier') }}">
+      <div class="icon icon-shape icon-sm text-center me-2">
+        <i class="ni ni-basket text-warning text-sm opacity-10"></i>
+      </div>
+      <span class="nav-link-text ms-1">Data Supplier</span>
+    </a>
+  </li>
+
+  <li class="nav-item">
+    <a class="nav-link {{ Request::is('pasar*') ? 'active' : '' }}" href="{{ route('pemilik.data_pasar') }}">
+      <div class="icon icon-shape icon-sm text-center me-2">
+        <i class="ni ni-shop text-danger text-sm opacity-10"></i>
+      </div>
+      <span class="nav-link-text ms-1">Data Pasar</span>
+    </a>
+  </li>
+
+  <li class="nav-item">
+    <a class="nav-link {{ Request::is('konsumen*') ? 'active' : '' }}" href="{{ route('pemilik.data_konsumen') }}">
+      <div class="icon icon-shape icon-sm text-center me-2">
+        <i class="ni ni-single-02 text-success text-sm opacity-10"></i>
+      </div>
+      <span class="nav-link-text ms-1">Data Konsumen</span>
+    </a>
+  </li>
+
+  <li class="nav-item">
+    <a class="nav-link {{ Request::is('beli*') ? 'active' : '' }}" href="{{ route('pemilik.pembelian') }}">
+      <div class="icon icon-shape icon-sm text-center me-2">
+        <i class="ni ni-cart text-primary text-sm opacity-10"></i>
+      </div>
+      <span class="nav-link-text ms-1">Data Pembelian</span>
+    </a>
+  </li>
+
+  <li class="nav-item">
+    <a class="nav-link {{ Request::is('jual*') ? 'active' : '' }}" href="">
+      <div class="icon icon-shape icon-sm text-center me-2">
+        <i class="ni ni-send text-info text-sm opacity-10"></i>
+      </div>
+      <span class="nav-link-text ms-1">Data Penjualan</span>
+    </a>
+  </li>
+
+  <li class="nav-item">
+    <a class="nav-link {{ Request::is('laporan*') ? 'active' : '' }}" data-bs-toggle="collapse" href="#laporanMenu" role="button" aria-expanded="false" aria-controls="laporanMenu">
+      <div class="icon icon-shape icon-sm text-center me-2">
+        <i class="ni ni-collection text-warning text-sm opacity-10"></i>
+      </div>
+      <span class="nav-link-text ms-1">Laporan</span>
+    </a>
+    <div class="collapse" id="laporanMenu">
+      <ul class="nav flex-column ms-4">
+        <li class="nav-item">
+          <a class="nav-link {{ Request::is('laporan/pembelian') ? 'active' : '' }}" href="">
+            <i class="fas fa-file-alt text-sm me-2"></i> Pembelian
+          </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-            <div class="icon icon-shape icon-sm text-center me-2">
-              <i class="ni ni-user-run text-danger text-sm opacity-10"></i>
-            </div>
-            <span class="nav-link-text ms-1">Logout</span>
+          <a class="nav-link {{ Request::is('laporan/penjualan') ? 'active' : '' }}" href="">
+            <i class="fas fa-file-invoice-dollar text-sm me-2"></i> Penjualan
           </a>
-          <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-            @csrf
-          </form>
         </li>
       </ul>
+    </div>
+  </li>
+
+  <li class="nav-item mt-3">
+    <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Account</h6>
+  </li>
+
+  <li class="nav-item">
+    <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+      <div class="icon icon-shape icon-sm text-center me-2">
+        <i class="ni ni-user-run text-danger text-sm opacity-10"></i>
+      </div>
+      <span class="nav-link-text ms-1">Logout</span>
+    </a>
+    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+      @csrf
+    </form>
+  </li>
+</ul>
+
     </div>
   </aside>
 

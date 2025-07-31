@@ -145,7 +145,7 @@
   </li>
 
   <li class="nav-item">
-    <a class="nav-link {{ Request::is('jual*') ? 'active' : '' }}" href="">
+    <a class="nav-link {{ Request::is('pemilik/penjualan*') ? 'active' : '' }}" href="{{ route('pemilik.penjualan') }}" href="">
       <div class="icon icon-shape icon-sm text-center me-2">
         <i class="ni ni-send text-info text-sm opacity-10"></i>
       </div>

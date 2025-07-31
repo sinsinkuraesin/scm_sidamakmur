@@ -57,6 +57,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/pemilik/data_pasar', [App\Http\Controllers\PemilikPasarController::class, 'index'])->name('pemilik.data_pasar');
     Route::get('/pemilik/data_konsumen', [App\Http\Controllers\PemilikKonsumenController::class, 'index'])->name('pemilik.data_konsumen');
     Route::get('/pemilik/pembelian', [App\Http\Controllers\PemilikPembelianController::class, 'index'])->name('pemilik.pembelian');
+    Route::get('/pemilik/penjualan', [App\Http\Controllers\PemilikPenjualanController::class, 'index'])->name('pemilik.penjualan');
+    Route::get('/pemilik/penjualan', [App\Http\Controllers\PemilikPenjualanController::class, 'index'])->name('pemilik.penjualan');
+Route::get('/pemilik/penjualan/invoice/{jual}', [App\Http\Controllers\JualController::class, 'invoice'])->name('penjualan.invoice');
 
 });
 

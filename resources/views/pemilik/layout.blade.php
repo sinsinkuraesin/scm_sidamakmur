@@ -111,6 +111,7 @@
         </li>
         <li class="nav-item">
           <a class="nav-link {{ Request::is('pasar*') ? 'active' : '' }}" href="{{ route('pasar.index') }}">
+          <a class="nav-link" href="{{ route('pemilik.data_pasar') }}">
             <div class="icon icon-shape icon-sm text-center me-2">
               <i class="ni ni-shop text-danger text-sm opacity-10"></i>
             </div>
@@ -119,6 +120,7 @@
         </li>
         <li class="nav-item">
           <a class="nav-link {{ Request::is('konsumen*') ? 'active' : '' }}" href="{{ route('konsumen.index') }}">
+          <a class="nav-link" href="{{ route('pemilik.data_konsumen') }}">
             <div class="icon icon-shape icon-sm text-center me-2">
               <i class="ni ni-single-02 text-success text-sm opacity-10"></i>
             </div>
@@ -127,6 +129,7 @@
         </li>
         <li class="nav-item">
           <a class="nav-link {{ Request::is('beli*') ? 'active' : '' }}" href="{{ route('beli.index') }}">
+          <a class="nav-link" href="{{ route('pemilik.pembelian') }}">
             <div class="icon icon-shape icon-sm text-center me-2">
               <i class="ni ni-cart text-primary text-sm opacity-10"></i>
             </div>
@@ -134,7 +137,9 @@
           </a>
         </li>
         <li class="nav-item">
+
           <a class="nav-link {{ Request::is('jual*') ? 'active' : '' }}" href="{{ route('jual.index') }}">
+          <a class="nav-link" href="">
             <div class="icon icon-shape icon-sm text-center me-2">
               <i class="ni ni-send text-info text-sm opacity-10"></i>
             </div>

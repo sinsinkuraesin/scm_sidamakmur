@@ -14,6 +14,7 @@
   <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
+
   <!-- CSS -->
   <link id="pagestyle" href="{{ asset('pemilik/css/argon-dashboard.css?v=2.0.4') }}" rel="stylesheet" />
 
@@ -22,6 +23,10 @@
       background: linear-gradient(to right, #e3f2fd, #e8f5e9);
       font-family: 'Poppins', sans-serif !important;
     }
+    .card-body {
+  font-family: 'Poppins', sans-serif !important;
+}
+
 
     .main-content {
       padding-top: 50px;
@@ -97,7 +102,7 @@
   <li class="nav-item">
     <a class="nav-link {{ Request::is('pemilik/data_ikan*') ? 'active' : '' }}" href="{{ route('pemilik.data_ikan') }}">
       <div class="icon icon-shape icon-sm text-center me-2">
-        <i class="fas fa-fish text-info text-sm opacity-10"></i>
+        <i class="fas fa-fish text-primary text-sm opacity-10"></i>
       </div>
       <span class="nav-link-text ms-1">Data Ikan</span>
     </a>
@@ -113,7 +118,7 @@
   </li>
 
   <li class="nav-item">
-    <a class="nav-link {{ Request::is('pasar*') ? 'active' : '' }}" href="{{ route('pemilik.data_pasar') }}">
+    <a class="nav-link {{ Request::is('pemilik/data_pasar*') ? 'active' : '' }}" href="{{ route('pemilik.data_pasar') }}">
       <div class="icon icon-shape icon-sm text-center me-2">
         <i class="ni ni-shop text-danger text-sm opacity-10"></i>
       </div>
@@ -122,7 +127,7 @@
   </li>
 
   <li class="nav-item">
-    <a class="nav-link {{ Request::is('konsumen*') ? 'active' : '' }}" href="{{ route('pemilik.data_konsumen') }}">
+    <a class="nav-link {{ Request::is('pemilik/data_konsumen*') ? 'active' : '' }}" href="{{ route('pemilik.data_konsumen') }}">
       <div class="icon icon-shape icon-sm text-center me-2">
         <i class="ni ni-single-02 text-success text-sm opacity-10"></i>
       </div>
@@ -131,7 +136,7 @@
   </li>
 
   <li class="nav-item">
-    <a class="nav-link {{ Request::is('beli*') ? 'active' : '' }}" href="{{ route('pemilik.pembelian') }}">
+    <a class="nav-link {{ Request::is('pemilik/pembelian*') ? 'active' : '' }}" href="{{ route('pemilik.pembelian') }}">
       <div class="icon icon-shape icon-sm text-center me-2">
         <i class="ni ni-cart text-primary text-sm opacity-10"></i>
       </div>

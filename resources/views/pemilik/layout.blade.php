@@ -154,7 +154,7 @@
   </li>
 
   <li class="nav-item">
-    <a class="nav-link {{ Request::is('laporan*') ? 'active' : '' }}" data-bs-toggle="collapse" href="#laporanMenu" role="button" aria-expanded="false" aria-controls="laporanMenu">
+    <a class="nav-link {{ Request::is('pemilik/laporan*') ? 'active' : '' }}" data-bs-toggle="collapse" href="#laporanMenu" role="button" aria-expanded="false" aria-controls="laporanMenu">
       <div class="icon icon-shape icon-sm text-center me-2">
         <i class="ni ni-collection text-warning text-sm opacity-10"></i>
       </div>
@@ -163,13 +163,18 @@
     <div class="collapse" id="laporanMenu">
       <ul class="nav flex-column ms-4">
         <li class="nav-item">
-          <a class="nav-link {{ Request::is('laporan/pembelian') ? 'active' : '' }}" href="">
+          <a class="nav-link {{ Request::is('laporan/pembelian') ? 'active' : '' }}" href="{{ route('pemilik.lap_pembelian') }}">
             <i class="fas fa-file-alt text-sm me-2"></i> Pembelian
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link {{ Request::is('laporan/penjualan') ? 'active' : '' }}" href="">
+          <a class="nav-link {{ Request::is('laporan/penjualan') ? 'active' : '' }}" href="{{ route('pemilik.lap_penjualan') }}">
             <i class="fas fa-file-invoice-dollar text-sm me-2"></i> Penjualan
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {{ Request::is('laporan/stok') ? 'active' : '' }}" href="{{ route('pemilik.lap_stok') }}">
+            <i class="fas fa-file-invoice-dollar text-sm me-2"></i> Stok
           </a>
         </li>
       </ul>

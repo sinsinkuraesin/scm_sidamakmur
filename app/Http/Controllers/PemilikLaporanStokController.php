@@ -31,7 +31,7 @@ class PemilikLaporanStokController extends Controller
 
         $laporanStok = $this->getStokData($tanggal, $jenisIkan);
 
-        $pdf = Pdf::loadView('pemilik.lap_stok_pdf', [
+        $pdf = Pdf::loadView('admin.laporan.persediaan_pdf', [
             'tanggal' => $tanggal,
             'laporanStok' => $laporanStok,
         ])->setPaper('a4', 'portrait');

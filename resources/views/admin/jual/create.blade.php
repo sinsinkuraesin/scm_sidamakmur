@@ -57,7 +57,7 @@
                                     <div class="col-md-1 text-center">✔</div>
                                     <div class="col-md-3">Jenis Ikan</div>
                                     <div class="col-md-2">Harga Jual</div>
-                                    <div class="col-md-3">Jumlah (Stok)</div>
+                                    <div class="col-md-3">Jumlah (Stok)/Kg</div>
                                     <div class="col-md-3">Total</div>
                                 </div>
                             </div>
@@ -88,7 +88,7 @@
                                             class="form-control jumlah"
                                             min="1"
                                             max="{{ $i->stok }}"
-                                            placeholder="{{ $stokKosong ? 'Stok kosong' : 'Stok tersedia: ' . $i->stok }}"
+                                            placeholder="{{ $stokKosong ? 'Stok kosong': 'Stok tersedia: ' . $i->stok }}"
                                             disabled>
                                     </div>
                                     <div class="col-md-3">

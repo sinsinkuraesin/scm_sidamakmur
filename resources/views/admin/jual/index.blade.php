@@ -60,7 +60,7 @@
                                 <th>Nama Konsumen</th>
                                 <th>Nama Pasar</th>
                                 <th>Tanggal Jual</th>
-                                <th>Jenis Ikan</th>
+                                <th>Jenis & Jumlah Ikan</th>
                                 <th>Harga /Kg</th>
                                 <th>Total Harga</th>
                                 <th>Aksi</th>

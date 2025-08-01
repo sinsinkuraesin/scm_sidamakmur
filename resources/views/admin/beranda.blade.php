@@ -74,7 +74,7 @@
         <div class="col-md-6 mb-4">
             <div class="card shadow-sm p-4">
                 <h5 class="mb-2"><b>🏪 Internal Supply Chain</b></h5>
-                <p class="text-muted mb-3">Stok ikan per hari (3 minggu terakhir)</p>
+                <p class="text-muted mb-3">Stok ikan per hari (1 minggu terakhir)</p>
                 <canvas id="internalChart" style="height: 200px !important;"></canvas>
             </div>
         </div>

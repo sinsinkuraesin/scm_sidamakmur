@@ -5,73 +5,67 @@
     <title>Laporan Pembelian</title>
     <style>
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #fff;
-            margin: 0;
-            padding: 30px;
-            color: #333;
+            font-family: 'Arial', sans-serif;
             font-size: 14px;
+            margin: 40px;
         }
 
         .laporan-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+            text-align: left;
+            margin-bottom: 20px;
         }
 
         .laporan-header img {
-            height: 60px;
+            width: 100px;
         }
 
         h1 {
-            font-size: 22px;
-            margin-top: 20px;
             text-align: center;
-        }
-
-        hr {
-            border: none;
-            height: 2px;
-            background-color: #3f51b5;
-            margin: 20px 0;
+            margin-bottom: 10px;
         }
 
         .section-title {
             font-weight: bold;
-            color: #3f51b5;
+            color: #2c3e50;
+            margin-top: 30px;
             margin-bottom: 10px;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 20px;
-            font-size: 14px;
+            margin-top: 10px;
+        }
+
+        table, th, td {
+            border: 1px solid #333;
         }
 
         th {
             background-color: #3f51b5;
             color: white;
             padding: 8px;
+            text-align: center;
         }
 
         td {
-            border: 1px solid #ccc;
             padding: 8px;
+            text-align: center;
         }
 
         .total-row {
             font-weight: bold;
+            background-color: #f1f1f1;
         }
 
         .signature {
+            margin-top: 80px;
             text-align: right;
-            margin-top: 40px;
         }
 
         .signature img {
-            height: 80px;
-            margin-bottom: 5px;
+            width: 120px;
+            margin-bottom: 10px;
         }
     </style>
 </head>
@@ -89,17 +83,12 @@
             $judul .= ' - Tanggal ' . Carbon::parse($tanggal)->translatedFormat('d F Y');
         }
 
-        $isPdf = request()->routeIs('laporan.pembelian.pdf');
-        $logoPath = $isPdf
-            ? 'file://' . public_path('images/logo.png')
-            : asset('images/logo.png');
-        $ttdPath = $isPdf
-            ? 'file://' . public_path('images/ttd.jpg')
-            : asset('images/ttd.jpg');
+        $logoPath = public_path('images/logo.png');
+        $ttdPath = public_path('images/ttd.jpg');
     @endphp
 
     <div class="laporan-header">
-        <img src="{{ $logoPath }}" alt="Logo">
+        <img src="file://{{ $logoPath }}" alt="Logo">
     </div>
 
     <h1>{{ $judul }}</h1>
@@ -132,13 +121,13 @@
                 </tr>
             @empty
                 <tr>
-                    <td colspan="7" style="text-align: center;">Tidak ada data</td>
+                    <td colspan="7">Tidak ada data</td>
                 </tr>
             @endforelse
         </tbody>
         <tfoot>
             <tr class="total-row">
-                <td colspan="6" style="text-align:right;">Total Pengeluaran</td>
+                <td colspan="6" style="text-align: right;">Total Pengeluaran</td>
                 <td>Rp {{ number_format($totalPengeluaran, 0, ',', '.') }}</td>
             </tr>
         </tfoot>
@@ -146,7 +135,7 @@
 
     <div class="signature">
         <p>Hormat Kami,</p>
-        <img src="{{ $ttdPath }}" alt="Tanda Tangan">
+        <img src="file://{{ $ttdPath }}" alt="Tanda Tangan">
         <p><strong>PD Sidamakmur</strong></p>
     </div>
 </body>

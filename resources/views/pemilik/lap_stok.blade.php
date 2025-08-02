@@ -28,8 +28,7 @@
                             <button type="submit" class="btn btn-primary me-2">Tampilkan</button>
 
                             @if(request()->has('tanggal'))
-                                <a href="{{ route('lap_stok.pdf', ['jenis_ikan' => request('jenis_ikan'), 'tanggal' => request('tanggal')]) }}"
-                                   target="_blank" class="btn btn-success">Cetak PDF</a>
+                                <a href="{{ route('pemilik.lap_stok.pdf', ['jenis_ikan' => request('jenis_ikan'), 'tanggal' => request('tanggal')]) }}" target="_blank" class="btn btn-success">Cetak PDF</a>
                             @endif
                         </div>
                     </form>

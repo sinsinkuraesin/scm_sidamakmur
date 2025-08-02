@@ -48,9 +48,9 @@
                                         <td>{{ $i + 1 }}</td>
                                         <td>{{ $konsumen->kd_konsumen }}</td>
                                         <td>{{ $konsumen->nama_konsumen }}</td>
-                                        <td>{{ $konsumen->no_tlp }}</td>
-                                        <td>{{ $konsumen->nama_pasar }}</td>
-                                        <td>{{ $konsumen->alamat }}</td>
+                                        <td class="text-justify-cell">{{ $konsumen->no_tlp }}</td>
+                                        <td class="text-justify-cell">{{ $konsumen->nama_pasar }}</td>
+                                        <td class="text-justify-cell">{{ $konsumen->alamat }}</td>
                                         <td>
                                             {{ \Carbon\Carbon::createFromFormat('H:i:s', $konsumen->jam_buka)->format('H:i') }}
                                             -

@@ -82,13 +82,15 @@
 
         $judul = 'Laporan Stok Persediaan Tanggal ' . Carbon::parse($tanggal)->translatedFormat('d F Y');
 
-        $isPdf = request()->routeIs('laporan.persediaan.pdf');
-        $logoPath = $isPdf ? 'file://' . public_path('images/logo.png') : asset('images/logo.png');
-        $ttdPath = $isPdf ? 'file://' . public_path('images/ttd.jpg') : asset('images/ttd.jpg');
+         // Penyesuaian path logo
+        $isPdf = request()->routeIs('laporan.penjualan.pdf');
+        $logoPath = $isPdf
+            ? 'file://' . public_path('images/logo.png')
+            : asset('images/logo.png');
     @endphp
 
     <div class="laporan-header">
-        <img src="{{ $logoPath }}" alt="Logo PD Sidamakmur">
+       <img src="file://{{ public_path('images/logo.png') }}" alt="Logo">
     </div>
 
     <h1>{{ $judul }}</h1>
@@ -146,9 +148,9 @@
     </table>
 
     <div class="signature">
-        <p>Hormat Kami,</p>
-        <img src="{{ $ttdPath }}" alt="Tanda Tangan">
-        <p><strong>PD Sidamakmur</strong></p>
-    </div>
+    <p>Hormat Kami,</p>
+    <img src="file://{{ public_path('images/ttd.jpg') }}" style="height: 80px;" alt="Tanda Tangan">
+    <p><strong>PD Sidamakmur</strong></p>
+</div>
 </body>
 </html>

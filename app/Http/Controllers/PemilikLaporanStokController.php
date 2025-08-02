@@ -10,6 +10,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 
 class PemilikLaporanStokController extends Controller
 {
+    // Halaman laporan stok
     public function index(Request $request)
     {
         $tanggal = $request->get('tanggal');
@@ -24,7 +25,8 @@ class PemilikLaporanStokController extends Controller
         return view('pemilik.lap_stok', compact('laporanStok', 'daftarJenisIkan', 'tanggal', 'jenisIkanFilter'));
     }
 
-    public function exportPdf(Request $request)
+    // Cetak PDF stok
+    public function cetakPDF(Request $request)
     {
         $tanggal = $request->input('tanggal', now()->format('Y-m-d'));
         $jenisIkan = $request->input('jenis_ikan', '');
@@ -39,6 +41,7 @@ class PemilikLaporanStokController extends Controller
         return $pdf->stream('laporan_stok_' . $tanggal . '.pdf');
     }
 
+    // Logika perhitungan stok harian
     private function getStokData($tanggal, $jenisIkan)
     {
         $daftarJenisIkan = Ikan::pluck('jenis_ikan');
@@ -73,9 +76,13 @@ class PemilikLaporanStokController extends Controller
         return $laporanStok;
     }
 
+    // Hitung stok sebelum tanggal yang dipilih
     private function hitungStokSebelumnya($idIkan, $tanggal)
     {
-        $masuk = Beli::where('jenis_ikan', $idIkan)->whereDate('tgl_beli', '<', $tanggal)->sum('jml_ikan');
+        $masuk = Beli::where('jenis_ikan', $idIkan)
+            ->whereDate('tgl_beli', '<', $tanggal)
+            ->sum('jml_ikan');
+
         $keluar = DetailJual::where('jenis_ikan', $idIkan)
             ->whereHas('jual', fn ($q) => $q->whereDate('tgl_jual', '<', $tanggal))
             ->sum('jml_ikan');

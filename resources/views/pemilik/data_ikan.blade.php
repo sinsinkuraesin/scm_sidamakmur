@@ -6,7 +6,7 @@
         <div class="col-12">
             <div class="card shadow-sm">
                 <div class="card-body">
-                    <h4 class="card-title">Kelola Data Ikan</h4>
+                    <h4 class="card-title">Data Ikan</h4>
 
                     {{-- Filter tanggal stok --}}
                     <form action="{{ route('pemilik.data_ikan') }}" method="GET" class="d-flex align-items-center mb-4">

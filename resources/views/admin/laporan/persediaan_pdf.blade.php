@@ -123,7 +123,7 @@
         </div>
 
         <div class="logo-kanan">
-            <img src="{{ $logoPath }}" alt="Logo">
+            <img src="file://{{ public_path('images/logo.png') }}" alt="Logo">
         </div>
 
         <div class="line"></div>

@@ -4,59 +4,82 @@
     <meta charset="UTF-8">
     <title>Laporan Penjualan</title>
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #fff;
+        html, body {
             margin: 0;
-            padding: 30px;
+            padding: 0;
+            background-color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             color: #333;
         }
 
-        .laporan-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+        .invoice-box {
+            background-color: white;
+            border-radius: 10px;
+            padding: 30px;
+            max-width: 800px;
+            margin: auto;
+            box-shadow: 0 0 10px rgba(0, 0, 0, .15);
+            position: relative;
         }
 
-        .laporan-header img {
+        .logo-kanan {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+        }
+
+        .logo-kanan img {
             height: 60px;
         }
 
-        h1 {
-            font-size: 22px;
-            margin-top: 20px;
+        .header-tengah {
             text-align: center;
+            margin-bottom: 5px;
         }
 
-        hr {
-            border: none;
-            height: 2px;
-            background-color: #3f51b5;
+        .header-tengah h2 {
+            margin: 0;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .header-tengah p {
+            margin: 2px 0;
+            font-size: 14px;
+        }
+
+        .line {
+            border-top: 2px solid #000;
             margin: 20px 0;
+        }
+
+        .invoice-header {
+            text-align: center;
         }
 
         .section-title {
             font-weight: bold;
             color: #3f51b5;
+            margin-top: 20px;
             margin-bottom: 10px;
         }
 
         table {
             width: 100%;
-            border-collapse: collapse;
             margin-bottom: 20px;
+            border-collapse: collapse;
             font-size: 14px;
+        }
+
+        th, td {
+            padding: 8px;
+            border: 1px solid #ccc;
+            text-align: left;
         }
 
         th {
             background-color: #3f51b5;
             color: white;
-            padding: 8px;
-        }
-
-        td {
-            border: 1px solid #ccc;
-            padding: 8px;
         }
 
         .total-row {
@@ -71,39 +94,48 @@
         .signature img {
             height: 80px;
             margin-bottom: 5px;
+        }
 
+        .footer-note {
+            text-align: center;
+            color: #888;
+            font-size: 12px;
+            margin-top: 30px;
         }
     </style>
 </head>
 <body>
-    @php
-        use Carbon\Carbon;
-        Carbon::setLocale('id');
+@php
+    use Carbon\Carbon;
+    Carbon::setLocale('id');
+    $judul = 'Laporan Penjualan';
+    if ($filter === 'bulan') {
+        $judul .= ' - Bulan ' . Carbon::parse($tanggal)->translatedFormat('F');
+    } elseif ($filter === 'tahun') {
+        $judul .= ' - Tahun ' . Carbon::parse($tanggal)->translatedFormat('Y');
+    } else {
+        $judul .= ' - Tanggal ' . Carbon::parse($tanggal)->translatedFormat('d F Y');
+    }
+    $isPdf = request()->routeIs('laporan.penjualan.pdf');
+    $logoPath = $isPdf ? public_path('images/logo.png') : asset('images/logo.png');
+@endphp
 
-        // Judul laporan berdasarkan filter
-        $judul = 'Laporan Penjualan';
-        if ($filter === 'bulan') {
-            $judul .= ' - Bulan ' . Carbon::parse($tanggal)->translatedFormat('F');
-        } elseif ($filter === 'tahun') {
-            $judul .= ' - Tahun ' . Carbon::parse($tanggal)->translatedFormat('Y');
-        } else {
-            $judul .= ' - Tanggal ' . Carbon::parse($tanggal)->translatedFormat('d F Y');
-        }
-
-        // Penyesuaian path logo
-        $isPdf = request()->routeIs('laporan.penjualan.pdf');
-        $logoPath = $isPdf
-            ? 'file://' . public_path('images/logo.png')
-            : asset('images/logo.png');
-    @endphp
-
-    <div class="laporan-header">
-       <img src="file://{{ public_path('images/logo.png') }}" alt="Logo">
-
+<div class="invoice-box">
+    <div class="invoice-header-top">
+        <div class="header-tengah">
+            <h2>PD. SIDAMAKMUR</h2>
+            <p>Blok. Kadutilu, Dukupuntang Cirebon - 45652</p>
+            <p>Telp. 085317889229</p>
+        </div>
+        <div class="logo-kanan">
+            <img src="file://{{ public_path('images/logo.png') }}" alt="Logo">
+        </div>
+        <div class="line"></div>
     </div>
 
-    <h1>{{ $judul }}</h1>
-    <hr>
+    <div class="invoice-header">
+        <h4 class="text-primary fw-bold">{{ $judul }}</h4>
+    </div>
 
     <div class="section-title">Detail Penjualan</div>
     <table>
@@ -152,11 +184,12 @@
     </table>
 
     <div class="signature">
-    <p>Hormat Kami,</p>
-    <img src="file://{{ public_path('images/ttd.jpg') }}" style="height: 80px;" alt="Tanda Tangan">
-    <p><strong>PD Sidamakmur</strong></p>
+        <p>Hormat Kami,</p>
+        <img src="file://{{ public_path('images/ttd.jpg') }}" alt="Tanda Tangan">
+        <p><strong>PD Sidamakmur</strong></p>
+    </div>
+
+    <p class="footer-note">Sistem Informasi Sidamakmur | ©2025</p>
 </div>
-
-
 </body>
 </html>

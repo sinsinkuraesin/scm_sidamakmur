@@ -4,47 +4,70 @@
     <meta charset="UTF-8">
     <title>Laporan Stok</title>
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #fff;
+        html, body {
             margin: 0;
-            padding: 30px;
+            padding: 0;
+            background-color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             color: #333;
         }
 
-        .laporan-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+        .invoice-box {
+            background-color: white;
+            border-radius: 10px;
+            padding: 30px;
+            max-width: 800px;
+            margin: auto;
+            box-shadow: 0 0 10px rgba(0, 0, 0, .15);
+            position: relative;
         }
 
-        .laporan-header img {
+        .logo-kanan {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+        }
+
+        .logo-kanan img {
             height: 60px;
         }
 
-        h1 {
-            font-size: 22px;
-            margin-top: 20px;
+        .header-tengah {
             text-align: center;
+            margin-bottom: 5px;
         }
 
-        hr {
-            border: none;
-            height: 2px;
-            background-color: #3f51b5;
-            margin: 20px 0;
+        .header-tengah h2 {
+            margin: 0;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .header-tengah p {
+            margin: 2px 0;
+            font-size: 14px;
+        }
+
+        .line {
+            border-top: 2px solid #000;
+            margin: 20px 0 20px 0;
+        }
+
+        .invoice-header {
+            text-align: center;
         }
 
         .section-title {
             font-weight: bold;
             color: #3f51b5;
+            margin-top: 20px;
             margin-bottom: 10px;
         }
 
         table {
             width: 100%;
-            border-collapse: collapse;
             margin-bottom: 20px;
+            border-collapse: collapse;
             font-size: 13px;
         }
 
@@ -73,6 +96,13 @@
             height: 80px;
             margin-bottom: 5px;
         }
+
+        .footer-note {
+            text-align: center;
+            color: #888;
+            font-size: 12px;
+            margin-top: 30px;
+        }
     </style>
 </head>
 <body>
@@ -81,76 +111,85 @@
         Carbon::setLocale('id');
 
         $judul = 'Laporan Stok Persediaan Tanggal ' . Carbon::parse($tanggal)->translatedFormat('d F Y');
-
-         // Penyesuaian path logo
-        $isPdf = request()->routeIs('laporan.penjualan.pdf');
-        $logoPath = $isPdf
-            ? 'file://' . public_path('images/logo.png')
-            : asset('images/logo.png');
+        $isPdf = request()->routeIs('laporan.stok.pdf');
+        $logoPath = $isPdf ? public_path('images/logo.png') : asset('images/logo.png');
     @endphp
 
-    <div class="laporan-header">
-       <img src="file://{{ public_path('images/logo.png') }}" alt="Logo">
-    </div>
+    <div class="invoice-box">
+        <div class="header-tengah">
+            <h2>PD. SIDAMAKMUR</h2>
+            <p>Blok. Kadutilu, Dukupuntang Cirebon - 45652</p>
+            <p>Telp. 085317889229</p>
+        </div>
 
-    <h1>{{ $judul }}</h1>
-    <hr>
+        <div class="logo-kanan">
+            <img src="{{ $logoPath }}" alt="Logo">
+        </div>
 
-    <div class="section-title">Rekapitulasi Stok</div>
-    <table>
-        <thead>
-            <tr>
-                <th>No</th>
-                <th>Tanggal</th>
-                <th>Jenis Ikan</th>
-                <th>Stok Awal (Kg)</th>
-                <th>Stok Masuk (Kg)</th>
-                <th>Stok Keluar (Kg)</th>
-                <th>Stok Akhir (Kg)</th>
-            </tr>
-        </thead>
-        <tbody>
-            @php
-                $totalMasuk = 0;
-                $totalKeluar = 0;
-                $totalAkhir = 0;
-            @endphp
+        <div class="line"></div>
 
-            @forelse($laporanStok as $i => $item)
+        <div class="invoice-header">
+            <h4 class="text-primary fw-bold">{{ $judul }}</h4>
+        </div>
+
+        <div class="section-title">Rekapitulasi Stok</div>
+        <table>
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Tanggal</th>
+                    <th>Jenis Ikan</th>
+                    <th>Stok Awal (Kg)</th>
+                    <th>Stok Masuk (Kg)</th>
+                    <th>Stok Keluar (Kg)</th>
+                    <th>Stok Akhir (Kg)</th>
+                </tr>
+            </thead>
+            <tbody>
                 @php
-                    $totalMasuk += $item['masuk'];
-                    $totalKeluar += $item['keluar'];
-                    $totalAkhir += $item['stok_akhir'];
+                    $totalMasuk = 0;
+                    $totalKeluar = 0;
+                    $totalAkhir = 0;
                 @endphp
-                <tr>
-                    <td>{{ $i + 1 }}</td>
-                    <td>{{ \Carbon\Carbon::parse($item['tanggal'])->format('d-m-Y') }}</td>
-                    <td>{{ $item['jenis_ikan'] }}</td>
-                    <td>{{ number_format($item['stok_awal']) }}Kg</td>
-                    <td>{{ number_format($item['masuk'] ) }}Kg</td>
-                    <td>{{ number_format($item['keluar'] ) }}Kg</td>
-                    <td>{{ number_format($item['stok_akhir'] ) }}Kg</td>
-                </tr>
-            @empty
-                <tr>
-                    <td colspan="7" style="text-align: center;">Tidak ada data tersedia</td>
-                </tr>
-            @endforelse
-        </tbody>
-        <tfoot>
-            <tr class="total-row">
-                <td colspan="4" style="text-align: right;">Total</td>
-                <td>{{ number_format($totalMasuk) }}Kg</td>
-                <td>{{ number_format($totalKeluar) }}Kg</td>
-                <td>{{ number_format($totalAkhir) }}Kg</td>
-            </tr>
-        </tfoot>
-    </table>
 
-    <div class="signature">
-    <p>Hormat Kami,</p>
-    <img src="file://{{ public_path('images/ttd.jpg') }}" style="height: 80px;" alt="Tanda Tangan">
-    <p><strong>PD Sidamakmur</strong></p>
-</div>
+                @forelse($laporanStok as $i => $item)
+                    @php
+                        $totalMasuk += $item['masuk'];
+                        $totalKeluar += $item['keluar'];
+                        $totalAkhir += $item['stok_akhir'];
+                    @endphp
+                    <tr>
+                        <td>{{ $i + 1 }}</td>
+                        <td>{{ \Carbon\Carbon::parse($item['tanggal'])->format('d-m-Y') }}</td>
+                        <td>{{ $item['jenis_ikan'] }}</td>
+                        <td>{{ number_format($item['stok_awal']) }}Kg</td>
+                        <td>{{ number_format($item['masuk']) }}Kg</td>
+                        <td>{{ number_format($item['keluar']) }}Kg</td>
+                        <td>{{ number_format($item['stok_akhir']) }}Kg</td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="7" style="text-align: center;">Tidak ada data tersedia</td>
+                    </tr>
+                @endforelse
+            </tbody>
+            <tfoot>
+                <tr class="total-row">
+                    <td colspan="4" style="text-align: right;">Total</td>
+                    <td>{{ number_format($totalMasuk) }}Kg</td>
+                    <td>{{ number_format($totalKeluar) }}Kg</td>
+                    <td>{{ number_format($totalAkhir) }}Kg</td>
+                </tr>
+            </tfoot>
+        </table>
+
+        <div class="signature">
+            <p>Hormat Kami,</p>
+            <img src="file://{{ public_path('images/ttd.jpg') }}" alt="Tanda Tangan">
+            <p><strong>PD Sidamakmur</strong></p>
+        </div>
+
+        <p class="footer-note">Sistem Informasi Sidamakmur | ©2025</p>
+    </div>
 </body>
 </html>

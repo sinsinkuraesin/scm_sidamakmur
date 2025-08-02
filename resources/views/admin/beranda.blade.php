@@ -9,53 +9,105 @@
     </div>
 
     <!-- Gambar Siklus SCM -->
-    <div class="mb-5 text-center">
-        <h4 class="font-weight-bold mb-4">Siklus Supply Chain Management</h4>
-        <div class="d-flex justify-content-center align-items-center flex-wrap">
-            <div class="scm-box">
-                <div><em>Upstream</em></div>
-                <small>(pengadaan dari berbagai supplier)</small>
-            </div>
-            <div class="scm-arrow">→</div>
-            <div class="scm-box">
-                <div><em>Internal supply chain</em></div>
-                <small>(Persedian atau pencatatan stok)</small>
-            </div>
-            <div class="scm-arrow">→</div>
-            <div class="scm-box">
-                <div><em>Downstream</em></div>
-                <small>(distribusi dan penjualan kepada konsumen)</small>
+        <div class="mb-5 text-center">
+            <h4 class="font-weight-bold mb-4">Siklus Supply Chain Management</h4>
+            <div class="d-flex justify-content-center align-items-center flex-wrap">
+                <!-- Upstream -->
+                <div class="scm-box text-start" tabindex="0">
+                    <div class="scm-title"><em>Upstream</em></div>
+                    <ul class="scm-list">
+                        <li>Perencanaan kebutuhan</li>
+                        <li>Pemilihan pemasok</li>
+                        <li>Pengadaan bahan baku</li>
+                    </ul>
+                </div>
+
+                <!-- Panah -->
+                <div class="scm-arrow-wrapper">
+                    <span class="scm-arrow">→</span>
+                </div>
+
+                <!-- Internal -->
+                <div class="scm-box text-start" tabindex="0">
+                    <div class="scm-title"><em>Internal Supply Chain</em></div>
+                    <ul class="scm-list">
+                        <li>Pengelolaan persediaan</li>
+                        <li>Perencanaan produksi</li>
+                        <li>Penyimpanan dan kontrol kualitas</li>
+                    </ul>
+                </div>
+
+                <!-- Panah -->
+                <div class="scm-arrow-wrapper">
+                    <span class="scm-arrow">→</span>
+                </div>
+
+                <!-- Downstream -->
+                <div class="scm-box text-start" tabindex="0">
+                    <div class="scm-title"><em>Downstream</em></div>
+                    <ul class="scm-list">
+                        <li>Grosir</li>
+                        <li>Retail</li>
+                        <li>Konsumen akhir</li>
+                    </ul>
+                </div>
             </div>
         </div>
-    </div>
 
     <style>
-        .scm-box {
-            background-color: #e3f2fd;
-            border: 2px solid #90caf9;
-            border-radius: 10px;
-            padding: 15px 20px;
-            width: 220px;
-            margin: 10px;
-            text-align: center;
-            font-weight: bold;
-            color: #0d47a1;
-            box-shadow: 2px 2px 8px rgba(0,0,0,0.1);
+    .scm-box {
+        background-color: #e8f4fe;
+        border: 2px solid #bcdff9;
+        border-radius: 10px;
+        padding: 20px;
+        width: 260px;
+        min-height: 200px;
+        box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.05);
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        transition: all 0.2s ease;
+        margin: 10px;
+    }
+    .scm-box:active {
+        transform: scale(1.03);
+        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+        border-color: #90c8f0;
+    }
+    .scm-title {
+        font-weight: bold;
+        color: #0d6efd;
+        margin-bottom: 10px;
+        font-size: 1.1rem;
+    }
+    .scm-list {
+        list-style-type: disc;
+        padding-left: 20px;
+        margin: 0;
+    }
+    .scm-list li {
+        text-align: justify;
+        margin-bottom: 5px;
+        color: #0d3d80;
+        font-size: 0.95rem;
+    }
+    .scm-arrow-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 10px;
+    }
+
+    .scm-arrow {
+        font-size: 1rem;
+        color: #0d6efd;
+        line-height: 1;
+    }
+
+    @media (max-width: 200px) {
+        .d-flex.flex-wrap .scm-arrow {
+            display: none;
         }
-        .scm-arrow {
-            font-size: 2rem;
-            margin: 0 10px;
-            color: #1976d2;
-        }
-        .scm-box em {
-            font-style: italic;
-            font-weight: bold;
-            font-size: 1.1rem;
-        }
-        @media (max-width: 768px) {
-            .d-flex.flex-wrap .scm-arrow {
-                display: none;
-            }
         }
     </style>
 

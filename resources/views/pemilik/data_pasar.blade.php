@@ -30,33 +30,34 @@
 
                     {{-- Tabel Data --}}
                     <div class="table-responsive mt-4">
-                        <table class="table table-hover table-bordered">
-                            <thead class="custom-header text-center">
-                                <tr>
-                                    <th>No</th>
-                                    <th>Kode Pasar</th>
-                                    <th>Nama Pasar</th>
-                                    <th>Alamat</th>
-                                    <th>Jam Operasional</th>
-                                </tr>
-                            </thead>
-                            <tbody class="text-center align-middle">
-                                @foreach ($pasars as $i => $pasar)
-                                    <tr>
-                                        <td>{{ $i + 1 }}</td>
-                                        <td>{{ $pasar->kd_pasar }}</td>
-                                        <td>{{ $pasar->nama_pasar }}</td>
-                                        <td>{{ $pasar->alamat }}</td>
-                                        <td>
-                                            {{ \Carbon\Carbon::createFromFormat('H:i:s', $pasar->jam_buka)->format('H:i') }}
-                                            -
-                                            {{ \Carbon\Carbon::createFromFormat('H:i:s', $pasar->jam_tutup)->format('H:i') }} WIB
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
+    <table class="table table-hover table-bordered">
+        <thead class="custom-header text-center">
+            <tr>
+                <th>No</th>
+                <th>Kode Pasar</th>
+                <th>Nama Pasar</th>
+                <th>Alamat</th>
+                <th>Jam Operasional</th>
+            </tr>
+        </thead>
+        <tbody class="text-center align-middle">
+            @foreach ($pasars as $i => $pasar)
+                <tr>
+                    <td>{{ $i + 1 }}</td>
+                    <td>{{ $pasar->kd_pasar }}</td>
+                    <td class="text-justify-cell">{{ $pasar->nama_pasar }}</td>
+                    <td class="text-justify-cell">{{ $pasar->alamat }}</td>
+                    <td>
+                        {{ \Carbon\Carbon::createFromFormat('H:i:s', $pasar->jam_buka)->format('H:i') }}
+                        -
+                        {{ \Carbon\Carbon::createFromFormat('H:i:s', $pasar->jam_tutup)->format('H:i') }} WIB
+                    </td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
+</div>
+
 
                 </div>
             </div>

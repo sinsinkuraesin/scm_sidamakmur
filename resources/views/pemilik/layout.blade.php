@@ -24,10 +24,12 @@
       font-family: 'Poppins', sans-serif !important;
     }
     .card-body {
-  font-family: 'Poppins', sans-serif !important;
+        font-family: 'Poppins', sans-serif !important;
+
 }
-
-
+    .text-justify-cell {
+        text-align: justify;
+    }
     .main-content {
       padding-top: 50px;
       padding-left: 20px;

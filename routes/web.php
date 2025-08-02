@@ -49,9 +49,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/cariju', [App\Http\Controllers\JualController::class, 'cariju']);
 
     // 4. Pemilik
-    Route::get('/beranda-pemilik', function () {
-        return view('pemilik.beranda');
-    });
+    Route::get('/beranda-pemilik', [App\Http\Controllers\PemilikBerandaController::class, 'index'])->name('pemilik.beranda');
+
     Route::get('/pemilik/data_ikan', [App\Http\Controllers\DataIkanController::class, 'index'])->name('pemilik.data_ikan');
     Route::get('/pemilik/data_supplier', [App\Http\Controllers\PemilikSupplierController::class, 'index'])->name('pemilik.data_supplier');
     Route::get('/pemilik/data_pasar', [App\Http\Controllers\PemilikPasarController::class, 'index'])->name('pemilik.data_pasar');

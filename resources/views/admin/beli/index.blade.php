@@ -5,7 +5,7 @@
             <div class="col-lg-12 stretch-card">
                 <div class="card">
                     <div class="card-body">
-                        <h4 class="card-title">Transaksi Pembelian</h4>
+                        <h4 class="card-title">Data Pembelian PD. Sidamakmur</h4>
                         <div class="float end">
                             <a class="btn btn-primary mb-3 ml-3" href="{{ route('beli.create') }}">Tambah Data Pembelian</a>
                         </div>
@@ -51,8 +51,8 @@
                                     <th>Nama Supplier</th>
                                     <th>Jenis Ikan</th>
                                     <th>Tanggal Beli</th>
-                                    <th>Jumlah</th>
-                                    <th>Harga Satuan</th>
+                                    <th>Jumlah Ikan</th>
+                                    <th>Harga/Kg</th>
                                     <th>Total Harga</th>
                                     <th>Status Pembayaran</th>
                                     <th>Action</th>

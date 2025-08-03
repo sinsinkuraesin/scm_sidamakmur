@@ -6,12 +6,11 @@
         <div class="col-lg-12 stretch-card">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="card-title">Laporan Penjualan</h4>
+                    <h4 class="card-title">Laporan Penjualan PD. Sidamakmur</h4>
 
                     <form method="GET" action="{{ route('laporan.penjualan') }}" class="form-inline mb-4">
                         <div class="form-group mr-2">
                             <select name="filter" class="form-control" required>
-                                <option value="jenis_ikan" {{ $filter == 'jenis_ikan' ? 'selected' : '' }}>Jenis Ikan</option>
                                 <option value="hari" {{ $filter == 'hari' ? 'selected' : '' }}>Harian</option>
                                 <option value="bulan" {{ $filter == 'bulan' ? 'selected' : '' }}>Bulanan</option>
                                 <option value="tahun" {{ $filter == 'tahun' ? 'selected' : '' }}>Tahunan</option>
@@ -35,7 +34,7 @@
                                     <th>Nama Konsumen</th>
                                     <th>Jenis Ikan</th>
                                     <th>Jumlah Ikan</th>
-                                    <th>Harga Satuan/Kg</th>
+                                    <th>Harga/Kg</th>
                                     <th>Total Harga</th>
                                 </tr>
                             </thead>

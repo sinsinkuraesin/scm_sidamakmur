@@ -13,7 +13,11 @@ class PemilikSupplierController extends Controller
 
         $suppliers = \App\Models\Supplier::when($kata, function ($query) use ($kata) {
                 $query->where('nm_supplier', 'LIKE', "%$kata%")
-                    ->orWhere('kd_supplier', 'LIKE', "%$kata%");
+                    ->orWhere('kd_supplier', 'LIKE', "%$kata%")
+                    ->orWhereHas('ikan', function ($q) use ($kata) {
+                        $q->where('jenis_ikan', 'like', "%$kata%");
+                    })
+                    ->orWhere('alamat', 'LIKE', "%$kata%");
             })
             ->get();
 

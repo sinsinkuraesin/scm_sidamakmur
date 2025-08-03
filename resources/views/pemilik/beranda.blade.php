@@ -156,9 +156,8 @@
             <div class="scm-box text-start">
                 <div class="scm-title"><em>Downstream</em></div>
                 <ul class="scm-list">
-                    <li>Grosir</li>
-                    <li>Retail</li>
-                    <li>Konsumen akhir</li>
+                    <li>Pengiriman</li>
+                    <li>Retail (konsumen akhir)</li>
                 </ul>
             </div>
         </div>

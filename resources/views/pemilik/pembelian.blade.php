@@ -79,7 +79,7 @@
                                             @endif
                                         </td>
                                         <td>
-                                            <a href="{{ route('beli.invoice', $beli->id) }}" class="btn btn-info btn-sm" target="_blank">Lihat</a>
+                                            <a href="{{ route('beli.invoice', $beli->id) }}" class="btn btn-info btn-sm mt-3" target="_blank">Cetak</a>
                                         </td>
                                     </tr>
                                 @empty

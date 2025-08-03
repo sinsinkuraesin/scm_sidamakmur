@@ -94,7 +94,7 @@
       <ul class="navbar-nav">
   <li class="nav-item">
     <a class="nav-link {{ Request::is('beranda-pemilik') ? 'active' : '' }}" href="{{ url('beranda-pemilik') }}">
-      <div class="icon icon-shape icon-sm text-center me-2">
+      <div class="icon icon-shape icon-sm text-center me-2 mb-2">
         <i class="ni ni-tv-2 text-primary text-sm opacity-10"></i>
       </div>
       <span class="nav-link-text ms-1">Beranda</span>
@@ -103,7 +103,7 @@
 
   <li class="nav-item">
     <a class="nav-link {{ Request::is('pemilik/data_ikan*') ? 'active' : '' }}" href="{{ route('pemilik.data_ikan') }}">
-      <div class="icon icon-shape icon-sm text-center me-2">
+      <div class="icon icon-shape icon-sm text-center me-2 mb-3">
         <i class="fas fa-fish text-primary text-sm opacity-10"></i>
       </div>
       <span class="nav-link-text ms-1">Data Ikan</span>
@@ -112,7 +112,7 @@
 
   <li class="nav-item">
     <a class="nav-link {{ Request::is('pemilik/data_supplier*') ? 'active' : '' }}" href="{{ route('pemilik.data_supplier') }}">
-      <div class="icon icon-shape icon-sm text-center me-2">
+      <div class="icon icon-shape icon-sm text-center me-2 mb-2">
         <i class="ni ni-basket text-warning text-sm opacity-10"></i>
       </div>
       <span class="nav-link-text ms-1">Data Supplier</span>
@@ -121,7 +121,7 @@
 
   <li class="nav-item">
     <a class="nav-link {{ Request::is('pemilik/data_pasar*') ? 'active' : '' }}" href="{{ route('pemilik.data_pasar') }}">
-      <div class="icon icon-shape icon-sm text-center me-2">
+      <div class="icon icon-shape icon-sm text-center me-2 mb-2">
         <i class="ni ni-shop text-danger text-sm opacity-10"></i>
       </div>
       <span class="nav-link-text ms-1">Data Pasar</span>
@@ -130,7 +130,7 @@
 
   <li class="nav-item">
     <a class="nav-link {{ Request::is('pemilik/data_konsumen*') ? 'active' : '' }}" href="{{ route('pemilik.data_konsumen') }}">
-      <div class="icon icon-shape icon-sm text-center me-2">
+      <div class="icon icon-shape icon-sm text-center me-2 mb-2">
         <i class="ni ni-single-02 text-success text-sm opacity-10"></i>
       </div>
       <span class="nav-link-text ms-1">Data Konsumen</span>
@@ -139,7 +139,7 @@
 
   <li class="nav-item">
     <a class="nav-link {{ Request::is('pemilik/pembelian*') ? 'active' : '' }}" href="{{ route('pemilik.pembelian') }}">
-      <div class="icon icon-shape icon-sm text-center me-2">
+      <div class="icon icon-shape icon-sm text-center me-2 mb-2">
         <i class="ni ni-cart text-primary text-sm opacity-10"></i>
       </div>
       <span class="nav-link-text ms-1">Data Pembelian</span>
@@ -148,7 +148,7 @@
 
   <li class="nav-item">
     <a class="nav-link {{ Request::is('pemilik/penjualan*') ? 'active' : '' }}" href="{{ route('pemilik.penjualan') }}" href="">
-      <div class="icon icon-shape icon-sm text-center me-2">
+      <div class="icon icon-shape icon-sm text-center me-2 mb-2">
         <i class="ni ni-send text-info text-sm opacity-10"></i>
       </div>
       <span class="nav-link-text ms-1">Data Penjualan</span>
@@ -157,7 +157,7 @@
 
   <li class="nav-item">
     <a class="nav-link {{ Request::is('pemilik/laporan*') ? 'active' : '' }}" data-bs-toggle="collapse" href="#laporanMenu" role="button" aria-expanded="false" aria-controls="laporanMenu">
-      <div class="icon icon-shape icon-sm text-center me-2">
+      <div class="icon icon-shape icon-sm text-center me-2 mb-2">
         <i class="ni ni-collection text-warning text-sm opacity-10"></i>
       </div>
       <span class="nav-link-text ms-1">Laporan</span>

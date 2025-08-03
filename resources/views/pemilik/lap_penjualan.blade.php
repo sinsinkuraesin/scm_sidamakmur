@@ -36,9 +36,9 @@
                                     <th>Tanggal</th>
                                     <th>Konsumen</th>
                                     <th>Jenis Ikan</th>
-                                    <th>Jumlah</th>
+                                    <th>Jumlah Ikan (Kg)</th>
                                     <th>Harga/Kg</th>
-                                    <th>Total</th>
+                                    <th>Total Harga</th>
                                 </tr>
                             </thead>
                             <tbody class="text-center">
@@ -64,10 +64,6 @@
                                 <tr>
                                     <td colspan="6" class="text-end fw-bold">Total Pendapatan</td>
                                     <td class="fw-bold">Rp {{ number_format($total, 0, ',', '.') }}</td>
-                                </tr>
-                                <tr>
-                                    <td colspan="6" class="text-end fw-bold">Total Jumlah Ikan Terjual</td>
-                                    <td class="fw-bold">{{ number_format($total_kg, 2, ',', '.') }} Kg</td>
                                 </tr>
                             </tfoot>
                         </table>

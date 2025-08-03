@@ -36,9 +36,9 @@
                                     <th>Tanggal</th>
                                     <th>Kode Supplier</th>
                                     <th>Jenis Ikan</th>
-                                    <th>Jumlah</th>
+                                    <th>Jumlah Ikan (Kg)</th>
                                     <th>Harga/Kg</th>
-                                    <th>Total</th>
+                                    <th>Total Harga</th>
                                 </tr>
                             </thead>
                             <tbody class="text-center">

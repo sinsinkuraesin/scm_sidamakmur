@@ -145,7 +145,7 @@
                 <th>Tanggal</th>
                 <th>Nama Konsumen</th>
                 <th>Jenis Ikan</th>
-                <th>Jumlah Ikan</th>
+                <th>Jumlah Ikan (Kg)</th>
                 <th>Total Harga</th>
             </tr>
         </thead>

@@ -199,7 +199,7 @@
             <tr>
                 <th>Jenis Ikan</th>
                 <th>Harga / Kg</th>
-                <th>Jumlah (Kg)</th>
+                <th>Jumlah Ikan(Kg)</th>
                 <th>Total Harga</th>
             </tr>
         </thead>

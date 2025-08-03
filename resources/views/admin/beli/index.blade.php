@@ -51,7 +51,7 @@
                                     <th>Nama Supplier</th>
                                     <th>Jenis Ikan</th>
                                     <th>Tanggal Beli</th>
-                                    <th>Jumlah Ikan</th>
+                                    <th>Jumlah Ikan (Kg)</th>
                                     <th>Harga/Kg</th>
                                     <th>Total Harga</th>
                                     <th>Status Pembayaran</th>

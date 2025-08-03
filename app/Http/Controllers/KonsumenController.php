@@ -24,7 +24,26 @@ class KonsumenController extends Controller
         return view('admin.konsumen.index', compact('konsumens'))->with('i', (request()->input('page', 1) - 1) * 20);
     }
 
-    public function create()
+    public function carik(Request $request)
+    {
+        $kata = $request->input('kata');
+
+        $konsumens = DB::table('tbl_konsumen')
+            ->join('tbl_pasar', 'tbl_pasar.id', '=', 'tbl_konsumen.nama_pasar')
+            ->where(function ($query) use ($kata) {
+                $query->where('tbl_konsumen.kd_konsumen', 'LIKE', "%$kata%")
+                    ->orWhere('tbl_konsumen.nama_konsumen', 'LIKE', "%$kata%")
+                    ->orWhere('tbl_konsumen.no_tlp', 'LIKE', "%$kata%")
+                    ->orWhere('tbl_konsumen.alamat', 'LIKE', "%$kata%")
+                    ->orWhere('tbl_pasar.nama_pasar', 'LIKE', "%$kata%");
+            })
+            ->select('tbl_konsumen.*', 'tbl_pasar.nama_pasar as nama_pasar')
+            ->get();
+
+        return view('admin.konsumen.index', compact('konsumens'))
+            ->with('i', (request()->input('page', 1) - 1) * 20);
+    }
+        public function create()
     {
         $pasar = DB::table('tbl_pasar')->get();
         return view('admin.konsumen.create', compact('pasar'));

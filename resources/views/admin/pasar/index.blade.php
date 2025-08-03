@@ -6,7 +6,7 @@
             <div class="col-lg-12 stretch-card">
                 <div class="card">
                     <div class="card-body">
-                        <h4 class="card-title">Data Pasar</h4>
+                        <h4 class="card-title">Data Pasar PD. Sidamakmur</h4>
                         <div class="float end">
                             <a class="btn btn-primary mb-3 ml-3"  href="{{ route('pasar.create') }}">Tambah Data Pasar</a>
                         </div>
@@ -24,6 +24,7 @@
                                 </div>
                             </div>
                         </form>
+
                         @if ($message = Session::get('success'))
                                     <div class="alert alert-primary">
                                         <p>{{ $message }}</p>

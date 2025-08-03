@@ -42,6 +42,7 @@ Route::middleware('auth')->group(function () {
     // Pencarian
     Route::get('/cari', [App\Http\Controllers\IkanController::class, 'cari']);
     Route::get('/carisp', [App\Http\Controllers\SupplierController::class, 'carisp']);
+    Route::get('/carips', [App\Http\Controllers\PasarController::class, 'carips']);
     Route::get('/carik', [App\Http\Controllers\KonsumenController::class, 'carik']);
     Route::get('/carib', [App\Http\Controllers\BeliController::class, 'carib']);
     Route::get('/caribe', [App\Http\Controllers\BeliController::class, 'caribe']);

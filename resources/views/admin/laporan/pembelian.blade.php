@@ -30,7 +30,7 @@
                                     <th>Tanggal</th>
                                     <th>Kode Supplierr</th>
                                     <th>Jenis Ikan</th>
-                                    <th>Jumlah Ikan</th>
+                                    <th>Jumlah Ikan (Kg)</th>
                                     <th>Harga/Kg</th>
                                     <th>Total Harga</th>
                                 </tr>

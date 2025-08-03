@@ -62,13 +62,13 @@
         $laporanAktif = Request::is('laporan/pembelian') || Request::is('laporan/penjualan');
       @endphp
       <ul class="nav">
-        <li class="nav-item"><a class="nav-link" href="{{ url('beranda-admin') }}"><i class="icon-grid menu-icon"></i><span class="menu-title">Dashboard</span></a></li>
-        <li class="nav-item"><a class="nav-link" href="{{ route('ikan.index') }}"><i class="icon-layout menu-icon"></i><span class="menu-title">Data Ikan</span></a></li>
-        <li class="nav-item"><a class="nav-link" href="{{ route('supplier.index') }}"><i class="icon-columns menu-icon"></i><span class="menu-title">Data Supplier</span></a></li>
-        <li class="nav-item"><a class="nav-link" href="{{ route('pasar.index') }}"><i class="icon-bar-graph menu-icon"></i><span class="menu-title">Data Pasar</span></a></li>
-        <li class="nav-item"><a class="nav-link" href="{{ route('konsumen.index') }}"><i class="ti-user menu-icon"></i><span class="menu-title">Data Konsumen</span></a></li>
-        <li class="nav-item"><a class="nav-link" href="{{ route('beli.index') }}"><i class="icon-grid-2 menu-icon"></i><span class="menu-title">Data Pembelian</span></a></li>
-        <li class="nav-item"><a class="nav-link" href="{{ route('jual.index') }}"><i class="icon-contract menu-icon"></i><span class="menu-title">Data Penjualan</span></a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ url('beranda-admin') }}"><i class="icon-grid menu-icon mb-1"></i><span class="menu-title">Dashboard</span></a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ route('ikan.index') }}"><i class="icon-layout menu-icon mb-1"></i><span class="menu-title">Data Ikan</span></a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ route('supplier.index') }}"><i class="icon-columns menu-icon mb-1"></i><span class="menu-title">Data Supplier</span></a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ route('pasar.index') }}"><i class="icon-bar-graph menu-icon mb-1"></i><span class="menu-title">Data Pasar</span></a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ route('konsumen.index') }}"><i class="ti-user menu-icon mb-1"></i><span class="menu-title">Data Konsumen</span></a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ route('beli.index') }}"><i class="icon-grid-2 menu-icon mb-1"></i><span class="menu-title">Data Pembelian</span></a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ route('jual.index') }}"><i class="icon-contract menu-icon mb-1"></i><span class="menu-title">Data Penjualan</span></a></li>
 
         <li class="nav-item {{ Request::is('laporan/pembelian') || Request::is('laporan/penjualan') ? 'active' : '' }}">
             <a class="nav-link" data-toggle="collapse" href="#laporanTransaksi"

@@ -5,7 +5,7 @@
         <div class="col-lg-12 stretch-card">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="card-title">Laporan Pembelian</h4>
+                    <h4 class="card-title">Laporan Pembelian PD. Sidamakmur</h4>
 
                     <form method="GET" action="{{ route('laporan.pembelian') }}" class="form-inline mb-4">
                         <div class="form-group mr-2">
@@ -30,9 +30,9 @@
                                     <th>Tanggal</th>
                                     <th>Kode Supplierr</th>
                                     <th>Jenis Ikan</th>
-                                    <th>Jumlah</th>
+                                    <th>Jumlah Ikan</th>
                                     <th>Harga/Kg</th>
-                                    <th>Total</th>
+                                    <th>Total Harga</th>
                                 </tr>
                             </thead>
                             <tbody>

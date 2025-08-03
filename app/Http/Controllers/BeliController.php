@@ -50,7 +50,9 @@ class BeliController extends Controller
             ->latest()
             ->paginate(10);
 
-        return view('admin.beli.index', compact('belis'));
+        $totalPengeluaran = $belis->sum('total_harga');
+
+        return view('admin.beli.index', compact('belis', 'totalPengeluaran'));
     }
 
     public function carib(Request $request)
@@ -65,8 +67,11 @@ class BeliController extends Controller
             ->latest()
             ->paginate(10);
 
-        return view('admin.beli.index', compact('belis'));
+        $totalPengeluaran = $belis->sum('total_harga');
+
+        return view('admin.beli.index', compact('belis', 'totalPengeluaran'));
     }
+
 
     public function create()
     {

@@ -49,9 +49,14 @@ class JualController extends Controller
                     });
             })
             ->latest()
+            ->orWhere('kd_jual', 'like', "%$kata%")
             ->paginate(10);
 
-        return view('admin.jual.index', compact('juals'));
+             // Hitung total pendapatan dari data yang ditampilkan
+           $totalPendapatan = $juals->getCollection()->flatMap(function ($jual) {
+                return $jual->detailJual;
+            })->sum('total');
+        return view('admin.jual.index', compact('juals', 'totalPendapatan'));
     }
 
     public function carij(Request $request)
@@ -66,7 +71,11 @@ class JualController extends Controller
             ->latest()
             ->paginate(10);
 
-        return view('admin.jual.index', compact('juals'));
+         // Hitung total pendapatan dari data yang ditampilkan
+       $totalPendapatan = $juals->getCollection()->flatMap(function ($jual) {
+            return $jual->detailJual;
+        })->sum('total');
+    return view('admin.jual.index', compact('juals', 'totalPendapatan'));
     }
 
     public function create()

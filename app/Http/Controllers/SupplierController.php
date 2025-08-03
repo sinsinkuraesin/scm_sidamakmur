@@ -23,16 +23,20 @@ class SupplierController extends Controller
     public function carisp(Request $request)
     {
         $kata = $request->input('kata');
-        $query = " kd_supplier LIKE '%".$kata."%'
-                  OR nm_supplier LIKE '%".$kata."%'
-                  OR jenis_ikan LIKE '%".$kata."%'
-                  OR alamat LIKE '%".$kata."%'";
 
         $suppliers = DB::table('tbl_supplier')
-                    ->whereRaw($query)
-                    ->get();
+            ->join('tbl_ikan', 'tbl_ikan.id', '=', 'tbl_supplier.jenis_ikan')
+            ->where(function ($query) use ($kata) {
+                $query->where('tbl_supplier.kd_supplier', 'LIKE', "%$kata%")
+                    ->orWhere('tbl_supplier.nm_supplier', 'LIKE', "%$kata%")
+                    ->orWhere('tbl_ikan.jenis_ikan', 'LIKE', "%$kata%")
+                    ->orWhere('tbl_supplier.alamat', 'LIKE', "%$kata%");
+            })
+            ->select('tbl_supplier.*', 'tbl_ikan.jenis_ikan as jenis_ikan')
+            ->get();
 
-        return view('admin.supplier.index', compact('suppliers'))->with('i', (request()->input('page', 1) - 1) * 20);
+        return view('admin.supplier.index', compact('suppliers'))
+            ->with('i', (request()->input('page', 1) - 1) * 20);
     }
 
     public function create()

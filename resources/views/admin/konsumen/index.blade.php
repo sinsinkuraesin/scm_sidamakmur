@@ -5,7 +5,7 @@
             <div class="col-lg-12 stretch-card">
                 <div class="card">
                     <div class="card-body">
-                        <h4 class="card-title">Data Konsumen</h4>
+                        <h4 class="card-title">Data Konsumen PD. Sidamakmur</h4>
                         <div class="float end">
                             <a class="btn btn-primary mb-3 ml-3" href="{{ route('konsumen.create') }}">Tambah Data Konsumen</a>
                         </div>

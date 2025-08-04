@@ -97,6 +97,7 @@ class JualController extends Controller
         'tgl_jual' => 'required|date',
         'nama_pasar' => 'required|string',
         'ikan' => 'required|array',
+        'status' => 'required|in:Diproses,Selesai',
     ]);
 
     $ikanDipilih = array_filter($request->ikan, function ($ikan) {
@@ -115,6 +116,7 @@ class JualController extends Controller
             'nama_konsumen' => $request->nama_konsumen,
             'tgl_jual' => $request->tgl_jual,
             'nama_pasar' => $request->nama_pasar,
+            'status' => $request->status,
         ]);
 
         // Simpan detail penjualan
@@ -175,6 +177,7 @@ class JualController extends Controller
             'nama_konsumen' => 'required|exists:tbl_konsumen,id',
             'tgl_jual' => 'required|date',
             'nama_pasar' => 'required|string',
+            'status' => 'required|in:Diproses,Selesai',
             'total' => 'required|numeric|min:0',
         ]);
 

@@ -99,6 +99,15 @@
                             </div>
                             @endforeach
 
+                            <div class="form-group mb-3">
+                                <label for="status">Status Penjualan:</label>
+                                <select name="status" id="status" class="form-control" required>
+                                    <option value="Diproses" selected>Diproses</option>
+                                    <option value="Selesai">Selesai</option>
+                                </select>
+                            </div>
+
+
                             <div class="form-group mt-4">
                                 <label for="total">Total Penjualan (Rp):</label>
                                 <input type="text" id="total" class="form-control" readonly>

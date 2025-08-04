@@ -116,6 +116,15 @@
                             </div>
                             @endforeach
 
+                            <div class="form-group mb-3">
+                                <label for="status">Status Penjualan:</label>
+                                <select name="status" id="status" class="form-control" required>
+                                    <option value="Diproses" {{ $jual->status == 'Diproses' ? 'selected' : '' }}>Diproses</option>
+                                    <option value="Selesai" {{ $jual->status == 'Selesai' ? 'selected' : '' }}>Selesai</option>
+                                </select>
+                            </div>
+
+
                             <!-- Total Keseluruhan -->
                             <div class="form-group mt-4">
                                 <label for="total">Total Penjualan (Rp):</label>

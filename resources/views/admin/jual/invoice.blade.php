@@ -147,13 +147,14 @@
     $waNumber = Str::startsWith($noTlp, '0') ? '62' . substr($noTlp, 1) : $noTlp;
 
     $pesan = urlencode("Halo {$jual->konsumen->nama_konsumen}, berikut kami berikan invoice pembelanjaan Anda di *PD Sidamakmur*:\n\n" .
-    "No Invoice: INV-JUAL-{$jual->jual_id}\n📅 Tanggal: " . \Carbon\Carbon::parse($jual->tgl_jual)->format('d M Y') . "\n" .
+    "No Invoice: INV-JUAL-{$jual->jual_id}\n" .
+    "Tanggal: " . \Carbon\Carbon::parse($jual->tgl_jual)->format('d M Y') . "\n" .
     "Total Pembelian: Rp " . number_format($jual->detailJual->sum('total'), 0, ',', '.') . "\n\n" .
+    "Status pembelian anda saait ini: {$jual->status}\n\n" .
     "Silakan lakukan pembayaran melalui transfer ke salah satu rekening berikut:\n\n" .
-    "*Bank BRI*\nNo. Rek: 1234 5678 9101 1121\nA.n: Nama Pemilik\n\n" .
-    "*Bank Mandiri*\nNo. Rek: 9876 5432 1098 7654\nA.n: Nama Pemilik\n\n" .
-    "Mohon melakukan pembayaran paling lambat hari ini sebelum sore hari ya.\n\n" .
-    "Jika melakukan pembayaran secara *tunai (cash)*, mohon tetap lakukan konfirmasi melalui WhatsApp ini ya 🙏\n\n" .
+    "*Bank BRI*\nNo. Rek: 1234 5678 9101 1121\nA.n: Sidamakmur\n\n" .
+    "*Bank Mandiri*\nNo. Rek: 9876 5432 1098 7654\nA.n: Sidamakmur\n\n" .
+    "*Mohon melakukan pembayaran dalam waktu 1 jam setelah pesan ini dikirim.*\n\n" .
     "Terima kasih telah berbelanja di *PD Sidamakmur*.");
     $waLink = "https://wa.me/$waNumber?text=$pesan";
 @endphp
@@ -200,6 +201,7 @@
                 <th>Jenis Ikan</th>
                 <th>Harga / Kg</th>
                 <th>Jumlah Ikan(Kg)</th>
+                <th>Status Pengiriman</th>
                 <th>Total Harga</th>
             </tr>
         </thead>
@@ -209,6 +211,7 @@
                 <td>{{ $item->ikan->jenis_ikan ?? '-' }}</td>
                 <td>Rp {{ number_format($item->harga_jual, 0, ',', '.') }}</td>
                 <td>{{ $item->jml_ikan }}</td>
+                <td>{{ $jual->status }}</td>
                 <td>Rp {{ number_format($item->total, 0, ',', '.') }}</td>
             </tr>
             @endforeach

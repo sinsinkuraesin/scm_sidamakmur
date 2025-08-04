@@ -63,6 +63,7 @@
                                 <th>Jenis & Jumlah Ikan (Kg)</th>
                                 <th>Harga /Kg</th>
                                 <th>Total Harga</th>
+                                <th>Status</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -91,6 +92,7 @@
                                     <td>
                                         Rp. {{ number_format($jual->detailJual->sum('total'), 0, ',', '.') }}
                                     </td>
+                                    <td>{{ $jual->status }}</td>
                                     <td>
                                         <form action="{{ route('jual.destroy', $jual->jual_id) }}" method="POST">
                                             @csrf

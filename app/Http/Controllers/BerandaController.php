@@ -55,8 +55,8 @@ class BerandaController extends Controller
 
       // 3. Data Stok Harian per Ikan (1 minggu ini)
         $hariIni = Carbon::now();
-        $tanggalMulai = $hariIni->copy()->startOfWeek(); // Senin minggu ini
-        $tanggalAkhir = $hariIni->copy()->endOfWeek();   // Minggu minggu ini
+        $tanggalMulai = $hariIni->copy()->subDays(6); // 6 hari ke belakang
+$tanggalAkhir = $hariIni->copy();             // Hari ini
 
         $stokData = Ikan::select(
                 DB::raw("DATE(updated_at) as tanggal"),

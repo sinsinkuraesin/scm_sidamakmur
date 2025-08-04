@@ -26,7 +26,7 @@ class BeliController extends Controller
     }
     public function index()
     {
-        $belis = Beli::with(['supplier', 'ikan'])->latest()->paginate(50);
+        $belis = Beli::with(['supplier', 'ikan'])->latest()->paginate(100);
         $totalPengeluaran = $belis->sum('total_harga');
 
         return view('admin.beli.index', compact('belis', 'totalPengeluaran'));

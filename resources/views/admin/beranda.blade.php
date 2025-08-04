@@ -116,7 +116,7 @@
         <div class="col-md-6 mb-4">
             <div class="card shadow-sm p-4 w-100">
                 <h5 class="mb-2"><b>📦 Upstream</b></h5>
-                <p class="text-muted mb-3">Jumlah pembelian dari supplier</p>
+               <p class="text-muted mb-3">Total pengeluaran berdasarkan jumlah pembelian ikan ke supplier /bulan</p>
                 <canvas id="upstreamChart" style="height: 200px !important;"></canvas>
             </div>
         </div>
@@ -134,7 +134,7 @@
         <div class="col-md-6 mb-4 mx-auto">
             <div class="card shadow-sm p-4 w-100">
                 <h5 class="mb-2"><b>🛒 Downstream</b></h5>
-                <p class="text-muted mb-3">Total pemasukan penjualan per bulan</p>
+                <p class="text-muted mb-3">Total pemasukan berdasarkan jumlah penjualan kepada konsumen /bulan</p>
                 <canvas id="downstreamChart" style="height: 200px !important;"></canvas>
             </div>
         </div>

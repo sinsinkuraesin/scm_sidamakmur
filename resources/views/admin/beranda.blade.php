@@ -75,7 +75,7 @@
     }
     .scm-title {
         font-weight: bold;
-        color: #0d6efd;
+        color: #4B45C6;
         margin-bottom: 10px;
         font-size: 1.1rem;
     }
@@ -99,8 +99,42 @@
 
     .scm-arrow {
         font-size: 1rem;
-        color: #0d6efd;
+        color: #4B45C6;
         line-height: 1;
+    }
+
+    .scm-arrow-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 10px;
+    }
+
+    .scm-arrow {
+        font-size: 1.8rem;
+        color: #4B45C6;
+    }
+
+    .card-custom {
+        border-radius: 18px;
+        box-shadow: 0 4px 20px rgba(56, 142, 60, 0.15);
+        background: #ffffff;
+        padding: 28px;
+        transition: 0.3s ease;
+        border-left: 6px solid #4B45C6;
+        height: 100%;
+    }
+
+    .card-custom:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 30px rgba(46, 125, 50, 0.2);
+    }
+
+    .card-custom h5 {
+        font-weight: 600;
+        font-size: 1.2rem;
+        color: #4B45C6;
+        margin-bottom: 8px;
     }
 
     @media (max-width: 200px) {
@@ -108,38 +142,43 @@
             display: none;
         }
         }
+    .text-purple {
+    color: #4B45C6; /* Ungu pastel seperti di grafik downstream */
+}
+
     </style>
 
-    <!-- Grafik Chart.js -->
-    <div class="row">
-        <!-- UPSTREAM -->
+   <!-- GRAFIK -->
+<div class="row">
+        <!-- Upstream Chart -->
         <div class="col-md-6 mb-4">
-            <div class="card shadow-sm p-4 w-100">
-                <h5 class="mb-2"><b>📦 Upstream</b></h5>
-               <p class="text-muted mb-3">Total pengeluaran berdasarkan jumlah pembelian ikan ke supplier /bulan</p>
-                <canvas id="upstreamChart" style="height: 200px !important;"></canvas>
+            <div class="card-custom">
+                <h5>📦 1. Grafik Pembelian (Pengadaan)</h5>
+                <p class="text-muted">Total pengeluaran berdasarkan jumlah pembelian ikan ke supplier /bulan</p>
+                <canvas id="upstreamChart" style="height: 200px;"></canvas>
             </div>
         </div>
 
-        <!-- INTERNAL -->
+        <!-- Internal Chart -->
         <div class="col-md-6 mb-4">
-            <div class="card shadow-sm p-4">
-                <h5 class="mb-2"><b>🏪 Internal Supply Chain</b></h5>
-                <p class="text-muted mb-3">Stok ikan per hari (1 minggu terakhir)</p>
-                <canvas id="internalChart" style="height: 200px !important;"></canvas>
+            <div class="card-custom">
+                <h5>🏪 2. Grafik Stok (Persediaan)</h5>
+                <p class="text-muted">Stok ikan per hari (1 minggu terakhir)</p>
+                <canvas id="internalChart" style="height: 200px;"></canvas>
             </div>
         </div>
 
-        <!-- DOWNSTREAM -->
-        <div class="col-md-6 mb-4 mx-auto">
-            <div class="card shadow-sm p-4 w-100">
-                <h5 class="mb-2"><b>🛒 Downstream</b></h5>
-                <p class="text-muted mb-3">Total pemasukan berdasarkan jumlah penjualan kepada konsumen /bulan</p>
-                <canvas id="downstreamChart" style="height: 200px !important;"></canvas>
+        <!-- Downstream Chart -->
+        <div class="col-md-6 mx-auto mb-4">
+            <div class="card-custom">
+                <h5>🛒 3. Grafik Penjualan (Distribusi)</h5>
+                <p class="text-muted">Total pemasukan berdasarkan jumlah penjualan kepada konsumen /bulan</p>
+                <canvas id="downstreamChart" style="height: 200px;"></canvas>
             </div>
         </div>
     </div>
 </div>
+
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
@@ -156,7 +195,7 @@ new Chart(document.getElementById('upstreamChart'), {
     data: {
         labels: bulanLabels,
         datasets: [{
-            label: 'Total Pembelian',
+            label: 'Total Pengeluaran',
             data: {!! json_encode(array_column($pembelian, 'total')) !!},
             backgroundColor: 'rgba(255, 159, 64, 0.6)',
             borderColor: 'rgba(255, 159, 64, 1)',

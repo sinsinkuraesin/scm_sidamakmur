@@ -168,8 +168,8 @@
         <!-- Upstream Chart -->
         <div class="col-md-6 mb-4">
             <div class="card-custom">
-                <h5>📦 Upstream</h5>
-                <p class="text-muted">Jumlah pembelian dari supplier</p>
+                <h5>📦 1. Grafik Pembelian (Pengadaan)</h5>
+                <p class="text-muted">Total pengeluaran berdasarkan jumlah pembelian ikan ke supplier /bulan</p>
                 <canvas id="upstreamChart" style="height: 200px;"></canvas>
             </div>
         </div>
@@ -177,8 +177,8 @@
         <!-- Internal Chart -->
         <div class="col-md-6 mb-4">
             <div class="card-custom">
-                <h5>🏪 Internal Supply Chain</h5>
-                <p class="text-muted">Stok ikan per bulan</p>
+                <h5>🏪 2. Grafik Stok (Persediaan)</h5>
+                <p class="text-muted">Stok ikan per hari (1 minggu terakhir)</p>
                 <canvas id="internalChart" style="height: 200px;"></canvas>
             </div>
         </div>
@@ -186,8 +186,8 @@
         <!-- Downstream Chart -->
         <div class="col-md-6 mx-auto mb-4">
             <div class="card-custom">
-                <h5>🛒 Downstream</h5>
-                <p class="text-muted">Total pemasukan penjualan per bulan</p>
+                <h5>🛒 3. Grafik Penjualan (Distribusi)</h5>
+                <p class="text-muted">Total pemasukan berdasarkan jumlah penjualan kepada konsumen /bulan</p>
                 <canvas id="downstreamChart" style="height: 200px;"></canvas>
             </div>
         </div>
@@ -196,109 +196,133 @@
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    const bulanLabels = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
-    const formatRupiah = value => 'Rp ' + Number(value).toLocaleString('id-ID');
+const bulanLabels = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
 
-    // Upstream Chart (Pembelian)
-    new Chart(document.getElementById('upstreamChart'), {
-        type: 'bar',
-        data: {
-            labels: bulanLabels,
-            datasets: [{
-                label: 'Total Pembelian',
-                data: {!! json_encode($pembelian) !!},
-                backgroundColor: 'rgba(255, 159, 64, 0.6)',
-                borderColor: 'rgba(255, 159, 64, 1)',
+// FORMAT RUPIAH
+function formatRupiah(value) {
+    return 'Rp ' + Number(value).toLocaleString('id-ID');
+}
+
+// UPSTREAM (Pembelian)
+new Chart(document.getElementById('upstreamChart'), {
+    type: 'bar',
+    data: {
+        labels: bulanLabels,
+        datasets: [{
+            label: 'Total Pengeluaran',
+            data: {!! json_encode(array_column($pembelian, 'total')) !!},
+            backgroundColor: 'rgba(255, 159, 64, 0.6)',
+            borderColor: 'rgba(255, 159, 64, 1)',
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+        scales: {
+            y: {
+                beginAtZero: true,
+                ticks: {
+                    callback: formatRupiah
+                }
+            }
+        },
+        plugins: {
+            legend: { position: 'bottom' },
+            tooltip: {
+                callbacks: {
+                    label: ctx => formatRupiah(ctx.raw)
+                }
+            }
+        }
+    }
+});
+
+// INTERNAL (Stok per minggu)
+
+const stokColors = [
+    '#42a5f5', '#66bb6a', '#ffa726', '#ab47bc', '#26c6da',
+    '#ff7043', '#8d6e63', '#26a69a', '#ec407a', '#7e57c2'
+];
+
+new Chart(document.getElementById('internalChart'), {
+    type: 'bar',
+    data: {
+        labels: {!! json_encode($tanggalLabels) !!},
+        datasets: [
+            @foreach ($stokChartData as $index => $data)
+            {
+                label: '{{ $data['label'] }}',
+                data: {!! json_encode($data['data']) !!},
+                backgroundColor: stokColors[{{ $index }} % stokColors.length],
                 borderWidth: 1
-            }]
-        },
-        options: {
-            responsive: true,
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    ticks: { callback: formatRupiah }
+            },
+            @endforeach
+        ]
+    },
+    options: {
+        responsive: true,
+        scales: {
+            x: {
+                stacked: true,
+                ticks: {
+                    autoSkip: false,
+                    maxRotation: 0,
+                    minRotation: 0
                 }
             },
-            plugins: {
-                legend: { position: 'bottom' },
-                tooltip: {
-                    callbacks: {
-                        label: ctx => formatRupiah(ctx.raw)
-                    }
+            y: {
+                stacked: true,
+                beginAtZero: true,
+                title: {
+                    display: true,
+                    text: 'Jumlah Stok'
+                }
+            }
+        },
+        plugins: {
+            legend: { position: 'bottom' },
+            tooltip: {
+                callbacks: {
+                    label: ctx => `${ctx.dataset.label}: ${ctx.raw} Kg`
                 }
             }
         }
-    });
+    }
+});
 
-    // Internal Chart (Stok Ikan)
-    const stokColors = ['#42a5f5', '#66bb6a', '#ffa726', '#ab47bc', '#26c6da', '#ff7043'];
-    new Chart(document.getElementById('internalChart'), {
-        type: 'bar',
-        data: {
-            labels: bulanLabels,
-            datasets: [
-                @foreach ($stokChartData as $index => $data)
-                {
-                    label: '{{ $data['label'] }}',
-                    data: {!! json_encode($data['data']) !!},
-                    backgroundColor: stokColors[{{ $index }} % stokColors.length],
-                    borderWidth: 1
-                },
-                @endforeach
-            ]
-        },
-        options: {
-            responsive: true,
-            scales: {
-                x: { stacked: true },
-                y: {
-                    stacked: true,
-                    beginAtZero: true,
-                    title: { display: true, text: 'Jumlah Stok (Kg)' }
-                }
-            },
-            plugins: {
-                legend: { position: 'bottom' },
-                tooltip: {
-                    callbacks: {
-                        label: ctx => `${ctx.dataset.label}: ${ctx.raw} Kg`
-                    }
-                }
-            }
-        }
-    });
 
-    // Downstream Chart (Penjualan)
-    new Chart(document.getElementById('downstreamChart'), {
-        type: 'bar',
-        data: {
-            labels: bulanLabels,
-            datasets: [{
-                label: 'Total Pemasukan',
-                data: {!! json_encode($konsumenTransaksi) !!},
-                backgroundColor: 'rgba(103, 58, 183, 0.6)',
-                borderColor: 'rgba(103, 58, 183, 1)',
-                borderWidth: 1
-            }]
-        },
-        options: {
-            responsive: true,
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    ticks: { callback: formatRupiah }
+// DOWNSTREAM (Pemasukan)
+new Chart(document.getElementById('downstreamChart'), {
+    type: 'bar',
+    data: {
+        labels: bulanLabels,
+        datasets: [{
+            label: 'Total Pemasukan',
+            data: {!! json_encode(array_column($konsumenTransaksi, 'total')) !!},
+            backgroundColor: 'rgba(103, 58, 183, 0.6)',
+            borderColor: 'rgba(103, 58, 183, 1)',
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+        scales: {
+            y: {
+                beginAtZero: true,
+                ticks: {
+                    callback: formatRupiah
                 }
-            },
-            plugins: {
-                legend: { position: 'bottom' },
-                tooltip: {
-                    callbacks: {
-                        label: ctx => formatRupiah(ctx.raw)
-                    }
+            }
+        },
+        plugins: {
+            legend: { position: 'bottom' },
+            tooltip: {
+                callbacks: {
+                    label: ctx => formatRupiah(ctx.raw)
                 }
             }
         }
-    });
+    }
+});
 </script>
 @endsection

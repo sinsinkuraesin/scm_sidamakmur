@@ -53,22 +53,11 @@ class BerandaController extends Controller
             ];
         }
 
-      // 3. Data Stok Harian per Ikan (1 minggu ini)
+        // 3. Data Stok Harian per Ikan (1 minggu ini, kumulatif)
         $hariIni = Carbon::now();
         $tanggalMulai = $hariIni->copy()->subDays(6); // 6 hari ke belakang
-$tanggalAkhir = $hariIni->copy();             // Hari ini
+        $tanggalAkhir = $hariIni->copy();             // Hari ini
 
-        $stokData = Ikan::select(
-                DB::raw("DATE(updated_at) as tanggal"),
-                'jenis_ikan',
-                DB::raw('SUM(stok) as total')
-            )
-            ->whereBetween('updated_at', [$tanggalMulai, $tanggalAkhir])
-            ->groupBy('tanggal', 'jenis_ikan')
-            ->orderBy('tanggal')
-            ->get();
-
-        // Buat label per hari dari Senin sampai Minggu
         $tanggalKeys = collect();
         for ($date = $tanggalMulai->copy(); $date <= $tanggalAkhir; $date->addDay()) {
             $tanggalKeys->push($date->format('Y-m-d'));
@@ -76,18 +65,31 @@ $tanggalAkhir = $hariIni->copy();             // Hari ini
 
         $tanggalLabels = $tanggalKeys->map(fn($tgl) => Carbon::parse($tgl)->format('d M'));
 
-        $jenisIkanList = $stokData->pluck('jenis_ikan')->unique();
+        $ikanList = Ikan::with(['belis', 'detailJual'])->get();
         $stokChartData = [];
 
-        foreach ($jenisIkanList as $jenis) {
+        foreach ($ikanList as $ikan) {
             $dataPerHari = [];
+
             foreach ($tanggalKeys as $tgl) {
-                $data = $stokData->first(fn($item) => $item->tanggal === $tgl && $item->jenis_ikan === $jenis);
-                $dataPerHari[] = $data ? $data->total : 0;
+                // Total pembelian sampai tanggal itu
+                $jumlahMasuk = $ikan->belis()
+                    ->whereDate('tgl_beli', '<=', $tgl)
+                    ->sum('jml_ikan');
+
+                // Total penjualan sampai tanggal itu
+                $jumlahKeluar = $ikan->detailJual()
+                    ->whereHas('jual', function ($q) use ($tgl) {
+                        $q->whereDate('tgl_jual', '<=', $tgl);
+                    })
+                    ->sum('jml_ikan');
+
+                $stok = $jumlahMasuk - $jumlahKeluar;
+                $dataPerHari[] = $stok;
             }
 
             $stokChartData[] = [
-                'label' => $jenis,
+                'label' => $ikan->jenis_ikan,
                 'data' => $dataPerHari,
             ];
         }

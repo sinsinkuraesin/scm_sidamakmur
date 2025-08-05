@@ -15,68 +15,89 @@ class PemilikBerandaController extends Controller
     {
         $tahunIni = Carbon::now()->year;
 
-        // 1. Data Penjualan per bulan
+        // 1. Data Penjualan Bulanan
         $penjualan = Jual::with('detailJual')
             ->whereYear('tgl_jual', $tahunIni)
             ->get();
 
         $konsumenTransaksi = [];
         foreach (range(1, 12) as $bulan) {
-            $total = $penjualan->filter(fn($jual) => Carbon::parse($jual->tgl_jual)->month == $bulan)
-                ->sum(fn($jual) => $jual->detailJual->sum('total'));
+            $total = $penjualan->filter(function ($jual) use ($bulan) {
+                return Carbon::parse($jual->tgl_jual)->month == $bulan;
+            })->sum(function ($jual) {
+                return $jual->detailJual->sum('total');
+            });
 
-            $konsumenTransaksi[] = $total;
+            $konsumenTransaksi[] = [
+                'bulan' => Carbon::create(null, $bulan)->format('M'),
+                'total' => $total,
+            ];
         }
 
-        // 2. Data Pembelian per bulan
+        // 2. Data Pembelian Bulanan
         $pembelianData = Beli::select(
                 DB::raw('MONTH(tgl_beli) as bulan'),
                 DB::raw('SUM(total_harga) as total')
             )
             ->whereYear('tgl_beli', $tahunIni)
             ->groupBy('bulan')
+            ->orderBy('bulan')
             ->get();
 
-        $pembelian = array_fill(0, 12, 0);
-        foreach ($pembelianData as $item) {
-            $pembelian[$item->bulan - 1] = $item->total;
+        $pembelian = [];
+        foreach (range(1, 12) as $bulan) {
+            $data = $pembelianData->firstWhere('bulan', $bulan);
+            $pembelian[] = [
+                'bulan' => Carbon::create(null, $bulan)->format('M'),
+                'total' => $data->total ?? 0,
+            ];
         }
 
-        // 3. Data Stok Bulanan per Jenis Ikan
-        $stokData = Ikan::select(
-                DB::raw('MONTH(updated_at) as bulan'),
-                'jenis_ikan',
-                DB::raw('SUM(stok) as total')
-            )
-            ->whereYear('updated_at', $tahunIni)
-            ->groupBy('bulan', 'jenis_ikan')
-            ->get();
+        // 3. Data Stok Harian per Ikan (1 minggu ini, kumulatif)
+        $hariIni = Carbon::now();
+        $tanggalMulai = $hariIni->copy()->subDays(6); // 6 hari ke belakang
+        $tanggalAkhir = $hariIni->copy();             // Hari ini
 
-        $jenisIkan = $stokData->pluck('jenis_ikan')->unique();
+        $tanggalKeys = collect();
+        for ($date = $tanggalMulai->copy(); $date <= $tanggalAkhir; $date->addDay()) {
+            $tanggalKeys->push($date->format('Y-m-d'));
+        }
 
+        $tanggalLabels = $tanggalKeys->map(fn($tgl) => Carbon::parse($tgl)->format('d M'));
+
+        $ikanList = Ikan::with(['belis', 'detailJual'])->get();
         $stokChartData = [];
-        foreach ($jenisIkan as $jenis) {
-            $dataPerBulan = array_fill(0, 12, 0);
 
-            foreach ($stokData->where('jenis_ikan', $jenis) as $item) {
-                $dataPerBulan[$item->bulan - 1] = $item->total;
+        foreach ($ikanList as $ikan) {
+            $dataPerHari = [];
+
+            foreach ($tanggalKeys as $tgl) {
+                // Total pembelian sampai tanggal itu
+                $jumlahMasuk = $ikan->belis()
+                    ->whereDate('tgl_beli', '<=', $tgl)
+                    ->sum('jml_ikan');
+
+                // Total penjualan sampai tanggal itu
+                $jumlahKeluar = $ikan->detailJual()
+                    ->whereHas('jual', function ($q) use ($tgl) {
+                        $q->whereDate('tgl_jual', '<=', $tgl);
+                    })
+                    ->sum('jml_ikan');
+
+                $stok = $jumlahMasuk - $jumlahKeluar;
+                $dataPerHari[] = $stok;
             }
 
             $stokChartData[] = [
-                'label' => $jenis,
-                'data' => $dataPerBulan,
+                'label' => $ikan->jenis_ikan,
+                'data' => $dataPerHari,
             ];
         }
-        // Tambahan: Label Tanggal 7 Hari Terakhir
-        $tanggalLabels = collect(range(0, 6))
-            ->map(fn($i) => Carbon::now()->subDays(6 - $i)->format('d M'))
-            ->toArray();
-
 
         return view('pemilik.beranda', compact(
+            'konsumenTransaksi',
             'pembelian',
             'stokChartData',
-            'konsumenTransaksi',
             'tanggalLabels'
         ));
     }

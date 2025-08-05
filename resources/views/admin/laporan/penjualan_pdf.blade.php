@@ -10,6 +10,7 @@
             background-color: white;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             color: #333;
+            font-size: 14px;
         }
 
         .invoice-box {
@@ -20,6 +21,10 @@
             margin: auto;
             box-shadow: 0 0 10px rgba(0, 0, 0, .15);
             position: relative;
+        }
+
+        .invoice-header {
+            text-align: center;
         }
 
         .logo-kanan {
@@ -53,10 +58,6 @@
             margin: 20px 0;
         }
 
-        .invoice-header {
-            text-align: center;
-        }
-
         .section-title {
             font-weight: bold;
             color: #3f51b5;
@@ -66,15 +67,14 @@
 
         table {
             width: 100%;
-            margin-bottom: 20px;
             border-collapse: collapse;
-            font-size: 14px;
+            margin-top: 10px;
         }
 
         th, td {
+            border: 1px solid #333;
             padding: 8px;
-            border: 1px solid #ccc;
-            text-align: left;
+            text-align: center;
         }
 
         th {
@@ -84,16 +84,17 @@
 
         .total-row {
             font-weight: bold;
+            background-color: #f1f1f1;
         }
 
         .signature {
+            margin-top: 60px;
             text-align: right;
-            margin-top: 40px;
         }
 
         .signature img {
-            height: 80px;
-            margin-bottom: 5px;
+            width: 120px;
+            margin-bottom: 10px;
         }
 
         .footer-note {
@@ -108,6 +109,7 @@
 @php
     use Carbon\Carbon;
     Carbon::setLocale('id');
+
     $judul = 'Laporan Penjualan';
     if ($filter === 'bulan') {
         $judul .= ' - Bulan ' . Carbon::parse($tanggal)->translatedFormat('F');
@@ -116,22 +118,23 @@
     } else {
         $judul .= ' - Tanggal ' . Carbon::parse($tanggal)->translatedFormat('d F Y');
     }
-    $isPdf = request()->routeIs('laporan.penjualan.pdf');
-    $logoPath = $isPdf ? public_path('images/logo.png') : asset('images/logo.png');
+
+    $logoPath = public_path('images/logo.png');
+    $ttdPath = public_path('images/ttd.jpg');
 @endphp
 
 <div class="invoice-box">
-    <div class="invoice-header-top">
-        <div class="header-tengah">
-            <h2>PD. SIDAMAKMUR</h2>
-            <p>Blok. Kadutilu, Dukupuntang Cirebon - 45652</p>
-            <p>Telp. 085317889229</p>
-        </div>
-        <div class="logo-kanan">
-            <img src="file://{{ public_path('images/logo.png') }}" alt="Logo">
-        </div>
-        <div class="line"></div>
+    <div class="header-tengah">
+        <h2>PD. SIDAMAKMUR</h2>
+        <p>Blok. Kadutilu, Dukupuntang Cirebon - 45652</p>
+        <p>Telp. 085317889229</p>
     </div>
+
+    <div class="logo-kanan">
+        <img src="file://{{ $logoPath }}" alt="Logo">
+    </div>
+
+    <div class="line"></div>
 
     <div class="invoice-header">
         <h4 class="text-primary fw-bold">{{ $judul }}</h4>
@@ -146,6 +149,7 @@
                 <th>Nama Konsumen</th>
                 <th>Jenis Ikan</th>
                 <th>Jumlah Ikan (Kg)</th>
+                <th>Harga/Kg</th>
                 <th>Total Harga</th>
             </tr>
         </thead>
@@ -156,28 +160,38 @@
                     <td>{{ \Carbon\Carbon::parse($jual->tgl_jual)->format('d-m-Y') }}</td>
                     <td>{{ $jual->konsumen->nama_konsumen ?? '-' }}</td>
                     <td>
-                        <ul style="margin:0; padding-left: 15px;">
-                            @foreach($jual->detailJual as $detail)
-                                <li>{{ $detail->ikan->jenis_ikan ?? '-' }} - {{ $detail->jml_ikan }} Kg</li>
-                            @endforeach
-                        </ul>
+                        @php $count = count($jual->detailJual); @endphp
+                        @foreach($jual->detailJual as $detail)
+                            {{ $count > 1 ? '• ' : '' }}{{ $detail->ikan->jenis_ikan ?? '-' }}<br>
+                        @endforeach
                     </td>
-                    <td>{{ $jual->detailJual->sum('jml_ikan') }} Kg</td>
+                    <td>
+                        @php $count = count($jual->detailJual); @endphp
+                        @foreach($jual->detailJual as $detail)
+                            {{ $count > 1 ? '• ' : '' }}{{ $detail->jml_ikan }} Kg<br>
+                        @endforeach
+                    </td>
+                    <td>
+                        @php $count = count($jual->detailJual); @endphp
+                        @foreach($jual->detailJual as $detail)
+                            {{ $count > 1 ? '• ' : '' }}Rp {{ number_format($detail->harga_jual, 0, ',', '.') }}<br>
+                        @endforeach
+                    </td>
                     <td>Rp {{ number_format($jual->detailJual->sum('total'), 0, ',', '.') }}</td>
                 </tr>
             @empty
                 <tr>
-                    <td colspan="6" style="text-align: center;">Tidak ada data</td>
+                    <td colspan="7">Tidak ada data</td>
                 </tr>
             @endforelse
         </tbody>
         <tfoot>
             <tr class="total-row">
-                <td colspan="5" style="text-align:right;">Total Penjualan</td>
+                <td colspan="6" style="text-align: right;">Total Penjualan</td>
                 <td>Rp {{ number_format($total, 0, ',', '.') }}</td>
             </tr>
             <tr class="total-row">
-                <td colspan="5" style="text-align:right;">Total Ikan Terjual</td>
+                <td colspan="6" style="text-align: right;">Total Ikan Terjual</td>
                 <td>{{ number_format($total_kg, 0, ',', '.') }} Kg</td>
             </tr>
         </tfoot>
@@ -185,7 +199,7 @@
 
     <div class="signature">
         <p>Hormat Kami,</p>
-        <img src="file://{{ public_path('images/ttd.jpg') }}" alt="Tanda Tangan">
+        <img src="file://{{ $ttdPath }}" alt="Tanda Tangan">
         <p><strong>PD Sidamakmur</strong></p>
     </div>
 

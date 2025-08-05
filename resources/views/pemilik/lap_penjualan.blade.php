@@ -43,22 +43,32 @@
                             </thead>
                             <tbody class="text-center">
                                 @forelse ($penjualans as $jual)
-                                    @foreach ($jual->detailJual as $detail)
-                                        <tr>
-                                            <td>{{ $loop->parent->iteration }}</td>
-                                            <td>{{ $jual->tgl_jual }}</td>
-                                            <td>{{ $jual->konsumen->nm_konsumen ?? '-' }}</td>
-                                            <td>{{ $detail->ikan->jenis_ikan ?? '-' }}</td>
-                                            <td>{{ $detail->jml_ikan }} Kg</td>
-                                            <td>Rp {{ number_format($detail->harga, 0, ',', '.') }}</td>
-                                            <td>Rp {{ number_format($detail->total, 0, ',', '.') }}</td>
-                                        </tr>
+                            <tr>
+                                <td>{{ $loop->iteration }}</td>
+                                <td>{{ \Carbon\Carbon::parse($jual->tgl_jual)->format('d-m-Y') }}</td>
+                                <td>{{ $jual->konsumen->nama_konsumen ?? '-' }}</td>
+                                <td>
+                                    @foreach($jual->detailJual as $detail)
+                                        • {{ $detail->ikan->jenis_ikan ?? '-' }}<br>
                                     @endforeach
-                                @empty
-                                    <tr>
-                                        <td colspan="7" class="text-center">Tidak ada data penjualan</td>
-                                    </tr>
-                                @endforelse
+                                </td>
+                                <td>
+                                    @foreach($jual->detailJual as $detail)
+                                        • {{ $detail->jml_ikan }} Kg<br>
+                                    @endforeach
+                                </td>
+                                <td>
+                                    @foreach($jual->detailJual as $detail)
+                                        • Rp {{ number_format($detail->harga_jual, 0, ',', '.') }}<br>
+                                    @endforeach
+                                </td>
+                                <td>Rp {{ number_format($jual->detailJual->sum('total'), 0, ',', '.') }}</td>
+                            </tr>
+                            @empty
+                            <tr>
+                                <td colspan="7" class="text-center">Tidak ada data penjualan</td>
+                            </tr>
+                            @endforelse
                             </tbody>
                             <tfoot>
                                 <tr>

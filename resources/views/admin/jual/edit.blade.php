@@ -75,8 +75,11 @@
                             @foreach ($ikan as $i)
                             @php
                                 $detail = $jual->detailJual->where('jenis_ikan', $i->id)->first();
-                                $stokKosong = $i->stok <= 0;
+                                $stokTambahan = $detail ? $detail->jml_ikan : 0;
+                                $stokTersedia = $i->stok + $stokTambahan;
+                                $stokKosong = $stokTersedia <= 0;
                             @endphp
+
                             <div class="border rounded p-3 mb-2 bg-light detail-row">
                                 <div class="row align-items-center">
                                     <div class="col-md-1 text-center">
@@ -98,14 +101,15 @@
                                     </div>
                                     <div class="col-md-3">
                                         <input type="number"
-                                            name="ikan[{{ $i->id }}][jumlah]"
-                                            class="form-control jumlah"
-                                            min="1"
-                                            max="{{ $i->stok }}"
-                                            value="{{ $detail ? $detail->jml_ikan : '' }}"
-                                            placeholder="{{ $stokKosong ? 'Stok kosong' : 'Stok tersedia: ' . $i->stok }}"
-                                            {{ $detail ? '' : 'disabled' }}>
-                                        <input type="hidden" class="stok" value="{{ $i->stok }}">
+                                        name="ikan[{{ $i->id }}][jumlah]"
+                                        class="form-control jumlah"
+                                        min="1"
+                                        max="{{ $stokTersedia }}"
+                                        value="{{ $detail ? $detail->jml_ikan : '' }}"
+                                        placeholder="{{ $stokKosong ? 'Stok kosong' : 'Stok tersedia: ' . $stokTersedia }}"
+                                        {{ $detail ? '' : 'disabled' }}>
+                                    <input type="hidden" class="stok" value="{{ $stokTersedia }}">
+
                                     </div>
                                     <div class="col-md-3">
                                         <input type="text" class="form-control total-display" readonly

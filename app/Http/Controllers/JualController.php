@@ -89,73 +89,66 @@ class JualController extends Controller
         return view('admin.jual.create', compact('konsumen', 'ikan'));
     }
 
-   public function store(Request $request)
-{
-    $request->validate([
-        'kd_jual' => 'required|string',
-        'nama_konsumen' => 'required|exists:tbl_konsumen,id',
-        'tgl_jual' => 'required|date',
-        'nama_pasar' => 'required|string',
-        'ikan' => 'required|array',
-        'status' => 'required|in:Diproses,Selesai',
-    ]);
-
-    $ikanDipilih = array_filter($request->ikan, function ($ikan) {
-        return isset($ikan['checked']) && $ikan['checked'] == 1;
-    });
-
-    if (count($ikanDipilih) === 0) {
-        return back()->withInput()->with('error', 'Pilih minimal satu jenis ikan untuk dijual.');
-    }
-
-    DB::beginTransaction();
-    try {
-        // Simpan data jual utama
-        $jual = Jual::create([
-            'kd_jual' => $request->kd_jual,
-            'nama_konsumen' => $request->nama_konsumen,
-            'tgl_jual' => $request->tgl_jual,
-            'nama_pasar' => $request->nama_pasar,
-            'status' => $request->status,
+    public function store(Request $request)
+    {
+        $request->validate([
+            'kd_jual' => 'required|string',
+            'nama_konsumen' => 'required|exists:tbl_konsumen,id',
+            'tgl_jual' => 'required|date',
+            'nama_pasar' => 'required|string',
+            'ikan' => 'required|array',
+            'status' => 'required|in:Diproses,Selesai',
         ]);
 
-        // Simpan detail penjualan
-        foreach ($ikanDipilih as $ikan) {
-        if (!isset($ikan['id'], $ikan['harga'], $ikan['jumlah'], $ikan['total']) ||
-            !is_numeric($ikan['id']) || !is_numeric($ikan['harga']) ||
-            !is_numeric($ikan['jumlah']) || !is_numeric($ikan['total']) ||
-            $ikan['jumlah'] < 5 || $ikan['total'] < 0) {
-            throw new \Exception("Setiap jenis ikan yang dipilih harus memiliki jumlah minimal 5 kg.");
+        $ikanDipilih = array_filter($request->ikan, function ($ikan) {
+            return isset($ikan['checked']) && $ikan['checked'] == 1;
+        });
+
+        if (count($ikanDipilih) === 0) {
+            return back()->withInput()->with('error', 'Pilih minimal satu jenis ikan untuk dijual.');
         }
 
-
-            DetailJual::create([
-                'jual_id' => $jual->jual_id,
-                'kd_jual' => $jual->kd_jual,  // hanya ini, tanpa kd_jual
-                'jenis_ikan' => $ikan['id'],
-                'harga_jual' => $ikan['harga'],
-                'jml_ikan' => $ikan['jumlah'],
-                'total' => $ikan['total'],
+        DB::beginTransaction();
+        try {
+            // Simpan data jual utama
+            $jual = Jual::create([
+                'kd_jual' => $request->kd_jual,
+                'nama_konsumen' => $request->nama_konsumen,
+                'tgl_jual' => $request->tgl_jual,
+                'nama_pasar' => $request->nama_pasar,
+                'status' => $request->status,
             ]);
 
-            // Update stok ikan
-            $ikanModel = Ikan::findOrFail($ikan['id']);
-            $ikanModel->stok -= $ikan['jumlah'];
-            if ($ikanModel->stok < 0) {
-                throw new \Exception("Stok ikan {$ikanModel->jenis_ikan} tidak mencukupi.");
+            // Simpan detail penjualan
+            foreach ($ikanDipilih as $ikan) {
+                DetailJual::create([
+                    'jual_id' => $jual->jual_id,
+                    'kd_jual' => $jual->kd_jual,
+                    'jenis_ikan' => $ikan['id'],
+                    'harga_jual' => $ikan['harga'],
+                    'jml_ikan' => $ikan['jumlah'],
+                    'total' => $ikan['total'],
+                ]);
+
+                // Update stok ikan hanya jika statusnya "Selesai"
+                if ($request->status === 'Selesai') {
+                    $ikanModel = Ikan::findOrFail($ikan['id']);
+                    $ikanModel->stok -= $ikan['jumlah'];
+                    if ($ikanModel->stok < 0) {
+                        throw new \Exception("Stok ikan {$ikanModel->jenis_ikan} tidak mencukupi.");
+                    }
+                    $ikanModel->save();
+                }
             }
-            $ikanModel->save();
+
+            DB::commit();
+            return redirect()->route('jual.index')->with('success', 'Data Penjualan berhasil ditambahkan.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            \Log::error('Gagal simpan penjualan: ' . $e->getMessage());
+            return back()->withInput()->with('error', 'Gagal menyimpan data penjualan: ' . $e->getMessage());
         }
-
-        DB::commit();
-        return redirect()->route('jual.index')->with('success', 'Data Penjualan berhasil ditambahkan.');
-    } catch (\Exception $e) {
-        DB::rollBack();
-        \Log::error('Gagal simpan penjualan: ' . $e->getMessage());
-        return back()->withInput()->with('error', 'Gagal menyimpan data penjualan: ' . $e->getMessage());
     }
-}
-
 
     public function edit(Jual $jual)
     {
@@ -177,6 +170,7 @@ class JualController extends Controller
             'nama_konsumen' => 'required|exists:tbl_konsumen,id',
             'tgl_jual' => 'required|date',
             'nama_pasar' => 'required|string',
+            'ikan' => 'required|array',
             'status' => 'required|in:Diproses,Selesai',
             'total' => 'required|numeric|min:0',
         ]);
@@ -191,6 +185,21 @@ class JualController extends Controller
 
         DB::beginTransaction();
         try {
+            // Simpan status lama sebelum diupdate
+            $oldStatus = $jual->status;
+
+            // Kembalikan stok ikan kalau status lama adalah 'Selesai'
+            if ($oldStatus === 'Selesai') {
+                foreach ($jual->detailJual as $detail) {
+                    $ikan = Ikan::find($detail->jenis_ikan);
+                    if ($ikan) {
+                        $ikan->stok += $detail->jml_ikan;
+                        $ikan->save();
+                    }
+                }
+            }
+
+            // Update data penjualan
             $jual->update([
                 'kd_jual' => $request->kd_jual,
                 'nama_konsumen' => $request->nama_konsumen,
@@ -200,16 +209,10 @@ class JualController extends Controller
                 'status' => $request->status,
             ]);
 
-            foreach ($jual->detailJual as $detail) {
-                $ikan = Ikan::find($detail->jenis_ikan);
-                if ($ikan) {
-                    $ikan->stok += $detail->jml_ikan;
-                    $ikan->save();
-                }
-            }
-
+            // Hapus detail lama
             DetailJual::where('jual_id', $jual->jual_id)->delete();
 
+            // Simpan detail baru
             foreach ($ikanDipilih as $data) {
                 DetailJual::create([
                     'jual_id' => $jual->jual_id,
@@ -219,10 +222,18 @@ class JualController extends Controller
                     'jml_ikan' => $data['jumlah'],
                     'total' => $data['total'],
                 ]);
+            }
 
-                $ikanModel = Ikan::findOrFail($data['id']);
-                $ikanModel->stok -= $data['jumlah'];
-                $ikanModel->save();
+            // Kurangi stok kalau status baru 'Selesai'
+            if ($request->status === 'Selesai') {
+                foreach ($ikanDipilih as $data) {
+                    $ikanModel = Ikan::findOrFail($data['id']);
+                    $ikanModel->stok -= $data['jumlah'] ?? 0;
+                    if ($ikanModel->stok < 0) {
+                        throw new \Exception("Stok ikan {$ikanModel->jenis_ikan} tidak mencukupi.");
+                    }
+                    $ikanModel->save();
+                }
             }
 
             DB::commit();

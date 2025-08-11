@@ -197,6 +197,7 @@ class JualController extends Controller
                 'tgl_jual' => $request->tgl_jual,
                 'nama_pasar' => $request->nama_pasar,
                 'total' => $request->total,
+                'status' => $request->status,
             ]);
 
             foreach ($jual->detailJual as $detail) {

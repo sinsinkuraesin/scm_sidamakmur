@@ -153,8 +153,8 @@
         <!-- Upstream Chart -->
         <div class="col-md-6 mb-4">
             <div class="card-custom">
-                <h5>📦 1. Grafik Pembelian (Pengadaan)</h5>
-                <p class="text-muted">Total pengeluaran berdasarkan jumlah pembelian ikan ke supplier /bulan</p>
+                <h5>📦 1. Grafik Pengadaan Bahan Baku</h5>
+                <p class="text-muted">Jumlah pembelian ikan per jenis setiap hari dari pemasok.</p>
                 <canvas id="upstreamChart" style="height: 200px;"></canvas>
             </div>
         </div>
@@ -171,8 +171,8 @@
         <!-- Downstream Chart -->
         <div class="col-md-6 mx-auto mb-4">
             <div class="card-custom">
-                <h5>🛒 3. Grafik Penjualan (Distribusi)</h5>
-                <p class="text-muted">Total pemasukan berdasarkan jumlah penjualan kepada konsumen /bulan</p>
+                <h5>🛒 Grafik Pasar Utama (Downstream))</h5>
+                <p class="text-muted">Jumlah penjualan harian ke pasar yang paling sering bertransaksi.</p>
                 <canvas id="downstreamChart" style="height: 200px;"></canvas>
             </div>
         </div>
@@ -182,54 +182,54 @@
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-const bulanLabels = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
-
-// FORMAT RUPIAH
 function formatRupiah(value) {
     return 'Rp ' + Number(value).toLocaleString('id-ID');
 }
 
-// UPSTREAM (Pembelian)
-new Chart(document.getElementById('upstreamChart'), {
+// === UPSTREAM ===
+
+// === UPSTREAM ===
+const supplierMap = {!! json_encode($supplierMapPerTanggal) !!};
+
+const upstreamChart = new Chart(document.getElementById('upstreamChart'), {
     type: 'bar',
     data: {
-        labels: bulanLabels,
-        datasets: [{
-            label: 'Total Pengeluaran',
-            data: {!! json_encode(array_column($pembelian, 'total')) !!},
-            backgroundColor: 'rgba(255, 159, 64, 0.6)',
-            borderColor: 'rgba(255, 159, 64, 1)',
-            borderWidth: 1
-        }]
+        labels: {!! json_encode($tanggalLabels) !!},
+        datasets: {!! json_encode($datasets) !!}
     },
     options: {
         responsive: true,
-        scales: {
-            y: {
-                beginAtZero: true,
-                ticks: {
-                    callback: formatRupiah
+        plugins: {
+            legend: {
+                position: 'bottom', // seperti Grafik 2
+            },
+            tooltip: {
+                callbacks: {
+                    label: function(context) {
+                        const tanggalKey = {!! json_encode($tanggalKeys) !!}[context.dataIndex];
+                        const jenisIkan = context.dataset.label;
+                        const suppliers = supplierMap[tanggalKey][jenisIkan] || [];
+                        return `${jenisIkan}: ${context.raw} Kg (Supplier: ${suppliers.join(', ')})`;
+                    }
                 }
             }
         },
-        plugins: {
-            legend: { position: 'bottom' },
-            tooltip: {
-                callbacks: {
-                    label: ctx => formatRupiah(ctx.raw)
-                }
-            }
+        scales: {
+            x: { stacked: false },
+            y: { beginAtZero: true, title: { display: true, text: 'Jumlah (Kg)' } }
         }
     }
 });
 
-// INTERNAL (Stok per minggu)
 
+
+
+
+// === INTERNAL ===
 const stokColors = [
     '#42a5f5', '#66bb6a', '#ffa726', '#ab47bc', '#26c6da',
     '#ff7043', '#8d6e63', '#26a69a', '#ec407a', '#7e57c2'
 ];
-
 new Chart(document.getElementById('internalChart'), {
     type: 'bar',
     data: {
@@ -247,68 +247,75 @@ new Chart(document.getElementById('internalChart'), {
     },
     options: {
         responsive: true,
-        scales: {
-            x: {
-                stacked: true,
-                ticks: {
-                    autoSkip: false,
-                    maxRotation: 0,
-                    minRotation: 0
-                }
-            },
-            y: {
-                stacked: true,
-                beginAtZero: true,
-                title: {
-                    display: true,
-                    text: 'Jumlah Stok'
-                }
-            }
-        },
-        plugins: {
-            legend: { position: 'bottom' },
-            tooltip: {
-                callbacks: {
-                    label: ctx => `${ctx.dataset.label}: ${ctx.raw} Kg`
-                }
-            }
-        }
+        scales: { x: { stacked: true }, y: { stacked: true, beginAtZero: true, title: { display: true, text: 'Jumlah Stok' } } },
+        plugins: { legend: { position: 'bottom' }, tooltip: { callbacks: { label: ctx => `${ctx.dataset.label}: ${ctx.raw} Kg` } } }
     }
 });
 
-
-// DOWNSTREAM (Pemasukan)
+// === DOWNSTREAM ===
 new Chart(document.getElementById('downstreamChart'), {
     type: 'bar',
     data: {
-        labels: bulanLabels,
-        datasets: [{
-            label: 'Total Pemasukan',
-            data: {!! json_encode(array_column($konsumenTransaksi, 'total')) !!},
-            backgroundColor: 'rgba(103, 58, 183, 0.6)',
-            borderColor: 'rgba(103, 58, 183, 1)',
-            borderWidth: 1
-        }]
+        labels: {!! json_encode($tanggalLabels) !!},
+        datasets: {!! json_encode($konsumenData) !!}
     },
     options: {
         responsive: true,
+        plugins: {
+            legend: {
+                position: 'bottom',
+                labels: {
+                    generateLabels: function(chart) {
+                        const labels = Chart.defaults.plugins.legend.labels.generateLabels(chart);
+                        return labels.map(label => ({
+                            ...label,
+                            // hanya ambil nama pasar tanpa kode
+                            text: label.text.split(' - ')[0]
+                        }));
+                    }
+                }
+            },
+            tooltip: {
+    callbacks: {
+        label: function(context) {
+            // Ambil label asli
+            let originalLabel = context.chart.data.datasets[context.datasetIndex].label;
+
+            // Pecah "Pasar Talun - Nama Konsumen" jadi array
+            let parts = originalLabel.split(' - ');
+            let namaKonsumen = parts.length > 1 ? parts[1] : originalLabel;
+
+            return namaKonsumen + ': ' + context.parsed.y + ' Kg';
+        }
+    }
+}
+
+        },
         scales: {
             y: {
                 beginAtZero: true,
-                ticks: {
-                    callback: formatRupiah
-                }
-            }
-        },
-        plugins: {
-            legend: { position: 'bottom' },
-            tooltip: {
-                callbacks: {
-                    label: ctx => formatRupiah(ctx.raw)
+                title: {
+                    display: true,
+                    text: 'Jumlah (Kg)'
                 }
             }
         }
     }
 });
+
+
 </script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+@if(session('success'))
+<script>
+Swal.fire({
+    icon: 'success',
+    title: 'Berhasil Login',
+    text: '{{ session('success') }}',
+    showConfirmButton: false,
+    timer: 2000
+});
+</script>
+@endif
 @endsection

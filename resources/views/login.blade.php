@@ -83,6 +83,7 @@
         }
 
         window.onload = () => setRole('admin');
+
     </script>
 
 </body>

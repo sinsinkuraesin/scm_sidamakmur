@@ -17,7 +17,7 @@ class Beli extends Model
 
     public function supplier()
     {
-        return $this->belongsTo(Supplier::class, 'kd_supplier');
+        return $this->belongsTo(Supplier::class, 'kd_supplier',);
     }
 
     public function ikan()

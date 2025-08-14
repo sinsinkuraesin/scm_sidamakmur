@@ -6,7 +6,7 @@
         <div class="col-lg-12 stretch-card">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="card-title">Laporan Persediaan PD. Sidamakmur</h4>
+                    <h4 class="card-title">Laporan Stok PD. Sidamakmur</h4>
 
                     {{-- Filter Form --}}
                     <form method="GET" action="{{ route('laporan.persediaan') }}" class="form-inline mb-4">

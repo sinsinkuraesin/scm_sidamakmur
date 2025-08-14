@@ -170,13 +170,13 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link {{ Request::is('laporan/penjualan') ? 'active' : '' }}" href="{{ route('pemilik.lap_penjualan') }}">
-            <i class="fas fa-file-invoice-dollar text-sm me-2"></i> Penjualan
+          <a class="nav-link {{ Request::is('laporan/stok') ? 'active' : '' }}" href="{{ route('pemilik.lap_stok') }}">
+            <i class="fas fa-file-invoice-dollar text-sm me-2"></i> Stok
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link {{ Request::is('laporan/stok') ? 'active' : '' }}" href="{{ route('pemilik.lap_stok') }}">
-            <i class="fas fa-file-invoice-dollar text-sm me-2"></i> Stok
+          <a class="nav-link {{ Request::is('laporan/penjualan') ? 'active' : '' }}" href="{{ route('pemilik.lap_penjualan') }}">
+            <i class="fas fa-file-invoice-dollar text-sm me-2"></i> Penjualan
           </a>
         </li>
       </ul>

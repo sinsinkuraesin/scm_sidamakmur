@@ -28,11 +28,12 @@ class AuthController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
+
             // Arahkan berdasarkan role
             if (Auth::user()->role === 'admin') {
-                return redirect('/beranda-admin');
+                return redirect('/beranda-admin')->with('success', 'Selamat datang, ' . Auth::user()->name . '!');
             } elseif (Auth::user()->role === 'pemilik') {
-                return redirect('/beranda-pemilik');
+                return redirect('/beranda-pemilik')->with('success', 'Selamat datang, ' . Auth::user()->name . '!');
             } else {
                 Auth::logout(); // Role tidak valid
                 return redirect('/login')->withErrors([

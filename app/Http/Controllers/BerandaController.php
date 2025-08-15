@@ -31,7 +31,7 @@ class BerandaController extends Controller
             'Ikan Gurame' => '#42a5f5',
             'Ikan Lele'   => '#66bb6a',
             'Ikan Mas'    => '#ffa726',
-            'Ikan Mujair' => '#ab47bc',
+            'Ikan Mujaer' => '#ab47bc',
         ];
 
         // === 1. SUPPLIER per hari (Top 5) ===
@@ -54,7 +54,7 @@ class BerandaController extends Controller
             'Ikan Gurame' => '#42a5f5',
             'Ikan Lele'   => '#66bb6a',
             'Ikan Mas'    => '#ffa726',
-            'Ikan Mujair' => '#ab47bc',
+            'Ikan Mujaer' => '#ab47bc',
         ];
 
         $jenisIkanGrouped = $supplierData->groupBy('jenis_ikan');

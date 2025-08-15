@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Sidamakmur Admin</title>
+  <title>SI-Machan Admin</title>
 
   <!-- plugins:css -->
   <link rel="stylesheet" href="{{ asset('vendors/feather/feather.css') }}">

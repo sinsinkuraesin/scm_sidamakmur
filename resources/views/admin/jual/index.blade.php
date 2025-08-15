@@ -107,8 +107,6 @@
                         </tbody>
                     </table>
                 </div>
-
-                    <div class="card-footer">{{ $juals->links() }}</div>
                 </div>
             </div>
         </div>

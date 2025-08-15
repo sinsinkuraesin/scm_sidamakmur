@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Login Sistem</title>
+    <title>Login SI-Machan</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
@@ -21,7 +21,8 @@
             <i class="fa-solid fa-user text-white text-3xl"></i>
         </div>
 
-        <h2 class="text-center text-2xl font-bold mb-8 mt-4"> Halaman Login
+        <h2 class="text-center text-2xl font-bold mb-8 mt-4"> Login
+            <br>SI-MACHAN
         </h2>
 
         {{-- Error Message --}}
@@ -108,7 +109,6 @@
     });
 </script>
 @endif
-
 
 
 </body>

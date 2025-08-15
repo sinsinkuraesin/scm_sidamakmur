@@ -25,7 +25,7 @@
         .logo-kanan {
             position: absolute;
             top: 30px;
-            right: 30px;
+            left: 30px;
         }
 
         .logo-kanan img {
@@ -106,14 +106,17 @@
     </style>
 </head>
 <body>
-    @php
-        use Carbon\Carbon;
-        Carbon::setLocale('id');
+   @php
+    use Carbon\Carbon;
+    Carbon::setLocale('id');
 
-        $judul = 'Laporan Stok Persediaan Tanggal ' . Carbon::parse($tanggal)->translatedFormat('d F Y');
-        $isPdf = request()->routeIs('laporan.stok.pdf');
-        $logoPath = $isPdf ? public_path('images/logo.png') : asset('images/logo.png');
-    @endphp
+    $judul = 'Laporan Stok Persediaan';
+    $periode = 'Tanggal ' . Carbon::parse($tanggal)->translatedFormat('d F Y');
+
+    $isPdf = request()->routeIs('laporan.stok.pdf');
+    $logoPath = $isPdf ? public_path('images/logo.png') : asset('images/logo.png');
+@endphp
+
 
     <div class="invoice-box">
         <div class="header-tengah">
@@ -128,9 +131,10 @@
 
         <div class="line"></div>
 
-        <div class="invoice-header">
-            <h4 class="text-primary fw-bold">{{ $judul }}</h4>
-        </div>
+        <div style="text-align:center; font-family:Arial, sans-serif;">
+        <h2 style="margin:0;">Laporan Stok Persediaan</h2>
+        <p style="margin:5; font-size:16px;"> {{ $periode }}</p>
+    </div>
 
         <div class="section-title">Rekapitulasi Stok</div>
         <table>

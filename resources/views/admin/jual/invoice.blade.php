@@ -25,7 +25,7 @@
         .logo-kanan {
             position: absolute;
             top: 30px;
-            right: 30px;
+            left: 30px;
         }
 
         .logo-kanan img {
@@ -61,6 +61,7 @@
             font-size: 24px;
             color: #3f51b5;
             margin: 0;
+            text-align: center;
         }
 
         .section-title {
@@ -174,10 +175,9 @@
         </div>
         <div class="line"></div>
     </div>
-
+     <h4 class="invoice-title center fw-bold ">INVOICE PENJUALAN</h4>
     <!-- Invoice Detail -->
     <div class="invoice-header">
-        <h4 class="invoice-title">INVOICE PENJUALAN</h4>
         <p class="mb-0">No: INV-JUAL-{{ $jual->jual_id }}</p>
         <p class="mb-0">Tanggal: {{ \Carbon\Carbon::parse($jual->tgl_jual)->format('d M Y') }}</p>
     </div>

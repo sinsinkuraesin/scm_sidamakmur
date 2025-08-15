@@ -61,6 +61,17 @@
                 <i class="fa-solid fa-right-to-bracket mr-2"></i> Login
             </button>
         </form>
+@if (session('success'))
+    <div style="background-color: #d4edda; color: #155724; padding: 10px; border-radius: 5px; margin-bottom: 15px;">
+        {{ session('success') }}
+    </div>
+@endif
+
+@if ($errors->any())
+    <div style="background-color: #f8d7da; color: #721c24; padding: 10px; border-radius: 5px; margin-bottom: 15px;">
+        {{ $errors->first() }}
+    </div>
+@endif
 
 
     </div>
@@ -85,6 +96,20 @@
         window.onload = () => setRole('admin');
 
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+@if (session('success'))
+<script>
+    Swal.fire({
+        icon: 'success',
+        title: 'Berhasil',
+        text: '{{ session('success') }}',
+        showConfirmButton: false,
+        timer: 2000
+    });
+</script>
+@endif
+
+
 
 </body>
 </html>

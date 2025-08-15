@@ -26,7 +26,7 @@
         .logo-kanan {
             position: absolute;
             top: 30px;
-            right: 30px;
+            left: 30px;
         }
 
         .logo-kanan img {
@@ -56,15 +56,15 @@
         }
 
 
-        .invoice-header {
+         .invoice-header {
             text-align: right;
         }
-
 
         .invoice-title {
             font-size: 24px;
             color: #3f51b5;
             margin: 0;
+            text-align: center;
         }
 
         .section-title {
@@ -163,26 +163,25 @@
         </div>
         <div class="line"></div>
     </div>
-
-    <!-- Invoice detail -->
+<h4 class="invoice-title center fw-bold ">INVOICE PEMBELIAN</h4>
+    <!-- Invoice Detail -->
     <div class="invoice-header">
-        <h4 class="text-primary fw-bold">INVOICE PEMBELIAN</h4>
         <p class="mb-0">No: INV-BELI-{{ $beli->id }}</p>
         <p class="mb-0">Tanggal: {{ \Carbon\Carbon::parse($beli->tgl_beli)->format('d M Y') }}</p>
     </div>
 
-
     <div class="section-title">Informasi Supplier</div>
     <table style="width: auto;">
         <tr>
-            <td><strong>Nama Supplier:</strong></td>
-            <td>{{ $beli->supplier->nm_supplier ?? '-' }}</td>
-        </tr>
-        <tr>
-            <td><strong>Alamat Supplier:</strong></td>
-            <td>{{ $beli->supplier->alamat ?? '-' }}</td>
-        </tr>
+                <td><strong>Nama Supplier:</strong></td>
+                <td>{{ $beli->supplier->nm_supplier ?? '-' }}</td>
+            </tr>
+            <tr>
+                <td><strong>Alamat Supplier:</strong></td>
+                <td>{{ $beli->supplier->alamat ?? '-' }}</td>
+            </tr>
     </table>
+
 
     <div class="section-title">Detail Pembelian</div>
     <table border="1">

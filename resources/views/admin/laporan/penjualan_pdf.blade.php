@@ -30,7 +30,7 @@
         .logo-kanan {
             position: absolute;
             top: 30px;
-            right: 30px;
+            left: 30px;
         }
 
         .logo-kanan img {
@@ -110,13 +110,18 @@
     use Carbon\Carbon;
     Carbon::setLocale('id');
 
-    $judul = 'Laporan Penjualan';
+    $judul = 'Laporan Penjualan Periode';
     if ($filter === 'bulan') {
-        $judul .= ' - Bulan ' . Carbon::parse($tanggal)->translatedFormat('F');
+    $startOfMonth = Carbon::parse($tanggal)->startOfMonth();
+    $endOfMonth   = Carbon::parse($tanggal)->endOfMonth();
+    $periode = $startOfMonth->translatedFormat('j F Y') . ' - ' . $endOfMonth->translatedFormat('j F Y');
     } elseif ($filter === 'tahun') {
-        $judul .= ' - Tahun ' . Carbon::parse($tanggal)->translatedFormat('Y');
+        $startOfYear = Carbon::parse($tanggal)->startOfYear();
+        $endOfYear   = Carbon::parse($tanggal)->endOfYear();
+        $periode = $startOfYear->translatedFormat('j F Y') . ' - ' . $endOfYear->translatedFormat('j F Y');
+
     } else {
-        $judul .= ' - Tanggal ' . Carbon::parse($tanggal)->translatedFormat('d F Y');
+        $periode = Carbon::parse($tanggal)->translatedFormat('j F Y');
     }
 
     $logoPath = public_path('images/logo.png');
@@ -136,8 +141,9 @@
 
     <div class="line"></div>
 
-    <div class="invoice-header">
-        <h4 class="text-primary fw-bold">{{ $judul }}</h4>
+    <div style="text-align:center; font-family:Arial, sans-serif;">
+        <h2 style="margin:0;">Laporan Penjualan</h2>
+        <p style="margin:5; font-size:16px;">Periode {{ $periode }}</p>
     </div>
 
     <div class="section-title">Detail Penjualan</div>

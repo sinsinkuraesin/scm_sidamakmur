@@ -171,7 +171,7 @@
         <!-- Downstream Chart -->
         <div class="col-md-6 mx-auto mb-4">
             <div class="card-custom">
-                <h5>🛒 Grafik Pasar Utama (Downstream))</h5>
+                <h5>🛒 Grafik Pasar Utama (Downstream)</h5>
                 <p class="text-muted">Jumlah penjualan harian ke pasar yang paling sering bertransaksi.</p>
                 <canvas id="downstreamChart" style="height: 200px;"></canvas>
             </div>
@@ -185,8 +185,6 @@
 function formatRupiah(value) {
     return 'Rp ' + Number(value).toLocaleString('id-ID');
 }
-
-// === UPSTREAM ===
 
 // === UPSTREAM ===
 const supplierMap = {!! json_encode($supplierMapPerTanggal) !!};

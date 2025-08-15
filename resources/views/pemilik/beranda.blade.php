@@ -163,7 +163,7 @@
         </div>
     </div>
 
-   <div class="row">
+  <div class="row">
         <!-- Upstream Chart -->
         <div class="col-md-6 mb-4">
             <div class="card-custom">
@@ -176,7 +176,7 @@
         <!-- Internal Chart -->
         <div class="col-md-6 mb-4">
             <div class="card-custom">
-                <h5>🏪 2. Grafik Stok (Persediaan)</h5>
+                <h5>🏪 2. Grafik Stok Persediaan</h5>
                 <p class="text-muted">Stok ikan per hari (1 minggu terakhir)</p>
                 <canvas id="internalChart" style="height: 200px;"></canvas>
             </div>
@@ -185,7 +185,7 @@
         <!-- Downstream Chart -->
         <div class="col-md-6 mx-auto mb-4">
             <div class="card-custom">
-                <h5>🛒 Grafik Pasar Utama (Downstream)</h5>
+                <h5>🛒 Grafik Distribusi Pasar Utama </h5>
                 <p class="text-muted">Jumlah penjualan harian ke pasar yang paling sering bertransaksi.</p>
                 <canvas id="downstreamChart" style="height: 200px;"></canvas>
             </div>
@@ -194,13 +194,14 @@
 </div>
 
 
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
 function formatRupiah(value) {
     return 'Rp ' + Number(value).toLocaleString('id-ID');
 }
 
-// === UPSTREAM ===
+
 
 // === UPSTREAM ===
 const supplierMap = {!! json_encode($supplierMapPerTanggal) !!};

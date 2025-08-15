@@ -27,7 +27,7 @@ class JualController extends Controller
 
     public function index()
     {
-        $juals = Jual::with(['konsumen', 'detailJual.ikan'])->latest()->paginate(10);
+        $juals = Jual::with(['konsumen', 'detailJual.ikan'])->latest()->get();
 
         $totalPendapatan = DetailJual::sum('total');
 

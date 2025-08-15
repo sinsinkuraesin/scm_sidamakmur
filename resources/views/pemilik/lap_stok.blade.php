@@ -6,7 +6,7 @@
         <div class="col-12">
             <div class="card shadow-sm">
                 <div class="card-body">
-                    <h4 class="card-title">Laporan Stok Persediaan</h4>
+                    <h4 class="card-title">Laporan Stok</h4>
 
                     <form method="GET" action="{{ route('pemilik.lap_stok') }}" class="row mb-4">
                         <div class="col-md-4">

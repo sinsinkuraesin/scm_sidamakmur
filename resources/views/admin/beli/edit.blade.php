@@ -70,7 +70,7 @@
 
                                 @if ($beli->bukti_pembayaran)
                                     <p class="mt-2">Bukti Saat Ini:</p>
-                                    <img src="{{ asset('storage/' . $beli->bukti_pembayaran) }}" alt="Bukti Pembayaran" style="max-height: 200px;">
+                                    <img src="{{ Storage::url($beli->bukti_pembayaran) }}" alt="Bukti Pembayaran" style="max-height: 200px;">
                                 @endif
                             </div>
 

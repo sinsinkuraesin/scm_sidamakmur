@@ -89,63 +89,106 @@ class PemilikBerandaController extends Controller
 
         $allSuppliers = array_values(array_unique($allSuppliers));
 
-
-                // === 2. STOK per hari ===
-                $ikanList = Ikan::with(['belis', 'detailJual'])->get();
+                // === 2. STOK PERHARI REAL-TIME ===
+                $ikanList = Ikan::all();
                 $stokChartData = [];
+
                 foreach ($ikanList as $ikan) {
                     $dataPerHari = [];
-                    foreach ($tanggalKeys as $tgl) {
-                        $masuk = $ikan->belis()
-                            ->whereDate('tgl_beli', '<=', $tgl)
+
+                    // Ambil stok terakhir dari tbl_ikan
+                    $stokHariTerakhir = $ikan->stok;
+
+                    // Simpan stok terakhir ke array
+                    $stokPerTanggal = [];
+                    $stokPerTanggal[$tanggalKeys->last()] = $stokHariTerakhir;
+
+                    // Hitung mundur ke hari sebelumnya
+                    for ($i = count($tanggalKeys) - 2; $i >= 0; $i--) {
+                        $tglSekarang = $tanggalKeys[$i];
+                        $tglBesok    = $tanggalKeys[$i + 1];
+
+                        // Ambil data pembelian & penjualan di tglBesok
+                        $masukBesok = Beli::where('jenis_ikan', $ikan->id)
+                            ->whereDate('tgl_beli', $tglBesok)
                             ->sum('jml_ikan');
-                        $keluar = $ikan->detailJual()
-                            ->whereHas('jual', fn($q) => $q->whereDate('tgl_jual', '<=', $tgl))
+
+                        $keluarBesok = DetailJual::where('jenis_ikan', $ikan->id)
+                            ->whereHas('jual', function ($q) use ($tglBesok) {
+                                $q->whereDate('tgl_jual', $tglBesok);
+                            })
                             ->sum('jml_ikan');
-                        $stok = $masuk - $keluar;
-                        $dataPerHari[] = $stok;
+
+                        // Hitung stok mundur
+                        $stokPerTanggal[$tglSekarang] = $stokPerTanggal[$tglBesok] - $masukBesok + $keluarBesok;
                     }
+
+                    // Urutkan stok sesuai tanggalKeys
+                    foreach ($tanggalKeys as $tgl) {
+                        $dataPerHari[] = $stokPerTanggal[$tgl] ?? 0;
+                    }
+
                     $stokChartData[] = [
                         'label' => $ikan->jenis_ikan,
                         'data'  => $dataPerHari
                     ];
                 }
 
+
                 // === 3. PASAR + KONSUMEN per hari ===
-            $konsumenData = Jual::select(
-                DB::raw('DATE(tbl_jual.tgl_jual) as tanggal'),
-                'tbl_konsumen.nama_konsumen',
-                'tbl_jual.nama_pasar',
-                DB::raw('SUM(tbl_detail_jual.jml_ikan) as total_kg')
+            // === 3. DISTRIBUSI IKAN KE PASAR ===
+            $pasarData = Jual::select(
+                    DB::raw('DATE(tbl_jual.tgl_jual) as tanggal'),
+                    'tbl_ikan.jenis_ikan',
+                    'tbl_jual.nama_pasar',
+                    DB::raw('SUM(tbl_detail_jual.jml_ikan) as total_kg')
                 )
                 ->join('tbl_detail_jual', 'tbl_jual.jual_id', '=', 'tbl_detail_jual.jual_id')
-                ->join('tbl_konsumen', 'tbl_jual.nama_konsumen', '=', 'tbl_konsumen.id') // sesuaikan jika FK beda
+                ->join('tbl_ikan', 'tbl_detail_jual.jenis_ikan', '=', 'tbl_ikan.id')
                 ->whereBetween(DB::raw('DATE(tbl_jual.tgl_jual)'), [
                     $tanggalMulai->format('Y-m-d'),
                     $hariIni->format('Y-m-d')
                 ])
-                ->groupBy('tanggal', 'tbl_konsumen.nama_konsumen', 'tbl_jual.nama_pasar')
-                ->get()
-                ->groupBy(fn($item) => $item->nama_pasar.' - '.$item->nama_konsumen)
-                ->map(function ($group) use ($tanggalKeys) {
-                    return [
-                        'label' => $group->first()->nama_pasar.' - '.$group->first()->nama_konsumen,
-                        'data'  => collect($tanggalKeys)->map(fn($tgl) =>
-                            $group->where('tanggal', $tgl)->sum('total_kg')
-                        )->toArray()
-                    ];
-                })
-                ->values();
+                ->groupBy('tanggal', 'jenis_ikan', 'nama_pasar')
+                ->get();
 
+            // Untuk chart utama: dataset jenis ikan per tanggal
+            $ikanGrouped = $pasarData->groupBy('jenis_ikan');
+            $ikanPasarMap = [];
+            $datasets = [];
+
+            foreach ($ikanGrouped as $jenisIkan => $rows) {
+                $data = [];
+
+                foreach ($tanggalKeys as $tgl) {
+                    $totalKg = $rows->where('tanggal', $tgl)->sum('total_kg');
+                    $data[] = $totalKg;
+
+                    // Buat tooltip mapping
+                    $pasarList = $rows->where('tanggal', $tgl)
+                        ->groupBy('nama_pasar')
+                        ->map(fn($g) => $g->sum('total_kg'))
+                        ->toArray();
+
+                    $ikanPasarMap[$tgl][$jenisIkan] = $pasarList;
+                }
+
+                $datasets[] = [
+                    'label' => $jenisIkan,
+                    'data' => $data,
+                    'backgroundColor' => $colorMap[$jenisIkan] ?? '#999'
+                ];
+            }
 
                 return view('pemilik.beranda', compact(
                     'tanggalLabels',
                     'tanggalKeys',
                     'datasets',
                     'stokChartData',
-                    'konsumenData',
                     'supplierMapPerTanggal',
-                    'allSuppliers'
+                    'allSuppliers',
+                    'ikanPasarMap',
+
                 ));
 
     }

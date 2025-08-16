@@ -142,9 +142,8 @@
             <div class="scm-box text-start">
                 <div class="scm-title"><em>Internal Supply Chain</em></div>
                 <ul class="scm-list">
-                    <li>Pengelolaan persediaan</li>
+                    <li>Pengelolaan dan kontrol persediaan</li>
                     <li>Perencanaan produksi</li>
-                    <li>Penyimpanan dan kontrol kualitas</li>
                 </ul>
             </div>
 

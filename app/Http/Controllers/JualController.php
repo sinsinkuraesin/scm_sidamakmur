@@ -248,14 +248,18 @@ class JualController extends Controller
     {
         DB::beginTransaction();
         try {
-            foreach ($jual->detailJual as $detail) {
-                $ikan = Ikan::find($detail->jenis_ikan);
-                if ($ikan) {
-                    $ikan->stok += $detail->jml_ikan;
-                    $ikan->save();
+            // Kembalikan stok hanya jika statusnya "Selesai"
+            if ($jual->status === 'Selesai') {
+                foreach ($jual->detailJual as $detail) {
+                    $ikan = Ikan::find($detail->jenis_ikan);
+                    if ($ikan) {
+                        $ikan->stok += $detail->jml_ikan;
+                        $ikan->save();
+                    }
                 }
             }
 
+            // Hapus detail & data jual
             $jual->detailJual()->delete();
             $jual->delete();
 

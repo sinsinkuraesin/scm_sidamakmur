@@ -92,7 +92,16 @@
                                     <td>
                                         Rp. {{ number_format($jual->detailJual->sum('total'), 0, ',', '.') }}
                                     </td>
-                                    <td>{{ $jual->status }}</td>
+                                    <td>
+                                        @if($jual->status === 'Selesai')
+                                            <span class="badge bg-success">{{ $jual->status }}</span>
+                                        @elseif($jual->status === 'Diproses')
+                                            <span class="badge bg-warning text-dark">{{ $jual->status }}</span>
+                                        @else
+                                            <span class="badge bg-secondary">{{ $jual->status }}</span>
+                                        @endif
+                                    </td>
+
                                     <td>
                                         <form action="{{ route('jual.destroy', $jual->jual_id) }}" method="POST">
                                             @csrf

@@ -81,7 +81,12 @@
                                                 @csrf
                                                 @method('DELETE')
                                                 <a href="{{ route('beli.edit', $beli->id) }}" class="btn btn-warning btn-sm">Edit</a>
-                                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Yakin hapus data?')">Hapus</button>
+                                                <button type="button"
+                                                        class="btn btn-danger btn-sm btn-delete"
+                                                        data-status="{{ $beli->bukti_pembayaran ? 'Sudah Upload Bukti Bayar' : 'Belum Upload Bukti Bayar' }}"
+                                                        data-tanggal="{{ $beli->tgl_beli }}">
+                                                    Hapus
+                                                </button>
                                                 <a href="{{ route('beli.invoice.pdf', $beli->id) }}" class="btn btn-info btn-sm" target="_blank">Cetak</a>
                                             </form>
                                         </td>
@@ -106,3 +111,30 @@
         </div>
     </div>
 @endsection
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.btn-delete').forEach(button => {
+        button.addEventListener('click', function () {
+            let form = this.closest('form');
+            let status = this.getAttribute('data-status');
+            let tanggal = this.getAttribute('data-tanggal');
+
+            Swal.fire({
+                title: 'Apakah Anda yakin?',
+                text: `Yakin mau hapus data yang statusnya ${status} pada tanggal ${tanggal}?`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Ya, Hapus!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            });
+        });
+    });
+});
+</script>

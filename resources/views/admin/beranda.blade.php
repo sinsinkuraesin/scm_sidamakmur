@@ -186,14 +186,14 @@ function formatRupiah(value) {
     return 'Rp ' + Number(value).toLocaleString('id-ID');
 }
 
-// === UPSTREAM ===
+// === Grafik 1 ===
 const supplierMap = {!! json_encode($supplierMapPerTanggal) !!};
 
 const upstreamChart = new Chart(document.getElementById('upstreamChart'), {
     type: 'bar',
     data: {
         labels: {!! json_encode($tanggalLabels) !!},
-        datasets: {!! json_encode($datasets) !!}
+        datasets: {!! json_encode($upstreamDatasets) !!}   // pakai upstreamDatasets
     },
     options: {
         responsive: true,
@@ -223,7 +223,7 @@ const upstreamChart = new Chart(document.getElementById('upstreamChart'), {
 
 
 
-// === INTERNAL ===
+// === Grafik 2 ===
 const stokColors = [
     '#42a5f5', '#66bb6a', '#ffa726', '#ab47bc', '#26c6da',
     '#ff7043', '#8d6e63', '#26a69a', '#ec407a', '#7e57c2'
@@ -262,7 +262,7 @@ new Chart(document.getElementById('internalChart'), {
 });
 
 
-// === DOWNSTREAM ===
+// === grafik3 ===
 const ikanPasarMap = {!! json_encode($ikanPasarMap) !!};
 
 new Chart(document.getElementById('downstreamChart'), {

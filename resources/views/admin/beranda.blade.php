@@ -169,13 +169,13 @@
         </div>
 
         <!-- Downstream Chart -->
-        <div class="col-md-6 mx-auto mb-4">
-            <div class="card-custom">
-                <h5>🛒 Grafik Distribusi Pasar Utama </h5>
-                <p class="text-muted">Jumlah penjualan harian ke pasar yang paling sering bertransaksi.</p>
-                <canvas id="downstreamChart" style="height: 200px;"></canvas>
-            </div>
+        <div class="col-md-12 mb-4">
+        <div class="card-custom">
+            <h5>🐟 Grafik Distribusi Jenis Ikan ke Pasar</h5>
+            <p class="text-muted">Total penjualan ikan per jenis per hari. Klik/hover untuk melihat distribusi ke pasar.</p>
+            <canvas id="downstreamChart" style="height: 250px;"></canvas>
         </div>
+    </div>
     </div>
 </div>
 
@@ -228,6 +228,7 @@ const stokColors = [
     '#42a5f5', '#66bb6a', '#ffa726', '#ab47bc', '#26c6da',
     '#ff7043', '#8d6e63', '#26a69a', '#ec407a', '#7e57c2'
 ];
+
 new Chart(document.getElementById('internalChart'), {
     type: 'bar',
     data: {
@@ -236,7 +237,7 @@ new Chart(document.getElementById('internalChart'), {
             @foreach ($stokChartData as $index => $data)
             {
                 label: '{{ $data['label'] }}',
-                data: {!! json_encode($data['data']) !!},
+                data: {!! json_encode($data['data']) !!}, // sisa stok harian
                 backgroundColor: stokColors[{{ $index }} % stokColors.length],
                 borderWidth: 1
             },
@@ -245,51 +246,54 @@ new Chart(document.getElementById('internalChart'), {
     },
     options: {
         responsive: true,
-        scales: { x: { stacked: true }, y: { stacked: true, beginAtZero: true, title: { display: true, text: 'Jumlah Stok' } } },
-        plugins: { legend: { position: 'bottom' }, tooltip: { callbacks: { label: ctx => `${ctx.dataset.label}: ${ctx.raw} Kg` } } }
+        scales: {
+            x: { stacked: true },
+            y: {
+                stacked: true,
+                beginAtZero: true,
+                title: { display: true, text: 'Sisa Stok (Kg)' }
+            }
+        },
+        plugins: {
+            legend: { position: 'bottom' },
+            tooltip: { callbacks: { label: ctx => `${ctx.dataset.label}: ${ctx.raw} Kg` } }
+        }
     }
 });
 
+
 // === DOWNSTREAM ===
+const ikanPasarMap = {!! json_encode($ikanPasarMap) !!};
+
 new Chart(document.getElementById('downstreamChart'), {
     type: 'bar',
     data: {
         labels: {!! json_encode($tanggalLabels) !!},
-        datasets: {!! json_encode($konsumenData) !!}
+        datasets: {!! json_encode($datasets) !!}
     },
     options: {
         responsive: true,
         plugins: {
-            legend: {
-                position: 'bottom',
-                labels: {
-                    generateLabels: function(chart) {
-                        const labels = Chart.defaults.plugins.legend.labels.generateLabels(chart);
-                        return labels.map(label => ({
-                            ...label,
-                            // hanya ambil nama pasar tanpa kode
-                            text: label.text.split(' - ')[0]
-                        }));
+            legend: { position: 'bottom' },
+            tooltip: {
+                callbacks: {
+                    label: function(context) {
+                        const tanggalKey = {!! json_encode($tanggalKeys) !!}[context.dataIndex];
+                        const jenisIkan = context.dataset.label;
+                        const pasarDistribusi = ikanPasarMap[tanggalKey]?.[jenisIkan] || {};
+
+                        let label = `${jenisIkan}: ${context.raw} Kg`;
+                        let detailPasar = Object.entries(pasarDistribusi)
+                            .map(([pasar, kg]) => `→ ${pasar}: ${kg} Kg`)
+                            .join('\n');
+
+                        return label + '\n' + detailPasar;
                     }
                 }
-            },
-            tooltip: {
-    callbacks: {
-        label: function(context) {
-            // Ambil label asli
-            let originalLabel = context.chart.data.datasets[context.datasetIndex].label;
-
-            // Pecah "Pasar Talun - Nama Konsumen" jadi array
-            let parts = originalLabel.split(' - ');
-            let namaKonsumen = parts.length > 1 ? parts[1] : originalLabel;
-
-            return namaKonsumen + ': ' + context.parsed.y + ' Kg';
-        }
-    }
-}
-
+            }
         },
         scales: {
+            x: { stacked: false },
             y: {
                 beginAtZero: true,
                 title: {
